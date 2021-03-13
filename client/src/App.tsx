@@ -4,9 +4,10 @@ import "./App.css";
 import { Link, Switch, Route } from "react-router-dom";
 import AddTutorial from "./components/add-tutorial.component";
 import Tutorial from "./components/tutorial.component";
-import TutorialsList from "./components/tutorials-list.component";
+import LoginPage from "./components/login-page";
+import ForgotPwd from "./components/forgot-password";
+import Wrapper from "./components/pages/verification_wrapper";
 
-import Wrapper from "./components/pages/wrapper";
 class App extends Component {
   render() {
     return (
@@ -31,7 +32,8 @@ class App extends Component {
 
         <div>
           <Switch>
-            <Route exact path={["/"]} component={Wrapper} />
+            <Route exact path={["/"]} component={Wrapper(LoginPage)} />
+            <Route exact path="/forgot" component={Wrapper(ForgotPwd)} />
             <Route exact path="/add" component={AddTutorial} />
             <Route path="/tutorials/:id" component={Tutorial} />
           </Switch>
