@@ -31,6 +31,7 @@ export default class LoginPage extends Component<Props, State> {
     UserAccessService.signin(this.state)
       .then((response) => {
         console.log("signin success");
+        this.setState({ uservalid: true });
       })
       .catch((e) => {
         console.log(e.response);
@@ -59,7 +60,7 @@ export default class LoginPage extends Component<Props, State> {
     return (
       <form>
         <h3>Log in</h3>
-        {uservalid == false && trycount <= 4 && (
+        {uservalid === false && trycount <= 4 && (
           <Alert
             variant="danger"
             style={{ margin: "0px 0px 0px 0px", padding: "5px 5px 5px 5px" }}
@@ -67,7 +68,7 @@ export default class LoginPage extends Component<Props, State> {
             Email or password is wrong.
           </Alert>
         )}
-        {uservalid == false && trycount > 4 && (
+        {uservalid === false && trycount > 4 && (
           <Alert
             variant="danger"
             style={{ margin: "0px 0px 0px 0px", padding: "5px 5px 5px 5px" }}
