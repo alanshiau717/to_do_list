@@ -1,13 +1,15 @@
 import React, { Component } from "react";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+// import Container from "react-bootstrap/Container";
+// import Row from "react-bootstrap/Row";
+// import Col from "react-bootstrap/Col";
+import Alert from "react-bootstrap/Alert";
 import UserAccessService from "../services/user.access";
 import { UserLoginType } from "../types/user.access";
 
 interface Props {}
 interface State extends UserLoginType {
   loading: boolean;
+  trycount: number;
 }
 
 export default class LoginPage extends Component<Props, State> {
@@ -19,18 +21,23 @@ export default class LoginPage extends Component<Props, State> {
     this.state = {
       email: "",
       password: "",
-      uservalid: false,
+      uservalid: true,
       loading: false,
+      trycount: 0,
     };
   }
 
   verify_login() {
     UserAccessService.signin(this.state)
-      .then((response) => {})
+      .then((response) => {
+        console.log("signin success");
+        this.setState({ uservalid: true });
+      })
       .catch((e) => {
         console.log(e.response);
         if (e.response.status === 401) {
           this.setState({ uservalid: false });
+          this.setState({ trycount: this.state.trycount + 1 });
         } else {
           console.log("Uncaught Error");
         }
@@ -49,10 +56,27 @@ export default class LoginPage extends Component<Props, State> {
     });
   }
   render() {
-    const { email, password, uservalid } = this.state;
+    const { email, password, uservalid, trycount } = this.state;
     return (
       <form>
         <h3>Log in</h3>
+        {uservalid === false && trycount <= 4 && (
+          <Alert
+            variant="danger"
+            style={{ margin: "0px 0px 0px 0px", padding: "5px 5px 5px 5px" }}
+          >
+            Email or password is wrong.
+          </Alert>
+        )}
+        {uservalid === false && trycount > 4 && (
+          <Alert
+            variant="danger"
+            style={{ margin: "0px 0px 0px 0px", padding: "5px 5px 5px 5px" }}
+          >
+            Email or password is wrong. <br />
+            <Alert.Link href="#">Reset your password.</Alert.Link>
+          </Alert>
+        )}
 
         <div className="form-group">
           <label>Email</label>
