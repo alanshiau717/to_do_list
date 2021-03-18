@@ -1,6 +1,8 @@
 import db from "../models/index";
 import { Request, Response } from "express";
-const User = db.user;
+import User from "../models/User";
+// const User = db.user;
+
 const UserSession = db.usersession;
 
 //TO-Do Figure what to send for errors
@@ -41,11 +43,11 @@ exports.signup = (req: Request, res: Response) => {
     newUser.firstName = firstName;
     newUser.lastName = lastName;
     newUser.password = newUser.generateHash(password);
-    newUser.save((err: Error, user: any) => {
+    newUser.save((err, output) => {
       if (err) {
         res.status(400).send({ message: "Error: Internval Server Error" });
       }
-      res.status(200).send(user);
+      res.status(200).send(output);
     });
   });
 };

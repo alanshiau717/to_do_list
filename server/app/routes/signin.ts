@@ -2,8 +2,8 @@ import { Router, Request, Response } from "express";
 
 module.exports = (app: any) => {
   const access = require("../controller/access.ts");
-
   var router = require("express").Router();
+
   router.get("/", (req: Request, res: Response) => {
     res.send("Hit api");
   });
