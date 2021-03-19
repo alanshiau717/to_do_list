@@ -8,10 +8,10 @@ interface UserSignupDoc extends Document, UserSignup {
 }
 
 export const UserSchema = new Schema<UserSignupDoc>({
-  firstName: { type: String, default: "" },
-  lastName: { type: String, default: "" },
-  email: { type: String, default: "" },
-  password: { type: String, default: "" },
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
+  email: { type: String, required: true },
+  password: { type: String, required: true },
   isDeleted: { type: Boolean, default: false },
   activated: { type: Boolean, default: false },
 });
