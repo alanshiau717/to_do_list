@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import User from "../models/User";
 import UserSession from "../models/UserSession";
-
+import jwt from "jsonwebtoken";
+const config = require("../config/auth.config");
 //TO-Do Figure what to send for errors
 
 exports.signup = (req: Request, res: Response) => {
@@ -81,6 +82,9 @@ exports.signin = (req: Request, res: Response) => {
     }
 
     const userSession = new UserSession();
+    var token = jwt.sign({ id: user._id }, config.secret, {
+      expiresIn: 86400,
+    });
     userSession.userId = user._id;
     userSession.save((err, output) => {
       if (err) {
@@ -88,7 +92,7 @@ exports.signin = (req: Request, res: Response) => {
           message: err,
         });
       }
-      return res.status(200).send(output);
+      return res.status(200).send(token);
     });
   });
 };
