@@ -1,5 +1,7 @@
-import { env } from "process";
+require("dotenv").config();
 
-export default {
-  secret: env.AUTH_KEY,
+const config = {
+  secret: process.env.AUTH_KEY,
 };
+
+export default config;
