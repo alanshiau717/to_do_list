@@ -1,13 +1,7 @@
 import { Document, Schema, model } from "mongoose";
+import Folder from "../../../client/src/models/folder";
 
-interface Folder extends Document {
-  name: string;
-  created: Date;
-  done: boolean;
-  order: number;
-  isDeleted: boolean;
-  user: string;
-}
+interface FolderDoc extends Document, Folder {}
 
 export const FolderSchema = new Schema({
   name: { type: String, required: true },
@@ -18,5 +12,5 @@ export const FolderSchema = new Schema({
   user: { type: String, required: true },
 });
 
-const FolderModel = model<Folder>("task", FolderSchema);
+const FolderModel = model<FolderDoc>("folder", FolderSchema);
 export default FolderModel;

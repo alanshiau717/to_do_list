@@ -1,16 +1,6 @@
 import { Document, Schema, model } from "mongoose";
-
-interface List extends Document {
-  name: string;
-  created: Date;
-  user: string;
-  isDeleted: boolean;
-  order: number;
-}
-
-// interface ToDoList extends Array<Task>, Document {
-//   name: string;
-// }
+import List from "../../../client/src/models/list";
+interface ListDoc extends List, Document {}
 
 export const ListSchema = new Schema({
   name: { type: String, required: true },
@@ -18,7 +8,8 @@ export const ListSchema = new Schema({
   user: { type: String, required: true },
   isDeleted: { type: Boolean, required: true, default: false },
   order: { type: Boolean, required: true },
+  folder: { type: Boolean, required: true },
 });
 
-const ListModel = model<List>("list", ListSchema);
+const ListModel = model<ListDoc>("list", ListSchema);
 export default ListModel;

@@ -1,7 +1,5 @@
-import db from "../models/index";
 import { Request, Response } from "express";
 import Task from "../models/tasks";
-import { userInfo } from "os";
 
 // Returns full list
 exports.getAll = (req: Request, res: Response) => {};

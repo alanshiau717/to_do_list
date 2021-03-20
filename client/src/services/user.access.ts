@@ -1,5 +1,5 @@
 import http from "../http-common";
-import { UserLoginType } from "../models/user.login";
+import UserLoginType from "../models/user.login";
 
 class UserAccessService {
   signup() {

@@ -1,7 +1,6 @@
 import { Document, Schema, model } from "mongoose";
 import Task from "../../../client/src/models/task";
 
-
 interface TaskDoc extends Document, Task {}
 
 export const TaskSchema = new Schema({

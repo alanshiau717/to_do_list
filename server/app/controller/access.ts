@@ -35,7 +35,6 @@ exports.signup = (req: Request, res: Response) => {
     }
 
     const newUser = new User();
-
     newUser.email = lower_email;
     newUser.firstName = firstName;
     newUser.lastName = lastName;
