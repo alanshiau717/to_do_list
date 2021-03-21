@@ -83,8 +83,6 @@ exports.signin = (req: Request, res: Response) => {
     }
 
     const userSession = new UserSession();
-    console.log(config);
-    console.log(config.secret);
     if (config.secret != undefined) {
       var token = jwt.sign({ id: user._id }, config.secret, {
         expiresIn: 86400,
@@ -96,7 +94,7 @@ exports.signin = (req: Request, res: Response) => {
             message: err,
           });
         }
-        return res.status(200).send(token);
+        return res.status(200).send({ accessToken: token });
       });
     } else {
       res.status(500).send({
