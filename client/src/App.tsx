@@ -7,6 +7,7 @@ import Tutorial from "./components/tutorial.component";
 import LoginPage from "./components/login-page";
 import ForgotPwd from "./components/forgot-password";
 import Wrapper from "./components/wrappers/verification_wrapper";
+import Test from "./components/test.component";
 
 class App extends Component {
   render() {
@@ -32,10 +33,16 @@ class App extends Component {
 
         <div>
           <Switch>
+            {/* <Route
+              exact
+              path={["/"]}
+              component={Wrapper((LoginPage as unknown) as React.ComponentType)}
+            /> */}
             <Route exact path={["/"]} component={Wrapper(LoginPage)} />
             <Route exact path="/forgot" component={Wrapper(ForgotPwd)} />
             <Route exact path="/add" component={AddTutorial} />
             <Route path="/tutorials/:id" component={Tutorial} />
+            <Route path="/test" component={Test} />
           </Switch>
         </div>
       </div>

@@ -1,29 +1,47 @@
 import { Request, Response } from "express";
 import Task from "../models/tasks";
 
-// Returns full list
-exports.getAll = (req: Request, res: Response) => {};
+//Search params in body. If no search params, will return all tasks of user
+exports.getTask = (req: Request, res: Response) => {
+  var { body } = req;
+  // user somehow passed a userId which they shouldn't have
+  if (body.userId) {
+    res.status(400).send({ message: "Error: Internal Server Error" });
+    return res.end();
+  }
+  Task.find({ ...body, user: req.userId }, (err, output) => {
+    if (err) {
+      res.status(400).send({ message: "Error: Internal Server Error" });
+      return res.end();
+    }
+    res.status(200).send(output);
+    return res.end();
+  });
+};
 
-// Returns one folder
-exports.getOne = (req: Request, res: Response) => {};
-
-// Creates one task
+// Creates a single task
 exports.createTask = (req: Request, res: Response) => {
   const NewTask = new Task();
+  const { body } = req;
+  const { name, due, order, list } = body;
 
-  NewTask.name = "test";
+  NewTask.name = name;
   NewTask.created = new Date();
-  NewTask.due = new Date();
-  NewTask.done = true;
-  NewTask.order = 1;
+  NewTask.due = due;
+  NewTask.done = false;
+  NewTask.order = order;
   NewTask.isDeleted = false;
-  NewTask.list = "test";
-  NewTask.user = "test";
+  NewTask.list = list;
 
+  if (req.userId) {
+    NewTask.user = req.userId;
+  } else {
+    res.status(400).send({ message: "Error: Internal Server Error" });
+  }
   NewTask.save((err, output) => {
     if (err) {
       console.log(err);
-      res.status(400).send({ message: "Error: Internval Server Error" });
+      res.status(400).send({ message: "Error: Internal Server Error" });
     }
     res.status(200).send(output);
   });

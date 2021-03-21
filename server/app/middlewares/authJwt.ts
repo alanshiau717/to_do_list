@@ -1,7 +1,9 @@
 const jwt = require("jsonwebtoken");
 const config = require("../config/auth.config");
 import { Request, Response, NextFunction } from "express";
-var verifyToken = function (req: any, res: Response, next: NextFunction) {
+// import Request from "../backend_types/auth_req";
+
+var verifyToken = function (req: Request, res: Response, next: NextFunction) {
   let token = req.headers["x-access-token"];
   if (!token) {
     return res.status(403).send({ message: "No token provided!" });

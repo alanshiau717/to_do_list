@@ -3,7 +3,7 @@
 export default interface Task {
   name: string;
   created: Date;
-  due: Date;
+  due?: Date;
   done: boolean;
   order: number;
   isDeleted: boolean;

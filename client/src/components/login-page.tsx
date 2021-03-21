@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 // import Container from "react-bootstrap/Container";
 // import Row from "react-bootstrap/Row";
 // import Col from "react-bootstrap/Col";
@@ -6,13 +7,13 @@ import Alert from "react-bootstrap/Alert";
 import UserAccessService from "../services/user.access";
 import UserLoginType from "../models/user.login";
 
-interface Props {}
+interface Props extends RouteComponentProps {}
 interface State extends UserLoginType {
   loading: boolean;
   trycount: number;
 }
 
-export default class LoginPage extends Component<Props, State> {
+const Login = class LoginPage extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.verify_login = this.verify_login.bind(this);
@@ -30,8 +31,8 @@ export default class LoginPage extends Component<Props, State> {
   verify_login() {
     UserAccessService.signin(this.state)
       .then((response) => {
-        console.log("signin success");
         this.setState({ uservalid: true });
+        this.props.history.push("/test");
       })
       .catch((e) => {
         console.log(e.response);
@@ -127,4 +128,6 @@ export default class LoginPage extends Component<Props, State> {
       </form>
     );
   }
-}
+};
+
+export default withRouter(Login);
