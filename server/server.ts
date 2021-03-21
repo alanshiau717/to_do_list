@@ -2,6 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import { allowedNodeEnvironmentFlags } from "process";
+
 // const path = __dirname + "/app/views";
 const app = express();
 
@@ -37,8 +38,8 @@ db.mongoose
     process.exit();
   });
 
-require("./app/routes/signin")(app);
-require("./app/routes/todolist")(app);
+app.use("/api/account", require("./app/routes/signin"));
+app.use("/api/todolist", require("./app/routes/todoist"));
 const port = process.env.PORT || 8080;
 
 // start the Express server
