@@ -46,3 +46,42 @@ exports.createTask = (req: Request, res: Response) => {
     res.status(200).send(output);
   });
 };
+
+//Completes a task.
+exports.completeTask = (req: Request, res: Response) => {
+  const { body } = req;
+  const { taskId } = body;
+  Task.updateOne({ _id: taskId, user: req.userId }, { done: true })
+    .then((output) => {
+      res.status(200).send(output);
+    })
+    .catch((err) => {
+      res.status(400).send({ err });
+    });
+};
+
+//Changes due date of a task
+exports.changeDue = (req: Request, res: Response) => {
+  const { body } = req;
+  const { dueDate, taskId } = body;
+  Task.updateOne({ _id: taskId, user: req.userId }, { due: dueDate })
+    .then((output) => {
+      res.status(200).send(output);
+    })
+    .catch((err) => {
+      res.status(400).send({ err });
+    });
+};
+
+//Deletes a task
+exports.changeDue = (req: Request, res: Response) => {
+  const { body } = req;
+  const { taskId } = body;
+  Task.updateOne({ _id: taskId, user: req.userId }, { isDeleted: true })
+    .then((output) => {
+      res.status(200).send(output);
+    })
+    .catch((err) => {
+      res.status(400).send({ err });
+    });
+};

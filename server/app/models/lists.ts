@@ -9,7 +9,8 @@ export const ListSchema = new Schema({
   isDeleted: { type: Boolean, required: true, default: false },
   order: { type: Boolean, required: true },
   folder: { type: Boolean, required: true },
+  tasks: [{ type: Schema.Types.ObjectId, ref: "task" }],
 });
 
 const ListModel = model<ListDoc>("list", ListSchema);
-export default ListModel;
+export { ListModel, ListDoc };

@@ -7,6 +7,5 @@ export default interface Task {
   done: boolean;
   order: number;
   isDeleted: boolean;
-  list: string;
   user: string;
 }

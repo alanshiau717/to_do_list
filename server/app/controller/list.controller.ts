@@ -19,26 +19,26 @@ exports.getTask = (req: Request, res: Response) => {
   });
 };
 
-// Creates a single task
+// Creates a singe list
 exports.createTask = (req: Request, res: Response) => {
-  const NewTask = new List();
+  const NewList = new List();
   const { body } = req;
   const { name, due, order, list } = body;
 
-  NewTask.name = name;
-  NewTask.created = new Date();
-  NewTask.due = due;
-  NewTask.done = false;
-  NewTask.order = order;
-  NewTask.isDeleted = false;
-  NewTask.list = list;
+  NewList.name = name;
+  NewList.created = new Date();
+  NewList.due = due;
+  NewList.done = false;
+  NewList.order = order;
+  NewList.isDeleted = false;
+  NewList.list = list;
 
   if (req.userId) {
-    NewTask.user = req.userId;
+    NewList.user = req.userId;
   } else {
     res.status(400).send({ message: "Error: Internal Server Error" });
   }
-  NewTask.save((err, output) => {
+  NewList.save((err, output) => {
     if (err) {
       console.log(err);
       res.status(400).send({ message: "Error: Internal Server Error" });
