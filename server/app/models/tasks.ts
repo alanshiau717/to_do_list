@@ -6,7 +6,7 @@ type ID = Types.ObjectId;
 //We are extending our frontend task interface with the list key
 //which is a list of ObjectIds or Documents
 interface ITask extends Task {
-  list: ID[] | ListDoc[];
+  list: ID | ListDoc;
 }
 
 //We Then further extend it to a mongoose document
@@ -20,7 +20,7 @@ const TaskSchemaFields: Record<keyof ITask, any> = {
   order: { type: Number, required: true },
   isDeleted: { type: Boolean, required: true, default: false },
   user: { type: String, required: true },
-  list: [{ type: Schema.Types.ObjectId, ref: "list" }],
+  list: { type: Schema.Types.ObjectId, ref: "list" },
 };
 
 const TaskSchema = new Schema(TaskSchemaFields);
