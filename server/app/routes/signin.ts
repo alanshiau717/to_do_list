@@ -1,6 +1,5 @@
 import { Router, Request, Response } from "express";
-
-const access = require("../controller/access.ts");
+import access from "../controller/access";
 var router = Router();
 router.get("/", (req: Request, res: Response) => {
   res.send("Hit api");

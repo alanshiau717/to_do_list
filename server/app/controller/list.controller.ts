@@ -1,16 +1,64 @@
-import db from "../models/index";
 import { Request, Response } from "express";
+import { ListModel as List } from "../models/lists";
 
-// const list = db.list;
+const list = {
+  //Search params in body. If no search params, will return all lists of user
+  getList: (req: Request, res: Response) => {
+    const { query } = req;
+    // user somehow passed a userId which they shouldn't have
+    if (query.userId) {
+      res.status(400).send({ message: "Error: Internal Server Error" });
+      return res.end();
+    }
+    List.find({ ...query, user: req.userId }, (err, output) => {
+      if (err) {
+        res.status(400).send({ message: "Error: Internal Server Error" });
+        return res.end();
+      }
+      res.status(200).send(output);
+      return res.end();
+    });
+  },
+  //Creates a single list. If no folder is specified will be placed into default folder/
+  createList: (req: Request, res: Response) => {
+    const NewList = new List();
+    const { body } = req;
+    const { name, order, folder } = body;
 
-// Returns full list
-exports.getAll = (req: Request, res: Response) => {};
+    if (req.userId) {
+      NewList.name = name;
+      NewList.user = req.userId;
+      NewList.order = order;
+      NewList.folder = folder;
+      NewList.save((err, output) => {
+        if (err) {
+          console.log(err);
+          res.status(400).send({ message: "Error: Internal Server Error" });
+        } else {
+          res.status(200).send(output);
+        }
+      });
+    } else {
+      res.status(400).send({ message: "Error: User ID not found" });
+    }
+  },
+  //Deletes a single list using it's object id
+  deleteList: (req: Request, res: Response) => {
+    if (req.query.listId) {
+      List.updateOne(
+        { _id: req.query.listId, user: req.userId },
+        { isDeleted: true }
+      )
+        .then((output) => {
+          res.status(200).send(output);
+        })
+        .catch((err) => {
+          res.status(400).send(err);
+        });
+    } else {
+      res.status(400).send("List ID doesn't exist");
+    }
+  },
+};
 
-// Returns one folder
-exports.getOne = (req: Request, res: Response) => {};
-
-// Creates one task
-exports.createTask = (req: Request, res: Response) => {};
-
-// Creates one folder
-exports.createFolder = (req: Request, res: Response) => {};
+export default list;
