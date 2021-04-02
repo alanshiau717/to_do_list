@@ -4,5 +4,4 @@ export default interface List {
   user: string;
   isDeleted: boolean;
   order: number;
-  folder: string;
 }

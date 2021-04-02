@@ -1,48 +1,64 @@
 import { Request, Response } from "express";
-import List from "../models/lists";
+import { ListModel as List } from "../models/lists";
 
-//Search params in body. If no search params, will return all lists
-exports.getTask = (req: Request, res: Response) => {
-  var { body } = req;
-  // user somehow passed a userId which they shouldn't have
-  if (body.userId) {
-    res.status(400).send({ message: "Error: Internal Server Error" });
-    return res.end();
-  }
-  List.find({ ...body, user: req.userId }, (err, output) => {
-    if (err) {
+const list = {
+  //Search params in body. If no search params, will return all lists of user
+  getList: (req: Request, res: Response) => {
+    const { query } = req;
+    // user somehow passed a userId which they shouldn't have
+    if (query.userId) {
       res.status(400).send({ message: "Error: Internal Server Error" });
       return res.end();
     }
-    res.status(200).send(output);
-    return res.end();
-  });
-};
+    List.find({ ...query, user: req.userId }, (err, output) => {
+      if (err) {
+        res.status(400).send({ message: "Error: Internal Server Error" });
+        return res.end();
+      }
+      res.status(200).send(output);
+      return res.end();
+    });
+  },
+  //Creates a single list. If no folder is specified will be placed into default folder/
+  createList: (req: Request, res: Response) => {
+    const NewList = new List();
+    const { body } = req;
+    const { name, order, folder } = body;
 
-// Creates a singe list
-exports.createTask = (req: Request, res: Response) => {
-  const NewList = new List();
-  const { body } = req;
-  const { name, due, order, list } = body;
-
-  NewList.name = name;
-  NewList.created = new Date();
-  NewList.due = due;
-  NewList.done = false;
-  NewList.order = order;
-  NewList.isDeleted = false;
-  NewList.list = list;
-
-  if (req.userId) {
-    NewList.user = req.userId;
-  } else {
-    res.status(400).send({ message: "Error: Internal Server Error" });
-  }
-  NewList.save((err, output) => {
-    if (err) {
-      console.log(err);
-      res.status(400).send({ message: "Error: Internal Server Error" });
+    if (req.userId) {
+      NewList.name = name;
+      NewList.user = req.userId;
+      NewList.order = order;
+      NewList.folder = folder;
+      NewList.save((err, output) => {
+        if (err) {
+          console.log(err);
+          res.status(400).send({ message: "Error: Internal Server Error" });
+        } else {
+          res.status(200).send(output);
+        }
+      });
+    } else {
+      res.status(400).send({ message: "Error: User ID not found" });
     }
-    res.status(200).send(output);
-  });
+  },
+  //Deletes a single list using it's object id
+  deleteList: (req: Request, res: Response) => {
+    if (req.query.listId) {
+      List.updateOne(
+        { _id: req.query.listId, user: req.userId },
+        { isDeleted: true }
+      )
+        .then((output) => {
+          res.status(200).send(output);
+        })
+        .catch((err) => {
+          res.status(400).send(err);
+        });
+    } else {
+      res.status(400).send("List ID doesn't exist");
+    }
+  },
 };
+
+export default list;

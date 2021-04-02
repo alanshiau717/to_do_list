@@ -20,11 +20,11 @@ const TaskSchemaFields: Record<keyof ITask, any> = {
   order: { type: Number, required: true },
   isDeleted: { type: Boolean, required: true, default: false },
   user: { type: String, required: true },
-  list: { type: Schema.Types.ObjectId, ref: "list" },
+  list: { type: Schema.Types.ObjectId, ref: "list", required: true },
 };
 
-const TaskSchema = new Schema(TaskSchemaFields);
+const TaskSchema = new Schema<TaskDoc>(TaskSchemaFields);
 
 const TaskModel = model<TaskDoc>("task", TaskSchema);
 
-export default TaskModel;
+export { TaskModel, TaskDoc };
