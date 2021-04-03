@@ -38,13 +38,20 @@ const task = {
       NewTask.user = req.userId;
     } else {
       res.status(400).send({ message: "Error: Internal Server Error" });
+      return res.end();
     }
     NewTask.save((err, output) => {
       if (err) {
         console.log(err);
         res.status(400).send({ message: "Error: Internal Server Error" });
       }
-      res.status(200).send(output);
+      List.findOneAndUpdate({ _id: list }, { $push: { tasks: output._id } })
+        .then((output) => {
+          res.status(200).send(output);
+        })
+        .catch((err) => {
+          res.status(400).send(err);
+        });
     });
   },
   //Completes a task.

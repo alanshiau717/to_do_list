@@ -10,6 +10,7 @@ import {
 } from "react-bootstrap";
 import { List } from "react-bootstrap-icons";
 import "../../css/main_view.css";
+import SideBar from "../main_view/sidebar/sidebar";
 
 //wrapper for the main view
 //will layout the strucutre of the navbar, sidebar and also main todolist view.
@@ -47,7 +48,7 @@ export default class MainViewPage extends Component<Props, State> {
         </Navbar>
         <div className="wrapper">
           <div id="sidebar" className={`${sidebaractive ? "active" : ""}`}>
-            <div>Test Sidebar</div>
+            <SideBar />
           </div>
           <div id="content">
             <div>Test Content</div>
