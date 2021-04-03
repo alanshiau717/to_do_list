@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-// import Container from "react-bootstrap/Container";
-// import Row from "react-bootstrap/Row";
-// import Col from "react-bootstrap/Col";
 import Alert from "react-bootstrap/Alert";
 import UserAccessService from "../services/user.access";
 import UserLoginType from "../models/user.login";
+import { Link } from "react-router-dom";
 
 interface Props extends RouteComponentProps {}
 interface State extends UserLoginType {
@@ -32,7 +30,7 @@ const Login = class LoginPage extends Component<Props, State> {
     UserAccessService.signin(this.state)
       .then((response) => {
         this.setState({ uservalid: true });
-        this.props.history.push("/test");
+        this.props.history.push("/main");
       })
       .catch((e) => {
         console.log(e.response);
@@ -123,7 +121,7 @@ const Login = class LoginPage extends Component<Props, State> {
           Sign in
         </button>
         <p className="forgot-password text-right">
-          Forgot <a href="#">password?</a>
+          Forgot <Link to="/forgot">password?</Link>
         </p>
       </form>
     );

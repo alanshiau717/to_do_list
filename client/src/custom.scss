@@ -1,0 +1,13 @@
+$theme-colors: (
+  "primary": #5180a8,
+  "danger": #ff4136,
+);
+
+.bg-primary,
+.btn-primary,
+.badge-primary,
+.alert-primary {
+  background-image: linear-gradient(to right, #f64f59, #c471ed, #12c2e9);
+}
+
+@import "~bootstrap/scss/bootstrap";
