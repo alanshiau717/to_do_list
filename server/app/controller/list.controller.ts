@@ -11,14 +11,15 @@ const list = {
       res.status(400).send({ message: "Error: Internal Server Error" });
       return res.end();
     }
-    List.find({ ...query, user: req.userId }, (err, output) => {
-      if (err) {
+
+    List.find({ ...query, user: req.userId })
+      .populate("tasks")
+      .then((output) => {
+        res.status(200).send(output);
+      })
+      .catch((err) => {
         res.status(400).send({ message: "Error: Internal Server Error" });
-        return res.end();
-      }
-      res.status(200).send(output);
-      return res.end();
-    });
+      });
   },
   //Creates a single list. If no folder is specified will be placed into default folder/
   createList: (req: Request, res: Response) => {

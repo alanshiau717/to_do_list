@@ -10,14 +10,22 @@ const folder = {
       res.status(400).send({ message: "Error: Internal Server Error" });
       return res.end();
     }
-    Folder.find({ ...query, user: req.userId }, (err, output) => {
-      if (err) {
+    Folder.find({ ...query, user: req.userId })
+      .populate({ path: "lists", populate: { path: "tasks" } })
+      .then((output) => {
+        res.status(200).send(output);
+      })
+      .catch((err) => {
         res.status(400).send({ message: "Error: Internal Server Error" });
-        return res.end();
-      }
-      res.status(200).send(output);
-      return res.end();
-    });
+      });
+    // Folder.find({ ...query, user: req.userId }, (err, output) => {
+    //   if (err) {
+    //     res.status(400).send({ message: "Error: Internal Server Error" });
+    //     return res.end();
+    //   }
+    //   res.status(200).send(output);
+    //   return res.end();
+    // });
   },
   // Creates a single folder
   createFolder: (req: Request, res: Response) => {

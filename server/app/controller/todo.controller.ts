@@ -8,7 +8,7 @@ import { TaskModel as Task } from "../models/tasks";
 const todo = {
   //takes optional query paramter of folderid
   //if nothing if passed, will return all folders
-  //if query paraterm of folderId is passed will only return specific folder
+  //if query paraters of folderId is passed will only return specific folder
   getFolderRec: (req: Request, res: Response) => {
     Folder.find({ user: req.userId }, (err, output) => {
       if (err) {

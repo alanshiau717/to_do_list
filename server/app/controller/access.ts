@@ -61,6 +61,12 @@ const access = {
           newList.user = newUser._id;
           newList.order = 1;
           newList.folder = newFolder._id;
+          newFolder.lists.push(newList._id);
+          newFolder.save((err, output) => {
+            if (err) {
+              console.log(err);
+            }
+          });
           newList.save((err, output) => {
             if (err) {
               console.log(err);
