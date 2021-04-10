@@ -2,8 +2,15 @@ import http from "../http-common";
 import authHeader from "../utils/auth.header";
 
 class ToDoList {
-  addTask() {
-    return http.get("/todolist/", { headers: authHeader() });
+  getTask(params: {}) {
+    return http.get(`/todolist/`, { headers: authHeader() });
+  }
+  getFolder(params: {}) {
+    return http.get(`/todolist/getfolder`, {
+      headers: authHeader(),
+      params: params,
+    });
   }
 }
+
 export default new ToDoList();

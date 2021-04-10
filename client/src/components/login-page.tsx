@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import Alert from "react-bootstrap/Alert";
 import UserAccessService from "../services/user.access";
-import UserLoginType from "../models/user.login";
+import UserLoginType from "../models/shared/user.login";
 import { Link } from "react-router-dom";
 
 interface Props extends RouteComponentProps {}

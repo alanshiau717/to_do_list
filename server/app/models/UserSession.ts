@@ -1,6 +1,6 @@
 import { Session } from "inspector";
 import { Schema, Document, model } from "mongoose";
-import UserSession from "../../../client/src/models/user.session";
+import UserSession from "../../../client/src/models/shared/user.session";
 interface UserSessionDoc extends Document, UserSession {}
 
 const UserSessionSchemaFields: Record<keyof UserSession, any> = {

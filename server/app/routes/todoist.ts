@@ -3,7 +3,6 @@ import verifyToken from "../middlewares/authJwt";
 import task from "../controller/task.controller";
 import folder from "../controller/folder.controller";
 import list from "../controller/list.controller";
-
 var router = Router();
 
 router.use(verifyToken);

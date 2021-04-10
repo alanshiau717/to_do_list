@@ -11,7 +11,7 @@ export default class TestPage extends React.Component<Props, State> {
   }
   getUser() {
     console.log(UserAccessService.getCurrentUser());
-    ToDoList.addTask()
+    ToDoList.getTask({})
       .then((response) => {
         console.log(response);
       })

@@ -1,5 +1,5 @@
 import { Document, Schema, model, Types } from "mongoose";
-import List from "../../../client/src/models/list";
+import List from "../../../client/src/models/shared/list";
 import { TaskDoc } from "./tasks";
 import { FolderDoc } from "./folders";
 type ID = Types.ObjectId;
