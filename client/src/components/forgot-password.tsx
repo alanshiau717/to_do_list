@@ -3,9 +3,9 @@ interface Props {}
 interface State {}
 
 export default class LoginPage extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-  }
+  // constructor(props: Props) {
+  //   super(props);
+  // }
   render() {
     return <div></div>;
   }

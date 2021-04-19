@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Accordion, Card, Button } from "react-bootstrap";
+import { Component } from "react";
+
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import IFolder from "../../../models/client/folder";
 import SidebarFolder from "./sidebar_folder";
@@ -16,15 +16,15 @@ interface State {}
 //It will however render the default folders - Inbox etc
 
 class SideBar extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-  }
+  // constructor(props: Props) {
+  //   super(props);
+  // }
   render() {
     const { folders, userDetails } = this.props;
     return (
       <div>
         {folders.map((folder) => {
-          return folder._id != userDetails.default_folder ? (
+          return folder._id !== userDetails.default_folder ? (
             <SidebarFolder folder={folder} />
           ) : (
             "Inbox"

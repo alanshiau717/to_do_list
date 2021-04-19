@@ -1,6 +1,4 @@
 import React from "react";
-import { BreadcrumbItem } from "react-bootstrap";
-import { RouteComponentProps } from "react-router-dom";
 export default function loginWrapper(WrappedComponent: React.ComponentType) {
   return class extends React.Component {
     render() {

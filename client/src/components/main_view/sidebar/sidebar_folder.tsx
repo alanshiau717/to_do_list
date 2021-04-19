@@ -10,9 +10,9 @@ interface State {}
 //folder and list props passed into it
 //folder will be created and lists will be passed into another list
 class SidebarFolder extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-  }
+  // constructor(props: Props) {
+  //   super(props);
+  // }
   componentDidMount() {}
   render() {
     const { folder } = this.props;
