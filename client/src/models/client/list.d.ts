@@ -1,5 +1,5 @@
-import list from "../shared/list";
-import task from "../shares/task";
+import List from "../shared/list";
+import Task from "../shared/task";
 
 export default interface IList extends List {
   tasks: task[];

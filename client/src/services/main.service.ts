@@ -11,6 +11,14 @@ class ToDoList {
       params: params,
     });
   }
+  completeTask(taskId: string) {
+    return http.post(`/todolist/completetask`, {
+      taskId: taskId
+    }, {
+      headers: authHeader(),
+    })
+  }
+
 }
 
 export default new ToDoList();
