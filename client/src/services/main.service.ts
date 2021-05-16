@@ -18,6 +18,20 @@ class ToDoList {
       headers: authHeader(),
     })
   }
+  createTask(payload: { name: string, list: string, order: number }) {
+    return http.post(`/todolist/createtask`, {
+      ...payload
+    }, {
+      headers: authHeader(),
+    })
+  }
+  createList(payload: { name: string, folder: string, order: number }) {
+    return http.post(`/todolist/createlist`, {
+      ...payload
+    }, {
+      headers: authHeader()
+    })
+  }
 
 }
 

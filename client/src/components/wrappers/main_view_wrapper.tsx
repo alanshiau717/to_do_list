@@ -12,10 +12,7 @@ import { connect } from "react-redux";
 import { changeListView } from "../../redux/reducers/mainViewSlice";
 import SidebarTaskContainer from '../main_view/sidebar/sidebar_listcontainer'
 import update from 'immutability-helper';
-//wrapper for the main view
-//will layout the strucutre of the navbar, sidebar and also main todolist view.
-//Will have button on navbar allowing sidebar to be moved
-//media Query to also remove it
+
 
 export type Iedittask =
   (action: "complete" | "delete" | "edit" | "add",
@@ -28,6 +25,16 @@ export type Iedittask =
     } | string)
     => void
 
+export type Ieditlist =
+  (action: "add" | "delete" | "edit",
+    payload: {
+      name?: string,
+      created?: Date,
+      user?: string,
+      isDeleted?: string,
+      order?: number
+    } | string) => void
+
 interface Props extends RouteComponentProps {
   activeList: string;
   activeFolder: string;
@@ -38,9 +45,12 @@ interface State {
   folders: IFolder[];
   userDetails: IJWT;
 }
-
+//wrapper for the main view
+//will layout the strucutre of the navbar, sidebar and also main todolist view.
+//Will have button on navbar allowing sidebar to be moved
+//media Query to also remove it
+//Most logic will be defined and executed from this class
 export class MainViewPage extends Component<Props, State> {
-
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -65,27 +75,26 @@ export class MainViewPage extends Component<Props, State> {
     var folderindex = -1
     var listindex = -1
     var taskindex = -1
+    this.state.folders.forEach(
+      (folder, curr_folder_index) => {
+        if (folder._id === this.props.activeFolder) {
+          folderindex = curr_folder_index
+          folder.lists.forEach(
+            (list, curr_list_index) => {
+              if (list._id === this.props.activeList) {
+                listindex = curr_list_index
+              }
+            }
+          )
+        }
+      }
+    )
     if (action === "complete") {
       if (typeof payload == "string") {
-        this.state.folders.forEach(
-          (folder, curr_folder_index) => {
-            if (folder._id === this.props.activeFolder) {
-              folderindex = curr_folder_index
-              console.log(folder)
-              folder.lists.forEach(
-                (list, curr_list_index) => {
-                  if (list._id === this.props.activeList) {
-                    listindex = curr_list_index
-                    list.tasks.forEach(
-                      (task, curr_task_index) => {
-                        if (task._id === payload) {
-                          taskindex = curr_task_index
-                        }
-                      }
-                    )
-                  }
-                }
-              )
+        this.state.folders[folderindex].lists[listindex].tasks.forEach(
+          (task, curr_task_index) => {
+            if (task._id === payload) {
+              taskindex = curr_task_index
             }
           }
         )
@@ -122,8 +131,74 @@ export class MainViewPage extends Component<Props, State> {
       console.log('hit edit')
     }
     if (action === "add") {
-      if (typeof payload == "object" && (payload.name) && (payload.order)) {
+      if (typeof payload == "string") {
+        console.log(this.state.folders[folderindex].lists[listindex].tasks)
+        const last_index = this.state.folders[folderindex].lists[listindex].tasks.length
+        this.setState(
+          {
+            folders: update(this.state.folders, {
+              [folderindex]: {
+                lists: {
+                  [listindex]: {
+                    tasks: {
+                      $push: [{
+                        name: payload,
+                        created: new Date(),
+                        done: false,
+                        order: 0,
+                        isDeleted: false,
+                        list: this.props.activeList,
+                        _id: "",
+                        user: ""
+                      }]
+                    }
+                  }
+                }
+              }
+            }
+            )
+          })
+        // this.setState({
+        //   folders: update(this.state.folders), {
+        //   [folderindex]: {
+        //     lists: {
+        //       $push: [{}]
+        //     }
+        //   }
+        // } 
+        //   })
 
+        MainService.createTask({
+          name: payload,
+          list: this.props.activeList,
+          order: 0
+        }).then(
+          resp => {
+            this.setState(
+              {
+                folders: update(this.state.folders, {
+                  [folderindex]: {
+                    lists: {
+                      [listindex]: {
+                        tasks: {
+                          [last_index]: {
+                            $set: resp.data
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+                )
+              })
+
+          }
+        ).catch(err => {
+          console.log()
+        })
+      }
+      else {
+        console.log('something went wrong when adding a task')
       }
       console.log('hit create')
     }
@@ -137,13 +212,81 @@ export class MainViewPage extends Component<Props, State> {
       this.setState({ sidebaractive: true });
     }
   }
+  editList: Ieditlist = (action, payload) => {
+    if (action === "delete") {
+      if (typeof payload === "string") {
+      } else {
+        console.log('List Delete Failed, wrong payload')
+      }
+    }
+    if (action === "add") {
+      if (typeof payload === "string") {
+        const last_index = this.state.folders[0].lists.length
+        this.setState(
+          {
+            folders: update(this.state.folders, {
+              0: {
+                lists: {
+                  $push: [{
+                    // name: payload,
+                    // create: new Date(),
+                    // done: false,
+                    // order: 0,
+                    // isDeleted: false
+                    name: payload,
+                    created: new Date(),
+                    user: "",
+                    isDeleted: false,
+                    order: 0,
+                    tasks: [],
+                    _id: "",
+                    folder: this.state.userDetails.default_folder
+                  }]
+                }
+
+              }
+            }
+            )
+          })
+
+        MainService
+          .createList({ name: payload, order: 0, folder: this.state.userDetails.default_folder })
+          .then(resp => {
+            this.setState(
+              {
+                folders: update(this.state.folders, {
+                  0: {
+                    lists: {
+                      [last_index]: { $set: resp.data }
+                    }
+
+                  }
+                }
+                )
+              })
+          })
+
+
+      }
+      else {
+        console.log('List add failed, wrong payload')
+      }
+    }
+    if (action === "edit") {
+      if (typeof payload === "object") { }
+      else {
+        console.log('List Edit Failed, wrong payload')
+      }
+
+    }
+
+  }
   render() {
     const { sidebaractive, folders, userDetails } = this.state;
     const sidebar_props = {
       folders,
-      userDetails,
+      userDetails
     };
-
     return (
       <div id="outer_wrapper">
         <Navbar bg="primary" expand="lg">
@@ -153,7 +296,7 @@ export class MainViewPage extends Component<Props, State> {
         </Navbar>
         <div className="wrapper">
           <div id="sidebar" className={`${sidebaractive ? "active" : ""}`}>
-            <SideBar {...sidebar_props} />
+            <SideBar {...sidebar_props} editList={this.editList} />
           </div>
           <div id="content">
             <div>

@@ -30,7 +30,7 @@ class SidebarList extends Component<Props, State> {
                 {list.tasks.map(
                     (task) => {
                         return (
-                            <div key={task._id}><CheckCircleFill onClick={() => this.props.editTask("complete", task._id)} />{task.name}{task.done.toString()}</div>
+                            <div key={task._id}><CheckCircleFill onClick={() => this.props.editTask("complete", task._id)} />{task._id}{task.name}{task.done.toString()}</div>
                         )
                     }
                 )}

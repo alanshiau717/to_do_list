@@ -37,12 +37,13 @@ const list = {
           console.log(err);
           res.status(400).send({ message: "Error: Internal Server Error" });
         } else {
+          const list_out = output
           Folder.findOneAndUpdate(
             { _id: folder },
             { $push: { lists: output._id } }
           )
             .then((output) => {
-              res.status(200).send("Success");
+              res.status(200).send(list_out);
             })
             .catch((err) => {
               res.status(400).send(err);

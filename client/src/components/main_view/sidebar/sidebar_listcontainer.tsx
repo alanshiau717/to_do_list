@@ -13,6 +13,7 @@ interface Props extends RouteComponentProps {
 }
 interface State {
   showAddTask: boolean
+  newTaskName: string
 }
 
 // This component will be the container component for the list which will be displayed
@@ -20,10 +21,22 @@ class SidebarListContainer extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      showAddTask: false
+      showAddTask: false,
+      newTaskName: ''
     }
+    this.toggleAddTask = this.toggleAddTask.bind(this)
+    this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
+
   }
   componentDidMount() {
+  }
+  handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    this.setState({ newTaskName: e.target.value });
+  }
+  handleSubmit(e: React.FormEvent) {
+    this.props.editTask('add', this.state.newTaskName)
+    e.preventDefault();
   }
   toggleAddTask() {
     if (this.state.showAddTask === false) {
@@ -48,13 +61,14 @@ class SidebarListContainer extends Component<Props, State> {
         })}
         <div>
           <button onClick={() => { this.toggleAddTask() }}></button>
-          {this.state.showAddTask && <form>
-            <label>
-              Name:
-              <input type="text" name="name" />
-            </label>
-            <input type="submit" value="Submit" />
-          </form>}
+          {this.state.showAddTask &&
+            <form onSubmit={this.handleSubmit}>
+              <label>
+                Name:
+              <input type="text" value={this.state.newTaskName} onChange={this.handleChange} />
+              </label>
+              <input type="submit" value="Submit" />
+            </form>}
         </div>
       </div>
     );

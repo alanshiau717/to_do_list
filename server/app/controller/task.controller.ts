@@ -26,6 +26,7 @@ const task = {
     const NewTask = new Task();
     const { body } = req;
     const { name, due, order, list } = body;
+    console.log(body)
     NewTask.name = name;
     NewTask.created = new Date();
     NewTask.due = due;
@@ -45,9 +46,10 @@ const task = {
         console.log(err);
         res.status(400).send({ message: "Error: Internal Server Error" });
       }
+      let task_output = output
       List.findOneAndUpdate({ _id: list }, { $push: { tasks: output._id } })
         .then((output) => {
-          res.status(200).send(output);
+          res.status(200).send(task_output);
         })
         .catch((err) => {
           res.status(400).send(err);
