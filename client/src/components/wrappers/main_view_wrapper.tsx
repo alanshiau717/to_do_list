@@ -35,6 +35,17 @@ export type Ieditlist =
       order?: number
     } | string) => void
 
+export type Ieditfolder =
+  (action: "add" | "delete" | "edit",
+    payload: {
+      name?: string,
+      created?: Date,
+      user?: string,
+      isDeleted?: string,
+      order?: number
+    } | string) => void
+
+
 interface Props extends RouteComponentProps {
   activeList: string;
   activeFolder: string;
@@ -45,6 +56,7 @@ interface State {
   folders: IFolder[];
   userDetails: IJWT;
 }
+
 //wrapper for the main view
 //will layout the strucutre of the navbar, sidebar and also main todolist view.
 //Will have button on navbar allowing sidebar to be moved
@@ -67,7 +79,11 @@ export class MainViewPage extends Component<Props, State> {
       .then((response) => {
         // setting up props
         this.setState({ folders: response.data });
-        this.props.changeListView(this.state.userDetails.inbox)
+        this.props.changeListView(
+          {
+            list_id: this.state.userDetails.inbox,
+            folder_id: this.state.userDetails.default_folder
+          })
       })
       .catch((e) => console.log(e));
   }
@@ -75,6 +91,7 @@ export class MainViewPage extends Component<Props, State> {
     var folderindex = -1
     var listindex = -1
     var taskindex = -1
+    console.log(this.props.activeList, this.props.activeFolder)
     this.state.folders.forEach(
       (folder, curr_folder_index) => {
         if (folder._id === this.props.activeFolder) {
@@ -158,15 +175,6 @@ export class MainViewPage extends Component<Props, State> {
             }
             )
           })
-        // this.setState({
-        //   folders: update(this.state.folders), {
-        //   [folderindex]: {
-        //     lists: {
-        //       $push: [{}]
-        //     }
-        //   }
-        // } 
-        //   })
 
         MainService.createTask({
           name: payload,
@@ -204,6 +212,64 @@ export class MainViewPage extends Component<Props, State> {
     }
 
 
+  }
+  editFolder: Ieditfolder = (action, payload) => {
+    if (action === "delete") {
+      if (typeof payload === "string") {
+      } else {
+        console.log('List Delete Failed, wrong payload')
+      }
+    }
+    if (action === "add") {
+      if (typeof payload === "string") {
+        const last_index = this.state.folders.length
+        this.setState(
+          {
+            folders: update(this.state.folders, {
+              $push: [{
+                _id: "",
+                lists: [],
+                name: payload,
+                created: new Date(),
+                done: false,
+                order: 0,
+                isDeleted: false,
+                user: ""
+              }]
+            }
+            )
+          })
+
+        MainService
+          .createList({ name: payload, order: 0, folder: this.state.userDetails.default_folder })
+          .then(resp => {
+            this.setState(
+              {
+                folders: update(this.state.folders, {
+                  0: {
+                    lists: {
+                      [last_index]: { $set: resp.data }
+                    }
+
+                  }
+                }
+                )
+              })
+          })
+
+
+      }
+      else {
+        console.log('List add failed, wrong payload')
+      }
+    }
+    if (action === "edit") {
+      if (typeof payload === "object") { }
+      else {
+        console.log('List Edit Failed, wrong payload')
+      }
+
+    }
   }
   toggleSidebar() {
     if (this.state.sidebaractive) {

@@ -16,7 +16,8 @@ interface Props extends RouteComponentProps {
 }
 interface State {
   modalShow: boolean,
-  newListName: string
+  newItemName: string,
+  modalSetting: 'list' | 'folder' | ""
 }
 
 //This component is a skeleton for the sidebart
@@ -34,16 +35,18 @@ class SideBar extends Component<Props, State> {
     this.handleChange = this.handleChange.bind(this)
     this.state = {
       modalShow: false,
-      newListName: ""
+      newItemName: "",
+      modalSetting: ""
     }
   }
   handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     this.setState({
-      newListName: e.target.value
+      newItemName: e.target.value
     })
   }
-  openModal() {
+  openModal(item: "folder" | "list") {
     this.setState({
+      modalSetting: item,
       modalShow: true
     })
   }
@@ -53,11 +56,24 @@ class SideBar extends Component<Props, State> {
     })
   }
   handleSubmit(e: React.FormEvent) {
-    this.props.editList('add', this.state.newListName)
+    if (this.state.modalSetting === 'folder') {
+      console.log('adding folder')
+    }
+    else if (this.state.modalSetting === 'list') {
+      this.props.editList('add', this.state.newItemName)
+    }
+    else {
+      console.log('An error has occured adding a list or folder')
+    }
+
     e.preventDefault();
   }
-  changeListViewHandler() {
-    this.props.changeListView(this.props.userDetails.inbox)
+  changeListViewHandler(listid: string, folderid: string) {
+    var payload = {
+      list_id: listid,
+      folder_id: folderid
+    }
+    this.props.changeListView(payload)
   }
   render() {
     const { folders, userDetails } = this.props;
@@ -71,29 +87,32 @@ class SideBar extends Component<Props, State> {
               <div>
                 {folder.lists.map((list) => {
                   return <div>
-                    <button key={list._id} onClick={this.changeListViewHandler}>
+                    <button key={list._id} onClick={() => this.changeListViewHandler(list._id, folder._id)}>
                       {list.name}
                     </button>
                   </div>
                 })}
               </div>
               <div>
-                <button onClick={() => this.openModal()}>Add List</button>
+                <button onClick={() => this.openModal('list')}>Add List</button>
               </div>
             </div>
           );
         })
         }
+        <div>
+          <button onClick={() => this.openModal('folder')}>Add Folder</button>
+        </div>
         <Modal show={this.state.modalShow} onHide={this.closeModal}>
           <Modal.Header closeButton>
-            <Modal.Title>Please enter list name</Modal.Title>
+            <Modal.Title>Please enter {this.state.modalSetting} name</Modal.Title>
           </Modal.Header>
 
           <Modal.Body>
             <form onSubmit={this.handleSubmit}>
               <label>
                 Name:
-              <input type="text" value={this.state.newListName} onChange={this.handleChange} />
+              <input type="text" value={this.state.newItemName} onChange={this.handleChange} />
               </label>
               <input type="submit" value="Submit" />
             </form>
