@@ -241,17 +241,12 @@ export class MainViewPage extends Component<Props, State> {
           })
 
         MainService
-          .createList({ name: payload, order: 0, folder: this.state.userDetails.default_folder })
+          .createFolder({ name: payload, order: 0 })
           .then(resp => {
             this.setState(
               {
                 folders: update(this.state.folders, {
-                  0: {
-                    lists: {
-                      [last_index]: { $set: resp.data }
-                    }
-
-                  }
+                  [last_index]: { $set: resp.data }
                 }
                 )
               })
@@ -362,7 +357,7 @@ export class MainViewPage extends Component<Props, State> {
         </Navbar>
         <div className="wrapper">
           <div id="sidebar" className={`${sidebaractive ? "active" : ""}`}>
-            <SideBar {...sidebar_props} editList={this.editList} />
+            <SideBar {...sidebar_props} editList={this.editList} editFolder={this.editFolder} />
           </div>
           <div id="content">
             <div>

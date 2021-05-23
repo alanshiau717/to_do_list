@@ -6,13 +6,14 @@ import SidebarFolder from "./sidebar_folder";
 import IJWT from "../../../models/shared/jwt";
 import { connect } from "react-redux"
 import { changeListView } from "../../../redux/reducers/mainViewSlice"
-import { Ieditlist } from "../../wrappers/main_view_wrapper"
+import { Ieditlist, Ieditfolder } from "../../wrappers/main_view_wrapper"
 import { Modal, Button } from "react-bootstrap"
 interface Props extends RouteComponentProps {
   folders: IFolder[];
   userDetails: IJWT;
   changeListView: any;
-  editList: Ieditlist
+  editList: Ieditlist;
+  editFolder: Ieditfolder
 }
 interface State {
   modalShow: boolean,
@@ -57,7 +58,7 @@ class SideBar extends Component<Props, State> {
   }
   handleSubmit(e: React.FormEvent) {
     if (this.state.modalSetting === 'folder') {
-      console.log('adding folder')
+      this.props.editFolder('add', this.state.newItemName)
     }
     else if (this.state.modalSetting === 'list') {
       this.props.editList('add', this.state.newItemName)

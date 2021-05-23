@@ -32,6 +32,14 @@ class ToDoList {
       headers: authHeader()
     })
   }
+  createFolder(payload: { name: string, order: number }) {
+    return http.post(`/todolist/createfolder`, {
+      ...payload
+    }, {
+      headers: authHeader()
+    })
+  }
+
 
 }
 
