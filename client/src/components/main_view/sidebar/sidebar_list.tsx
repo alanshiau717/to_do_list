@@ -36,9 +36,7 @@ class SidebarList extends Component<Props, State> {
                     (task) => {
                         return (
                             <div key={task._id}>
-                                <TaskUnit task={task} editTask={this.props.editTask} />
-                                {/* <CheckCircleFill onClick={() => this.props.editTask("complete", task._id)} />
-                                <span onClick={this.toggleNameChange}>{task.name}</span> */}
+                                { !task.isDeleted && <TaskUnit task={task} editTask={this.props.editTask} />}
                             </div>
                         )
                     }

@@ -142,7 +142,33 @@ export class MainViewPage extends Component<Props, State> {
       }
     }
     if (action === "delete") {
-      console.log('hit delete')
+      if (typeof payload == "string") {
+        this.state.folders[folderindex].lists[listindex].tasks.forEach(
+          (task, curr_task_index) => {
+            if (task._id === payload) {
+              taskindex = curr_task_index
+            }
+          }
+        )
+        this.setState(
+          {
+            folders: update(this.state.folders, {
+              [folderindex]: {
+                lists: {
+                  [listindex]: {
+                    tasks: { $splice: [[taskindex, 1]] }
+                  }
+                }
+              }
+            }
+            )
+          }
+        )
+        MainService.changeTask({taskId: payload, isDeleted: true})
+      }
+      else {
+        console.log("Something went wrong in adding a task, payload was not a string")
+      }
     }
     if (action === "edit") {
       if (typeof payload == "object") {
