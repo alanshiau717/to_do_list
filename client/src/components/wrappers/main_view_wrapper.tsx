@@ -22,6 +22,7 @@ export type Iedittask =
       done?: boolean;
       order?: number;
       isDeleted?: boolean;
+      _id: string
     } | string)
     => void
 
@@ -91,7 +92,6 @@ export class MainViewPage extends Component<Props, State> {
     var folderindex = -1
     var listindex = -1
     var taskindex = -1
-    console.log(this.props.activeList, this.props.activeFolder)
     this.state.folders.forEach(
       (folder, curr_folder_index) => {
         if (folder._id === this.props.activeFolder) {
@@ -145,7 +145,43 @@ export class MainViewPage extends Component<Props, State> {
       console.log('hit delete')
     }
     if (action === "edit") {
-      console.log('hit edit')
+      if (typeof payload == "object") {
+        this.state.folders[folderindex].lists[listindex].tasks.forEach(
+          (task, curr_task_index) => {
+            if (task._id === payload._id) {
+              taskindex = curr_task_index
+            }
+          }
+        )
+        for (const [key, value] of Object.entries(payload)) {
+          if (key !== "_id") {
+            this.setState(
+              {
+                folders: update(this.state.folders, {
+                  [folderindex]: {
+                    lists: {
+                      [listindex]: {
+                        tasks: {
+                          [taskindex]: {
+                            [key]: { $set: value }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+                )
+              })
+            MainService.changeTask({ taskId: payload._id, [key]: value })
+
+
+          }
+        }
+
+      }
+      else {
+        console.log('something went wrong when editing a task')
+      }
     }
     if (action === "add") {
       if (typeof payload == "string") {

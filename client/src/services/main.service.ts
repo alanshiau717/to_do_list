@@ -18,6 +18,12 @@ class ToDoList {
       headers: authHeader(),
     })
   }
+  changeTask(payload: { taskId: string, name?: string, due?: Date, isDeleted?: boolean, list?: string }) {
+    return http.post(`/todolist/changetask`, {
+      ...payload
+    },
+      { headers: authHeader() })
+  }
   createTask(payload: { name: string, list: string, order: number }) {
     return http.post(`/todolist/createtask`, {
       ...payload

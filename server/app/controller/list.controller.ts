@@ -11,7 +11,6 @@ const list = {
       res.status(400).send({ message: "Error: Internal Server Error" });
       return res.end();
     }
-
     List.find({ ...query, user: req.userId })
       .populate("tasks")
       .then((output) => {
@@ -71,6 +70,10 @@ const list = {
       res.status(400).send("List ID doesn't exist");
     }
   },
+
+  changeList: (req: Request, res: Response) => {
+
+  }
 };
 
 export default list;

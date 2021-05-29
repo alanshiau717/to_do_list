@@ -26,7 +26,6 @@ const task = {
     const NewTask = new Task();
     const { body } = req;
     const { name, due, order, list } = body;
-    console.log(body)
     NewTask.name = name;
     NewTask.created = new Date();
     NewTask.due = due;
@@ -68,11 +67,14 @@ const task = {
         res.status(400).send({ err });
       });
   },
-  //Changes due date of a task
-  changeDue: (req: Request, res: Response) => {
+  //Changes a property of the task
+  changeTask: (req: Request, res: Response) => {
     const { body } = req;
-    const { dueDate, taskId } = body;
-    Task.updateOne({ _id: taskId, user: req.userId }, { due: dueDate })
+    const { taskId, ...other_params } = body;
+    if ((!body.name) && (!body.due) && (!body.isDeleted) && (!body.list)) {
+      res.status(400).send("Didn't find valid field to change").end()
+    }
+    Task.updateOne({ _id: body.taskId, user: req.userId }, { ...other_params })
       .then((output) => {
         res.status(200).send(output);
       })

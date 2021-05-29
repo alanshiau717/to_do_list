@@ -1,17 +1,17 @@
 import { Component } from 'react';
-
+import TaskUnit from './task_unit'
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { changeListView } from '../../../redux/reducers/mainViewSlice';
 import IList from '../../../models/client/list';
-import { CheckCircleFill } from 'react-bootstrap-icons'
 import { Iedittask } from '../../wrappers/main_view_wrapper'
 interface Props extends RouteComponentProps {
     list: IList,
     editTask: Iedittask
 }
 interface State {
-    currentTask: string
+    currentTask: string,
+    editTaskName: string
 }
 
 // This component is the list displayed by the sidebar
@@ -22,15 +22,24 @@ class SidebarList extends Component<Props, State> {
     // }
     componentDidMount() {
     }
+    toggleNameChange(e: React.MouseEvent) {
+        if (e.altKey) {
+            console.log('alt key hit')
+        }
+
+    }
     render() {
         const { list } = this.props;
         return (
             <div>
-                {list._id}
                 {list.tasks.map(
                     (task) => {
                         return (
-                            <div key={task._id}><CheckCircleFill onClick={() => this.props.editTask("complete", task._id)} />{task._id}{task.name}{task.done.toString()}</div>
+                            <div key={task._id}>
+                                <TaskUnit task={task} editTask={this.props.editTask} />
+                                {/* <CheckCircleFill onClick={() => this.props.editTask("complete", task._id)} />
+                                <span onClick={this.toggleNameChange}>{task.name}</span> */}
+                            </div>
                         )
                     }
                 )}

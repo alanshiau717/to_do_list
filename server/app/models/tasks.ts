@@ -10,7 +10,7 @@ interface ITask extends Task {
 }
 
 //We Then further extend it to a mongoose document
-interface TaskDoc extends Document, ITask {}
+interface TaskDoc extends Document, ITask { }
 
 const TaskSchemaFields: Record<keyof ITask, any> = {
   name: { type: String, required: true },

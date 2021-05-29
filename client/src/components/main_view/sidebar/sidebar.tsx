@@ -84,11 +84,11 @@ class SideBar extends Component<Props, State> {
           return folder._id !== userDetails.default_folder ? (
             <SidebarFolder folder={folder} key={folder._id} />
           ) : (
-            <div>
+            <div key={folder._id}>
               <div>
                 {folder.lists.map((list) => {
-                  return <div>
-                    <button key={list._id} onClick={() => this.changeListViewHandler(list._id, folder._id)}>
+                  return <div key={list._id}>
+                    <button onClick={() => this.changeListViewHandler(list._id, folder._id)}>
                       {list.name}
                     </button>
                   </div>

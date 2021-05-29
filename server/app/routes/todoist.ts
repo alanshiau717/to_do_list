@@ -13,7 +13,7 @@ router.get("/", (req: Request, res: Response) => {
 router.get("/gettask", task.getTask);
 router.post("/createtask", task.createTask);
 router.post("/completetask", task.completeTask);
-router.post("/changeduetask", task.changeDue);
+router.post("/changetask", task.changeTask);
 router.delete("/deletetask", task.deleteTask);
 //List API calls
 router.get("/getlist", list.getList);
