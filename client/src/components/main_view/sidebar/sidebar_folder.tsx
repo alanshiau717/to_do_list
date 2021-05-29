@@ -4,37 +4,50 @@ import { Accordion, Card, Button, ListGroup } from "react-bootstrap";
 import { changeListView } from "../../../redux/reducers/mainViewSlice"
 import { connect } from "react-redux"
 import IFolder from "../../../models/client/folder";
+import {Trash} from 'react-bootstrap-icons'
+import {Ieditfolder} from '../../wrappers/main_view_wrapper'
 
 
 interface Props extends RouteComponentProps {
   folder: IFolder;
-  changeListView: any
+  changeListView: any,
+  editFolder: Ieditfolder
 }
-interface State { }
+interface State { 
+  hover: boolean
+}
 //folder and list props passed into it
 //folder will be created and lists will be passed into another list
 class SidebarFolder extends Component<Props, State> {
-  // constructor(props: Props) {
-  //   super(props);
-  // }
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      hover: false
+    }
+  }
 
   changeListViewHandler(listid: string, folderid: string) {
     var payload = {
       list_id: listid,
       folder_id: folderid
     }
+
     this.props.changeListView(payload)
+  }
+  changeHover(state: boolean){
+      this.setState({hover: state})
   }
   componentDidMount() { }
   render() {
     const { folder } = this.props;
     return (
-      <Accordion key={folder._id} defaultActiveKey={folder._id}>
+      <Accordion key={folder._id} defaultActiveKey={folder._id} onMouseLeave={()=> this.changeHover(false)}onMouseEnter={() => this.changeHover(true)}>
         <Card>
           <Card.Header>
             <Accordion.Toggle as={Button} variant="link" eventKey={folder._id}>
-              {folder.name}
+              {folder.name} 
             </Accordion.Toggle>
+            {this.state.hover && <Trash onClick = {() => {this.props.editFolder('delete', this.props.folder._id)}}/>}
           </Card.Header>
           <Accordion.Collapse eventKey={folder._id}>
             {/* <Card.Body> */}
@@ -47,7 +60,9 @@ class SidebarFolder extends Component<Props, State> {
             </ListGroup>
             {/* </Card.Body> */}
           </Accordion.Collapse>
+          
         </Card>
+
       </Accordion>
     );
   }

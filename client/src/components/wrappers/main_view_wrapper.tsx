@@ -12,6 +12,7 @@ import { connect } from "react-redux";
 import { changeListView } from "../../redux/reducers/mainViewSlice";
 import SidebarTaskContainer from '../main_view/sidebar/sidebar_listcontainer'
 import update from 'immutability-helper';
+import { updatePartiallyEmittedExpression } from "typescript";
 
 
 export type Iedittask =
@@ -44,6 +45,7 @@ export type Ieditfolder =
       user?: string,
       isDeleted?: string,
       order?: number
+      _id: string
     } | string) => void
 
 
@@ -276,8 +278,27 @@ export class MainViewPage extends Component<Props, State> {
 
   }
   editFolder: Ieditfolder = (action, payload) => {
+  
     if (action === "delete") {
+      var folderindex = -1
+      this.state.folders.forEach(
+        (folder, curr_folder_index) => {
+          if (folder._id === payload) {
+            folderindex = curr_folder_index
+          }
+        }
+      )
+  
       if (typeof payload === "string") {
+          this.setState({
+            folders: update(this.state.folders, {
+              $splice: [[folderindex, 1]]
+            })
+          })
+          MainService.deleteFolder({folderId: payload})
+          if(payload === this.props.activeFolder){
+            this.props.changeListView({list_id: this.state.userDetails.inbox, folder_id: this.state.userDetails.default_folder})
+          }
       } else {
         console.log('List Delete Failed, wrong payload')
       }

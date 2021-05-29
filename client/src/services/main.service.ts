@@ -45,6 +45,13 @@ class ToDoList {
       headers: authHeader()
     })
   }
+  deleteFolder(payload: {folderId: string }){
+    console.log('hit')
+    return http.delete(`/todolist/deletefolder`, {
+      headers: authHeader(),
+      params: {...payload}
+    })
+  }
 
 
 }

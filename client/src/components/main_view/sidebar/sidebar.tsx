@@ -82,7 +82,7 @@ class SideBar extends Component<Props, State> {
       <div>
         {folders.map((folder) => {
           return folder._id !== userDetails.default_folder ? (
-            <SidebarFolder folder={folder} key={folder._id} />
+            (!folder.isDeleted && <SidebarFolder folder={folder} key={folder._id} editFolder={this.props.editFolder}/>)
           ) : (
             <div key={folder._id}>
               <div>
