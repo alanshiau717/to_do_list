@@ -52,6 +52,13 @@ class ToDoList {
       params: {...payload}
     })
   }
+  deleteList(payload: {listId: string}){
+    return http.delete(`todolist/deletelist`, {
+      headers: authHeader(),
+      params: {...payload}
+    })
+  }
+
 
 
 }

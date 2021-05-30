@@ -36,7 +36,7 @@ class SidebarList extends Component<Props, State> {
                     (task) => {
                         return (
                             <div key={task._id}>
-                                { !task.isDeleted && <TaskUnit task={task} editTask={this.props.editTask} />}
+                                { !task.done && !task.isDeleted && <TaskUnit task={task} editTask={this.props.editTask} />}
                             </div>
                         )
                     }

@@ -5,13 +5,15 @@ import { changeListView } from "../../../redux/reducers/mainViewSlice"
 import { connect } from "react-redux"
 import IFolder from "../../../models/client/folder";
 import {Trash} from 'react-bootstrap-icons'
-import {Ieditfolder} from '../../wrappers/main_view_wrapper'
+import {Ieditfolder, Ieditlist} from '../../wrappers/main_view_wrapper'
+import ListUnit from "./list_unit"
 
 
 interface Props extends RouteComponentProps {
   folder: IFolder;
   changeListView: any,
   editFolder: Ieditfolder
+  editList: Ieditlist
 }
 interface State { 
   hover: boolean
@@ -54,7 +56,8 @@ class SidebarFolder extends Component<Props, State> {
             <ListGroup>
               {folder.lists.map((list) => {
                 return (<ListGroup.Item key={list._id}>
-                  <button onClick={() => this.changeListViewHandler(list._id, folder._id)}>{list.name}</button >
+                  {/* <button onClick={() => this.changeListViewHandler(list._id, folder._id)}>{list.name}</button > */}
+                  <ListUnit list={list} folderId={folder._id} editList={this.props.editList}/>
                 </ListGroup.Item>)
               })}
             </ListGroup>

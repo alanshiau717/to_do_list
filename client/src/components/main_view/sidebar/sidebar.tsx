@@ -8,6 +8,7 @@ import { connect } from "react-redux"
 import { changeListView } from "../../../redux/reducers/mainViewSlice"
 import { Ieditlist, Ieditfolder } from "../../wrappers/main_view_wrapper"
 import { Modal, Button } from "react-bootstrap"
+import ListUnit from "./list_unit"
 interface Props extends RouteComponentProps {
   folders: IFolder[];
   userDetails: IJWT;
@@ -82,15 +83,13 @@ class SideBar extends Component<Props, State> {
       <div>
         {folders.map((folder) => {
           return folder._id !== userDetails.default_folder ? (
-            (!folder.isDeleted && <SidebarFolder folder={folder} key={folder._id} editFolder={this.props.editFolder}/>)
+            (!folder.isDeleted && <SidebarFolder folder={folder} key={folder._id} editFolder={this.props.editFolder} editList={this.props.editList}/>)
           ) : (
             <div key={folder._id}>
               <div>
                 {folder.lists.map((list) => {
                   return <div key={list._id}>
-                    <button onClick={() => this.changeListViewHandler(list._id, folder._id)}>
-                      {list.name}
-                    </button>
+                    <ListUnit list = {list} folderId= {folder._id} editList={this.props.editList}/>
                   </div>
                 })}
               </div>

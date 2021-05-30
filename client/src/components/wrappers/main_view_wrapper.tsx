@@ -35,6 +35,8 @@ export type Ieditlist =
       user?: string,
       isDeleted?: string,
       order?: number
+      folderId: string
+      listId: string
     } | string) => void
 
 export type Ieditfolder =
@@ -358,7 +360,33 @@ export class MainViewPage extends Component<Props, State> {
   }
   editList: Ieditlist = (action, payload) => {
     if (action === "delete") {
-      if (typeof payload === "string") {
+      var folderindex = -1
+      var listindex = -1
+      if (typeof payload === "object") {
+        this.state.folders.forEach(
+          (folder, curr_folder_index) => {
+            if (folder._id === payload.folderId) {
+              folderindex = curr_folder_index
+              folder.lists.forEach(
+                (list, curr_list_index) => {
+                  if (list._id === payload.listId) {
+                    listindex = curr_list_index
+                  }
+                }
+              )
+            }
+          }
+        )
+        this.setState({
+          folders: update(this.state.folders, {
+            [folderindex]: {
+              lists: {
+                $splice: [[listindex, 1]]
+              }
+            }
+          })
+        })
+        MainService.deleteList({listId: payload.listId})
       } else {
         console.log('List Delete Failed, wrong payload')
       }
