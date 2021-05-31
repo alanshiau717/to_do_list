@@ -12,7 +12,7 @@ import { connect } from "react-redux";
 import { changeListView } from "../../redux/reducers/mainViewSlice";
 import SidebarTaskContainer from '../main_view/sidebar/sidebar_listcontainer'
 import update from 'immutability-helper';
-import { updatePartiallyEmittedExpression } from "typescript";
+
 
 
 export type Iedittask =
@@ -468,7 +468,7 @@ export class MainViewPage extends Component<Props, State> {
         </Navbar>
         <div className="wrapper">
           <div id="sidebar" className={`${sidebaractive ? "active" : ""}`}>
-            <SideBar {...sidebar_props} editList={this.editList} editFolder={this.editFolder} />
+            <SideBar {...sidebar_props} editList={this.editList} editFolder={this.editFolder}/>
           </div>
           <div id="content">
             <div>

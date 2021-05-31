@@ -5,6 +5,7 @@ import {changeListView} from "../../../redux/reducers/mainViewSlice"
 import IList from "../../../models/client/list"
 import {Trash, ListCheck} from "react-bootstrap-icons"
 import {Ieditlist} from "../../wrappers/main_view_wrapper"
+import {Nav} from "react-bootstrap"
 interface Props extends RouteComponentProps{
     list: IList;
     folderId: string;
@@ -30,13 +31,13 @@ class ListUnit extends Component<Props, State>{
     render() {
         return  (
             !this.props.list.isDeleted &&
-            <div onMouseEnter={() => this.changeHover(true)} onMouseLeave={()=> this.changeHover(false)}>
-            <ListCheck/>
-            <button onClick={()=> this.props.changeListView({list_id: this.props.list._id, folder_id: this.props.folderId})}>
-            {this.props.list.name} 
-            </button>
+            <Nav.Link onMouseEnter={() => this.changeHover(true)} onMouseLeave={()=> this.changeHover(false)}>
+            
+            <div onClick={()=> this.props.changeListView({list_id: this.props.list._id, folder_id: this.props.folderId})}>
+            <ListCheck/> { this.props.list.name} 
             {this.state.hover && <Trash onClick={()=>this.props.editList('delete', {listId: this.props.list._id, folderId: this.props.folderId})}/>}
             </div>
+            </Nav.Link>
             )
 
     }

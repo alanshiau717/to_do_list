@@ -7,7 +7,9 @@ import IJWT from "../../../models/shared/jwt";
 import { connect } from "react-redux"
 import { changeListView } from "../../../redux/reducers/mainViewSlice"
 import { Ieditlist, Ieditfolder } from "../../wrappers/main_view_wrapper"
-import { Modal, Button } from "react-bootstrap"
+import { Modal, Button, Navbar, Nav, Row, Container, Col} from "react-bootstrap"
+import { Plus} from "react-bootstrap-icons"
+
 import ListUnit from "./list_unit"
 interface Props extends RouteComponentProps {
   folders: IFolder[];
@@ -80,12 +82,25 @@ class SideBar extends Component<Props, State> {
   render() {
     const { folders, userDetails } = this.props;
     return (
+    <Navbar>
+      <Nav className="flex-column" style={{maxWidth: "100%", minWidth: "100%"}}>
       <div>
         {folders.map((folder) => {
           return folder._id !== userDetails.default_folder ? (
-            (!folder.isDeleted && <SidebarFolder folder={folder} key={folder._id} editFolder={this.props.editFolder} editList={this.props.editList}/>)
+            (!folder.isDeleted &&  <SidebarFolder folder={folder} key={folder._id} editFolder={this.props.editFolder} editList={this.props.editList}/>)
           ) : (
             <div key={folder._id}>
+              <Container style={{padding: "0px"}}>
+              <Row style={{maxWidth: "100%", minWidth: "100%"}} >
+              <Col>
+              <Nav.Item>Lists 
+              </Nav.Item>
+              </Col>
+              <Col className="ml-auto" md="auto" >
+              <Plus onClick={()=> this.openModal('list')} style={{cursor:'pointer'}}/>
+              </Col>
+              </Row>
+              </Container>
               <div>
                 {folder.lists.map((list) => {
                   return <div key={list._id}>
@@ -93,16 +108,22 @@ class SideBar extends Component<Props, State> {
                   </div>
                 })}
               </div>
-              <div>
-                <button onClick={() => this.openModal('list')}>Add List</button>
-              </div>
+              <Container style={{padding: "0px"}}>
+              <Row style={{maxWidth: "100%", minWidth:"100%"}}>
+                <Col>
+              <Nav.Item>Folders 
+              </Nav.Item>
+              </Col> 
+              <Col className="ml-auto" md="auto">
+              <Plus onClick={() => this.openModal('folder')} style={{cursor:'pointer'}}/>
+              </Col>
+              </Row>
+              </Container>
+
             </div>
           );
         })
         }
-        <div>
-          <button onClick={() => this.openModal('folder')}>Add Folder</button>
-        </div>
         <Modal show={this.state.modalShow} onHide={this.closeModal}>
           <Modal.Header closeButton>
             <Modal.Title>Please enter {this.state.modalSetting} name</Modal.Title>
@@ -124,6 +145,8 @@ class SideBar extends Component<Props, State> {
           </Modal.Footer>
         </Modal>
       </div >
+      </Nav>
+      </Navbar>
     );
   }
 }

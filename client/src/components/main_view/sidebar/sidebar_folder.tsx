@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
-import { Accordion, Card, Button, ListGroup } from "react-bootstrap";
+import { Accordion, Nav, ListGroup } from "react-bootstrap";
 import { changeListView } from "../../../redux/reducers/mainViewSlice"
 import { connect } from "react-redux"
 import IFolder from "../../../models/client/folder";
-import {Trash} from 'react-bootstrap-icons'
+import {Trash, Folder} from 'react-bootstrap-icons'
 import {Ieditfolder, Ieditlist} from '../../wrappers/main_view_wrapper'
 import ListUnit from "./list_unit"
 
@@ -44,13 +44,11 @@ class SidebarFolder extends Component<Props, State> {
     const { folder } = this.props;
     return (
       <Accordion key={folder._id} defaultActiveKey={folder._id} onMouseLeave={()=> this.changeHover(false)}onMouseEnter={() => this.changeHover(true)}>
-        <Card>
-          <Card.Header>
-            <Accordion.Toggle as={Button} variant="link" eventKey={folder._id}>
-              {folder.name} 
+      
+            <Accordion.Toggle as={Nav.Link} variant="link" eventKey={folder._id}>
+              <Folder/> {folder.name} {this.state.hover && <Trash onClick = {() => {this.props.editFolder('delete', this.props.folder._id)}}/>}
             </Accordion.Toggle>
-            {this.state.hover && <Trash onClick = {() => {this.props.editFolder('delete', this.props.folder._id)}}/>}
-          </Card.Header>
+            
           <Accordion.Collapse eventKey={folder._id}>
             {/* <Card.Body> */}
             <ListGroup>
@@ -63,8 +61,6 @@ class SidebarFolder extends Component<Props, State> {
             </ListGroup>
             {/* </Card.Body> */}
           </Accordion.Collapse>
-          
-        </Card>
 
       </Accordion>
     );

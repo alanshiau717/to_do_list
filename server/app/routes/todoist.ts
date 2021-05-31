@@ -21,7 +21,7 @@ router.post("/createList", list.createList);
 router.delete("/deletelist", list.deleteList);
 //Folder API calls
 router.get("/getfolder", folder.getFolder);
-router.post("/createFolder", folder.createFolder);
-router.delete("/deleteFolder", folder.deleteFolder);
+router.post("/createfolder", folder.createFolder);
+router.delete("/deletefolder", folder.deleteFolder);
 
 module.exports = router;
