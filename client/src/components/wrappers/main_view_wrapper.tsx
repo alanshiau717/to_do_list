@@ -10,7 +10,7 @@ import IFolder from "../../models/client/folder";
 import IJWT from "../../models/shared/jwt";
 import { connect } from "react-redux";
 import { changeListView } from "../../redux/reducers/mainViewSlice";
-import SidebarTaskContainer from '../main_view/sidebar/sidebar_listcontainer'
+import SidebarTaskContainer from '../main_view/main_content/main_content_container'
 import update from 'immutability-helper';
 
 
