@@ -22,7 +22,7 @@
 }
 
 #content {
-  background-color: blue;
+  /* background-color: blue; */
   flex-grow: 1;
 }
 

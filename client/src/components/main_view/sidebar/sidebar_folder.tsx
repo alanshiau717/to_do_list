@@ -1,6 +1,13 @@
 import React, { Component } from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
-import { Accordion, Nav, ListGroup } from "react-bootstrap";
+import {
+  Accordion,
+  Nav,
+  ListGroup,
+  Container,
+  Col,
+  Row,
+} from "react-bootstrap";
 import { changeListView } from "../../../redux/reducers/mainViewSlice";
 import { connect } from "react-redux";
 import IFolder from "../../../models/client/folder";
@@ -55,18 +62,28 @@ class SidebarFolder extends Component<Props, State> {
           as={Nav.Link}
           variant="link"
           eventKey={folder._id}
+          style={{ padding: "0px" }}
         >
-          <Folder /> {folder.name}{" "}
-          {this.state.hover && (
-            <Trash
-              onClick={() => {
-                this.props.editFolder(
-                  "delete",
-                  this.props.folder._id,
-                );
-              }}
-            />
-          )}
+          <Container>
+            <Row style={{ maxWidth: "100%", minWidth: "100%" }}>
+              <Col style={{ padding: "0px" }} md="auto">
+                <Folder />
+              </Col>
+              <Col>{folder.name}</Col>
+              <Col className="ml-auto" md="auto">
+                {this.state.hover && (
+                  <Trash
+                    onClick={() => {
+                      this.props.editFolder(
+                        "delete",
+                        this.props.folder._id,
+                      );
+                    }}
+                  />
+                )}
+              </Col>
+            </Row>
+          </Container>
         </Accordion.Toggle>
 
         <Accordion.Collapse eventKey={folder._id}>

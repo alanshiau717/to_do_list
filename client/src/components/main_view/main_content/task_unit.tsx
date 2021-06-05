@@ -1,9 +1,21 @@
 import React, { Component } from "react";
 import ITask from "../../../models/client/task";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { CheckCircleFill, Trash } from "react-bootstrap-icons";
+import {
+  CheckCircleFill,
+  Trash,
+  Circle,
+  Check,
+} from "react-bootstrap-icons";
+import {
+  InputGroup,
+  FormControl,
+  Container,
+  Col,
+  Row,
+} from "react-bootstrap";
 import { Iedittask } from "../../wrappers/main_view_wrapper";
-
+import "./css/task_unit.css";
 interface Props extends RouteComponentProps {
   task: ITask;
   editTask: Iedittask;
@@ -12,7 +24,8 @@ interface Props extends RouteComponentProps {
 interface State {
   TaskName: string;
   inputMode: boolean;
-  hover: boolean;
+  hoverTask: boolean;
+  hoverTick: boolean;
   showMenu: boolean;
   xPos: string;
   yPos: string;
@@ -24,15 +37,17 @@ class TaskUnit extends Component<Props, State> {
     this.state = {
       TaskName: this.props.task.name,
       inputMode: false,
-      hover: false,
+      hoverTask: false,
       showMenu: false,
+      hoverTick: false,
       xPos: "0px",
       yPos: "0px",
     };
     this.toggleNameChange = this.toggleNameChange.bind(this);
     this.handleNameChange = this.handleNameChange.bind(this);
     this.changeName = this.changeName.bind(this);
-    this.changeHover = this.changeHover.bind(this);
+    this.changeHoverTask = this.changeHoverTask.bind(this);
+    this.changeHoverTick = this.changeHoverTick.bind(this);
   }
 
   toggleNameChange(e: React.MouseEvent) {
@@ -40,13 +55,16 @@ class TaskUnit extends Component<Props, State> {
       this.setState({ inputMode: true });
     }
   }
-  changeHover(state: boolean) {
-    this.setState({ hover: state });
+  changeHoverTick(state: boolean) {
+    this.setState({ hoverTick: state });
+  }
+  changeHoverTask(state: boolean) {
+    this.setState({ hoverTask: state });
   }
   handleNameChange(e: React.ChangeEvent<HTMLInputElement>) {
     this.setState({ TaskName: e.target.value });
   }
-  changeName(e: React.FocusEvent<HTMLInputElement>) {
+  changeName() {
     this.props.editTask("edit", {
       name: this.state.TaskName,
       _id: this.props.task._id,
@@ -58,33 +76,75 @@ class TaskUnit extends Component<Props, State> {
     return (
       <div>
         {this.state.inputMode ? (
-          <input
-            type="text"
-            value={this.state.TaskName}
-            onChange={this.handleNameChange}
-            onBlur={this.changeName}
-          />
-        ) : (
-          <div
-            onMouseEnter={() => this.changeHover(true)}
-            onMouseLeave={() => this.changeHover(false)}
-          >
-            <CheckCircleFill
-              onClick={() =>
-                this.props.editTask("complete", this.props.task._id)
-              }
-            />
-            <span onClick={this.toggleNameChange}>
-              {this.state.TaskName}
-            </span>
-            {this.state.hover && (
-              <Trash
-                onClick={() =>
-                  this.props.editTask("delete", this.props.task._id)
+          <InputGroup>
+            <FormControl
+              autoFocus
+              placeholder="Task Name"
+              value={this.state.TaskName}
+              onChange={this.handleNameChange}
+              onKeyPress={(
+                e: React.KeyboardEvent<HTMLInputElement>,
+              ) => {
+                if (e.key === "Enter") {
+                  this.changeName();
                 }
-              />
-            )}
-          </div>
+              }}
+              onBlur={() => this.changeName()}
+            />
+          </InputGroup>
+        ) : (
+          <Container
+            onMouseEnter={() => this.changeHoverTask(true)}
+            onMouseOut={() => this.changeHoverTask(false)}
+          >
+            <Row style={{ maxWidth: "100%", minWidth: "100%" }}>
+              <Col style={{ padding: "0px" }} md="auto">
+                <div className="circle">
+                  <Check className="check" />
+                </div>
+                {/* {this.state.hoverTick ? (
+                  <CheckCircleFill
+                    id="circle_fill"
+                    onClick={() =>
+                      this.props.editTask(
+                        "complete",
+                        this.props.task._id,
+                      )
+                    }
+                    onMouseEnter={() => this.changeHoverTick(true)}
+                    onMouseLeave={() => this.changeHoverTick(false)}
+                  />
+                ) : (
+                  <Circle
+                    id="circle"
+                    onClick={() =>
+                      this.props.editTask(
+                        "complete",
+                        this.props.task._id,
+                      )
+                    }
+                    onMouseEnter={() => this.changeHoverTick(true)}
+                    onMouseLeave={() => this.changeHoverTick(false)}
+                  />
+                )} */}
+              </Col>
+              <Col onClick={this.toggleNameChange}>
+                {this.state.TaskName}
+              </Col>
+              <Col className="ml-auto" md="auto">
+                {this.state.hoverTask && (
+                  <Trash
+                    onClick={() =>
+                      this.props.editTask(
+                        "delete",
+                        this.props.task._id,
+                      )
+                    }
+                  />
+                )}
+              </Col>
+            </Row>
+          </Container>
         )}
       </div>
     );

@@ -36,25 +36,26 @@ class ListUnit extends Component<Props, State> {
   render() {
     return (
       !this.props.list.isDeleted && (
-        <Container>
-          <Row>
-            <Nav.Link
-              onMouseEnter={() => this.changeHover(true)}
-              onMouseLeave={() => this.changeHover(false)}
-            >
-              <div
-                onClick={() =>
-                  this.props.changeListView({
-                    list_id: this.props.list._id,
-                    folder_id: this.props.folderId,
-                  })
-                }
-              >
-                <Col>
+        <Nav.Link
+          onMouseEnter={() => this.changeHover(true)}
+          onMouseLeave={() => this.changeHover(false)}
+          style={{ padding: "0px" }}
+        >
+          <div
+            onClick={() =>
+              this.props.changeListView({
+                list_id: this.props.list._id,
+                folder_id: this.props.folderId,
+              })
+            }
+          >
+            <Container>
+              <Row style={{ maxWidth: "100%", minWidth: "100%" }}>
+                <Col style={{ padding: "0px" }} md="auto">
                   <ListCheck />
                 </Col>
                 <Col>{this.props.list.name}</Col>
-                <Col>
+                <Col className="ml-auto" md="auto">
                   {this.state.hover && !this.props.noDelete && (
                     <Trash
                       onClick={() =>
@@ -66,10 +67,10 @@ class ListUnit extends Component<Props, State> {
                     />
                   )}
                 </Col>
-              </div>
-            </Nav.Link>
-          </Row>
-        </Container>
+              </Row>
+            </Container>
+          </div>
+        </Nav.Link>
       )
     );
   }
