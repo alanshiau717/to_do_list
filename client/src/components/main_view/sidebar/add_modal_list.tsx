@@ -71,9 +71,7 @@ class AddModalList extends Component<Props, State> {
     return (
       <Modal show={this.state.modalShow} onHide={this.closeModal}>
         <Modal.Header closeButton>
-          <Modal.Title>
-            Please enter list name {this.props.folderId}
-          </Modal.Title>
+          <Modal.Title>Please enter list name</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
