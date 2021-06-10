@@ -49,12 +49,48 @@ class ListUnit extends Component<Props, State> {
               })
             }
           >
-            <Container>
-              <Row style={{ maxWidth: "100%", minWidth: "100%" }}>
+            <div style={{ display: "inline" }}>
+              <ListCheck />
+              {this.props.list.name}
+              {this.state.hover && !this.props.noDelete && (
+                <Trash
+                  onClick={() =>
+                    this.props.editList("delete", {
+                      listId: this.props.list._id,
+                      folderId: this.props.folderId,
+                    })
+                  }
+                />
+              )}
+            </div>
+            {/* <Container>
+              <Row
+                style={{
+                  maxWidth: "100%",
+                  minWidth: "100%",
+                }}
+              >
                 <Col style={{ padding: "0px" }} md="auto">
                   <ListCheck />
                 </Col>
-                <Col>{this.props.list.name}</Col>
+                <Col>
+                  <div
+                    className="text-truncate"
+                    style={{
+                      maxWidth: "100%",
+                      maxHeight: "100%",
+                    }}
+                    // style={{
+                    //   display: "inline-block",
+                    //   whiteSpace: "nowrap",
+                    //   overflow: "hidden !important",
+                    //   textOverflow: "ellipsis",
+                    //   maxWidth: "10px",
+                    // }}
+                  >
+                    {this.props.list.name}
+                  </div>
+                </Col>
                 <Col className="ml-auto" md="auto">
                   {this.state.hover && !this.props.noDelete && (
                     <Trash
@@ -68,7 +104,7 @@ class ListUnit extends Component<Props, State> {
                   )}
                 </Col>
               </Row>
-            </Container>
+            </Container> */}
           </div>
         </Nav.Link>
       )

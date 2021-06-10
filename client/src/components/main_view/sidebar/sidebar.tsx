@@ -10,18 +10,13 @@ import {
   Ieditlist,
   Ieditfolder,
 } from "../../wrappers/main_view_wrapper";
-import {
-  Modal,
-  Button,
-  Navbar,
-  Nav,
-  Row,
-  Container,
-  Col,
-} from "react-bootstrap";
+import { Navbar, Nav, Row, Container, Col } from "react-bootstrap";
 import { Plus } from "react-bootstrap-icons";
+import AddModalFolder from "./add_modal_folder";
+import AddModalList from "./add_modal_list";
 
 import ListUnit from "./list_unit";
+
 interface Props extends RouteComponentProps {
   folders: IFolder[];
   userDetails: IJWT;
@@ -30,7 +25,8 @@ interface Props extends RouteComponentProps {
   editFolder: Ieditfolder;
 }
 interface State {
-  modalShow: boolean;
+  folderModalShow: boolean;
+  listModalShow: boolean;
   newItemName: string;
   modalSetting: "list" | "folder" | "";
 }
@@ -43,17 +39,24 @@ interface State {
 class SideBar extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.changeListViewHandler =
-      this.changeListViewHandler.bind(this);
+    this.changeListViewHandler.bind(this);
     this.openModal = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
+    this.closeFolderModal = this.closeFolderModal.bind(this);
+    this.closeListModal = this.closeListModal.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.state = {
-      modalShow: false,
+      folderModalShow: false,
+      listModalShow: false,
       newItemName: "",
       modalSetting: "",
     };
+  }
+  closeFolderModal() {
+    this.setState({ folderModalShow: false });
+  }
+  closeListModal() {
+    this.setState({ listModalShow: false });
   }
   handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     this.setState({
@@ -61,15 +64,15 @@ class SideBar extends Component<Props, State> {
     });
   }
   openModal(item: "folder" | "list") {
-    this.setState({
-      modalSetting: item,
-      modalShow: true,
-    });
-  }
-  closeModal() {
-    this.setState({
-      modalShow: false,
-    });
+    if (item === "folder") {
+      this.setState({
+        folderModalShow: true,
+      });
+    } else {
+      this.setState({
+        listModalShow: true,
+      });
+    }
   }
   handleSubmit(e: React.FormEvent) {
     if (this.state.modalSetting === "folder") {
@@ -162,7 +165,18 @@ class SideBar extends Component<Props, State> {
                 </div>
               );
             })}
-            <Modal
+            <AddModalFolder
+              editFolder={this.props.editFolder}
+              modalShow={this.state.folderModalShow}
+              closeModal={this.closeFolderModal}
+            />
+            <AddModalList
+              folderId={this.props.userDetails.default_folder}
+              editList={this.props.editList}
+              closeModal={this.closeListModal}
+              modalShow={this.state.listModalShow}
+            />
+            {/* <Modal
               show={this.state.modalShow}
               onHide={this.closeModal}
             >
@@ -190,7 +204,7 @@ class SideBar extends Component<Props, State> {
                 <Button variant="secondary">Close</Button>
                 <Button variant="primary">Save changes</Button>
               </Modal.Footer>
-            </Modal>
+            </Modal> */}
           </div>
         </Nav>
       </Navbar>

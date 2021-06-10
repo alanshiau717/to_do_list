@@ -52,42 +52,48 @@ class SidebarList extends Component<Props, State> {
   render() {
     const { list } = this.props;
     return (
-      <ListGroup variant="flush">
-        {list.tasks.map((task) => {
-          return (
-            !task.done &&
-            !task.isDeleted && (
-              <ListGroup.Item key={task._id}>
-                <TaskUnit
-                  task={task}
-                  editTask={this.props.editTask}
-                />
-              </ListGroup.Item>
-            )
-          );
-        })}
+      <div>
+        <h2>{list.name}</h2>
+        <ListGroup variant="flush">
+          {list.tasks.map((task) => {
+            return (
+              !task.done &&
+              !task.isDeleted && (
+                <ListGroup.Item
+                  key={task._id}
+                  style={{ paddingLeft: "0px" }}
+                >
+                  <TaskUnit
+                    task={task}
+                    editTask={this.props.editTask}
+                  />
+                </ListGroup.Item>
+              )
+            );
+          })}
 
-        {this.state.addTaskInput ? (
-          <ListGroup.Item>
-            <InputGroup>
-              <FormControl
-                autoFocus
-                placeholder="Task Name"
-                value={this.state.newTaskName}
-                onChange={this.handleChange}
-                onKeyPress={this.handleSubmit}
-              />
-            </InputGroup>
-          </ListGroup.Item>
-        ) : (
-          <ListGroup.Item
-            onClick={() => this.toggleInput()}
-            style={{ cursor: "pointer" }}
-          >
-            <Plus /> Add Item
-          </ListGroup.Item>
-        )}
-      </ListGroup>
+          {this.state.addTaskInput ? (
+            <ListGroup.Item>
+              <InputGroup>
+                <FormControl
+                  autoFocus
+                  placeholder="Task Name"
+                  value={this.state.newTaskName}
+                  onChange={this.handleChange}
+                  onKeyPress={this.handleSubmit}
+                />
+              </InputGroup>
+            </ListGroup.Item>
+          ) : (
+            <ListGroup.Item
+              onClick={() => this.toggleInput()}
+              style={{ cursor: "pointer" }}
+            >
+              <Plus /> Add Item
+            </ListGroup.Item>
+          )}
+        </ListGroup>
+      </div>
     );
   }
 }

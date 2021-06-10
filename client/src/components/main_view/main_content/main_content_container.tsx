@@ -47,7 +47,7 @@ class SidebarListContainer extends Component<Props, State> {
   render() {
     const { folders } = this.props;
     return (
-      <Container>
+      <Container style={{ padding: "10px" }}>
         {folders.map((folder) => {
           return folder.lists.map((list) => {
             return list._id === this.props.activeList ? (
@@ -59,26 +59,6 @@ class SidebarListContainer extends Component<Props, State> {
             ) : null;
           });
         })}
-        <div>
-          <button
-            onClick={() => {
-              this.toggleAddTask();
-            }}
-          />
-          {this.state.showAddTask && (
-            <form onSubmit={this.handleSubmit}>
-              <label>
-                Name:
-                <input
-                  type="text"
-                  value={this.state.newTaskName}
-                  onChange={this.handleChange}
-                />
-              </label>
-              <input type="submit" value="Submit" />
-            </form>
-          )}
-        </div>
       </Container>
     );
   }
