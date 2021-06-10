@@ -75,17 +75,6 @@ class AddModalList extends Component<Props, State> {
         </Modal.Header>
 
         <Modal.Body>
-          {/* <form onSubmit={this.handleSubmit}>
-            <label>
-              Name:
-              <input
-                type="text"
-                value={this.state.newItemName}
-                onChange={this.handleChange}
-              />
-            </label>
-            <input type="submit" value="Submit" />
-          </form> */}
           <Form>
             <Form.Group controlId="formBasicEmail">
               <Form.Label>Name</Form.Label>
