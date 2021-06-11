@@ -1,5 +1,5 @@
 import { Document, Schema, model, Types } from "mongoose";
-import Folder from "../../../client/src/models/folder";
+import Folder from "../../../client/src/models/shared/folder";
 import { ListDoc } from "./lists";
 type ID = Types.ObjectId;
 interface IFolder extends Folder {

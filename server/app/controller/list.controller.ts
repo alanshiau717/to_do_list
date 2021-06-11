@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { ListModel as List } from "../models/lists";
-
+import { FolderModel as Folder } from "../models/folders";
+import { Types } from "mongoose";
 const list = {
   //Search params in body. If no search params, will return all lists of user
   getList: (req: Request, res: Response) => {
@@ -10,14 +11,14 @@ const list = {
       res.status(400).send({ message: "Error: Internal Server Error" });
       return res.end();
     }
-    List.find({ ...query, user: req.userId }, (err, output) => {
-      if (err) {
+    List.find({ ...query, user: req.userId })
+      .populate("tasks")
+      .then((output) => {
+        res.status(200).send(output);
+      })
+      .catch((err) => {
         res.status(400).send({ message: "Error: Internal Server Error" });
-        return res.end();
-      }
-      res.status(200).send(output);
-      return res.end();
-    });
+      });
   },
   //Creates a single list. If no folder is specified will be placed into default folder/
   createList: (req: Request, res: Response) => {
@@ -29,13 +30,23 @@ const list = {
       NewList.name = name;
       NewList.user = req.userId;
       NewList.order = order;
-      NewList.folder = folder;
+      NewList.folder = Types.ObjectId(folder);
       NewList.save((err, output) => {
         if (err) {
           console.log(err);
           res.status(400).send({ message: "Error: Internal Server Error" });
         } else {
-          res.status(200).send(output);
+          const list_out = output
+          Folder.findOneAndUpdate(
+            { _id: folder },
+            { $push: { lists: output._id } }
+          )
+            .then((output) => {
+              res.status(200).send(list_out);
+            })
+            .catch((err) => {
+              res.status(400).send(err);
+            });
         }
       });
     } else {
@@ -59,6 +70,10 @@ const list = {
       res.status(400).send("List ID doesn't exist");
     }
   },
+
+  changeList: (req: Request, res: Response) => {
+
+  }
 };
 
 export default list;

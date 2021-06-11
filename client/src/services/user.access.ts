@@ -1,6 +1,6 @@
 import http from "../http-common";
-import UserLoginType from "../models/user.login";
-
+import UserLoginType from "../models/shared/user.login";
+import IJWT from "../models/shared/jwt";
 class UserAccessService {
   signup() {
     return http.post("/account/signup");
@@ -24,12 +24,13 @@ class UserAccessService {
     return http.post("account/logout");
   }
 
-  getCurrentUser() {
+  getCurrentUser(): IJWT {
     const jwt = localStorage.getItem("user");
     if (jwt != null) {
-      return JSON.parse(jwt).accessToken;
+      return JSON.parse(jwt);
+    } else {
+      throw new Error("JWT not found");
     }
-    return undefined;
   }
 }
 

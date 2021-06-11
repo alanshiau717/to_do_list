@@ -38,13 +38,21 @@ const task = {
       NewTask.user = req.userId;
     } else {
       res.status(400).send({ message: "Error: Internal Server Error" });
+      return res.end();
     }
     NewTask.save((err, output) => {
       if (err) {
         console.log(err);
         res.status(400).send({ message: "Error: Internal Server Error" });
       }
-      res.status(200).send(output);
+      let task_output = output
+      List.findOneAndUpdate({ _id: list }, { $push: { tasks: output._id } })
+        .then((output) => {
+          res.status(200).send(task_output);
+        })
+        .catch((err) => {
+          res.status(400).send(err);
+        });
     });
   },
   //Completes a task.
@@ -59,11 +67,14 @@ const task = {
         res.status(400).send({ err });
       });
   },
-  //Changes due date of a task
-  changeDue: (req: Request, res: Response) => {
+  //Changes a property of the task
+  changeTask: (req: Request, res: Response) => {
     const { body } = req;
-    const { dueDate, taskId } = body;
-    Task.updateOne({ _id: taskId, user: req.userId }, { due: dueDate })
+    const { taskId, ...other_params } = body;
+    if ((!body.name) && (!body.due) && (!body.isDeleted) && (!body.list)) {
+      res.status(400).send("Didn't find valid field to change").end()
+    }
+    Task.updateOne({ _id: body.taskId, user: req.userId }, { ...other_params })
       .then((output) => {
         res.status(200).send(output);
       })

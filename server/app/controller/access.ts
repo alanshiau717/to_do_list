@@ -38,16 +38,19 @@ const access = {
       }
       //creating new user
       const newUser = new User();
+      const newFolder = new Folder();
+      const newList = new List();
       newUser.email = lower_email;
       newUser.firstName = firstName;
       newUser.lastName = lastName;
       newUser.password = newUser.generateHash(password);
+      newUser.default_folder = newFolder._id;
+      newUser.inbox = newList._id;
       newUser.save((err, output) => {
         if (err) {
           res.status(400).send(err);
         }
         // creating newUser
-        const newFolder = new Folder();
         newFolder.name = "default";
         newFolder.order = 1;
         newFolder.user = newUser._id;
@@ -56,11 +59,17 @@ const access = {
           if (err) {
             res.status(400).send(err);
           }
-          const newList = new List();
+
           newList.name = "Inbox";
           newList.user = newUser._id;
           newList.order = 1;
           newList.folder = newFolder._id;
+          newFolder.lists.push(newList._id);
+          newFolder.save((err, output) => {
+            if (err) {
+              console.log(err);
+            }
+          });
           newList.save((err, output) => {
             if (err) {
               console.log(err);
@@ -87,7 +96,7 @@ const access = {
       return res.end();
     }
 
-    User.find({ email: email }, (err: Error, users: any) => {
+    User.find({ email: email }, (err, users) => {
       if (err) {
         return res.status(401).send({ message: "Error: Email not found" });
       }
@@ -116,7 +125,11 @@ const access = {
               message: err,
             });
           }
-          return res.status(200).send({ accessToken: token });
+          return res.status(200).send({
+            accessToken: token,
+            default_folder: user.default_folder,
+            inbox: user.inbox,
+          });
         });
       } else {
         res.status(500).send({

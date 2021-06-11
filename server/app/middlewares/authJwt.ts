@@ -14,6 +14,7 @@ var verifyToken = function (req: Request, res: Response, next: NextFunction) {
     }
     req.userId = decoded.id;
     next();
+
   });
 };
 

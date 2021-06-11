@@ -1,5 +1,5 @@
 import { Document, Schema, model, Types } from "mongoose";
-import Task from "../../../client/src/models/task";
+import Task from "../../../client/src/models/shared/task";
 import { ListDoc } from "./lists";
 type ID = Types.ObjectId;
 
@@ -10,7 +10,7 @@ interface ITask extends Task {
 }
 
 //We Then further extend it to a mongoose document
-interface TaskDoc extends Document, ITask {}
+interface TaskDoc extends Document, ITask { }
 
 const TaskSchemaFields: Record<keyof ITask, any> = {
   name: { type: String, required: true },
