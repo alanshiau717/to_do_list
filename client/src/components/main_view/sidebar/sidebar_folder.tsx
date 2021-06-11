@@ -1,9 +1,7 @@
 import React, { Component } from "react";
-import { withRouter, RouteComponentProps } from "react-router-dom";
 import {
   Accordion,
   Nav,
-  ListGroup,
   Container,
   Col,
   Row,
@@ -80,42 +78,62 @@ class SidebarFolder extends Component<Props, State> {
           eventKey={folder._id}
           style={{ padding: "0px" }}
         >
-          <Container>
-            <Row style={{ maxWidth: "100%", minWidth: "100%" }}>
-              <Col style={{ padding: "0px" }} md="auto">
-                <Folder />
-              </Col>
-              <Col>{folder.name}</Col>
-              <Col className="ml-auto" md="auto">
-                {this.state.hover && (
-                  <Dropdown>
-                    <Dropdown.Toggle
-                      id="dropdown-basic"
-                      as={ThreeDotsVertical}
-                    />
-                    <Dropdown.Menu>
-                      <Dropdown.Item
-                        onClick={() => {
-                          this.openModal(folder._id);
-                        }}
-                        as="div"
-                      >
-                        Add List
-                      </Dropdown.Item>
-                      <Dropdown.Item
-                        onClick={() => {
-                          this.props.editFolder("delete", folder._id);
-                        }}
-                        as="div"
-                      >
-                        Delete Folder
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                )}
-              </Col>
-            </Row>
-          </Container>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "30px auto 30px",
+            }}
+          >
+            <div
+              style={{
+                gridColumn: "1 / 2",
+              }}
+            >
+              <Folder />
+            </div>
+            <div
+              style={{
+                gridColumn: "2 / 3",
+                justifySelf: "start",
+                maxWidth: "100%",
+              }}
+              className="text-truncate"
+            >
+              {folder.name}
+            </div>
+            <div
+              style={{
+                gridColumn: "3 / 4",
+              }}
+            >
+              {this.state.hover && (
+                <Dropdown>
+                  <Dropdown.Toggle
+                    id="dropdown-basic"
+                    as={ThreeDotsVertical}
+                  />
+                  <Dropdown.Menu>
+                    <Dropdown.Item
+                      onClick={() => {
+                        this.openModal(folder._id);
+                      }}
+                      as="div"
+                    >
+                      Add List
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      onClick={() => {
+                        this.props.editFolder("delete", folder._id);
+                      }}
+                      as="div"
+                    >
+                      Delete Folder
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              )}
+            </div>
+          </div>
         </Accordion.Toggle>
 
         <Accordion.Collapse eventKey={folder._id}>

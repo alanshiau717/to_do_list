@@ -49,18 +49,44 @@ class ListUnit extends Component<Props, State> {
               })
             }
           >
-            <div style={{ display: "inline" }}>
-              <ListCheck />
-              {this.props.list.name}
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "30px auto 30px",
+              }}
+            >
+              <div
+                style={{
+                  gridColumn: "1 / 2",
+                }}
+              >
+                <ListCheck />
+              </div>
+              <div
+                style={{
+                  gridColumn: "2 / 3",
+                  justifySelf: "start",
+                  maxWidth: "100%",
+                }}
+                className="text-truncate"
+              >
+                {this.props.list.name}
+              </div>
               {this.state.hover && !this.props.noDelete && (
-                <Trash
-                  onClick={() =>
-                    this.props.editList("delete", {
-                      listId: this.props.list._id,
-                      folderId: this.props.folderId,
-                    })
-                  }
-                />
+                <div
+                  style={{
+                    gridColumn: "3 / 4",
+                  }}
+                >
+                  <Trash
+                    onClick={() =>
+                      this.props.editList("delete", {
+                        listId: this.props.list._id,
+                        folderId: this.props.folderId,
+                      })
+                    }
+                  />
+                </div>
               )}
             </div>
             {/* <Container>
