@@ -1,16 +1,17 @@
 import http from "../http-common";
 import UserLoginType from "../models/shared/user.login";
+import UserSignup from "../models/client/user.signup"
 import IJWT from "../models/shared/jwt";
+
 class UserAccessService {
-  signup() {
-    return http.post("/account/signup");
+  signup(data: UserSignup) {
+    return http.post("/account/signup", data)
   }
   signin(data: UserLoginType) {
     return http.post("/account/signin", data).then((response) => {
       if (response.data.accessToken) {
         localStorage.setItem("user", JSON.stringify(response.data));
       }
-      console.log(response);
       return response.data;
     });
 

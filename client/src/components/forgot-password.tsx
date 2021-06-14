@@ -7,6 +7,6 @@ export default class LoginPage extends React.Component<Props, State> {
   //   super(props);
   // }
   render() {
-    return <div></div>;
+    return <div>this is the forget password page</div>;
   }
 }
