@@ -62,7 +62,10 @@ const Login = class LoginPage extends Component<Props, State> {
         {uservalid === false && trycount <= 4 && (
           <Alert
             variant="danger"
-            style={{ margin: "0px 0px 0px 0px", padding: "5px 5px 5px 5px" }}
+            style={{
+              margin: "0px 0px 0px 0px",
+              padding: "5px 5px 5px 5px",
+            }}
           >
             Email or password is wrong.
           </Alert>
@@ -70,7 +73,10 @@ const Login = class LoginPage extends Component<Props, State> {
         {uservalid === false && trycount > 4 && (
           <Alert
             variant="danger"
-            style={{ margin: "0px 0px 0px 0px", padding: "5px 5px 5px 5px" }}
+            style={{
+              margin: "0px 0px 0px 0px",
+              padding: "5px 5px 5px 5px",
+            }}
           >
             Email or password is wrong. <br />
             <Alert.Link href="#">Reset your password.</Alert.Link>
@@ -106,23 +112,35 @@ const Login = class LoginPage extends Component<Props, State> {
               className="custom-control-input"
               id="customCheck1"
             />
-            <label className="custom-control-label" htmlFor="customCheck1">
+            <label
+              className="custom-control-label"
+              htmlFor="customCheck1"
+            >
               Remember me
             </label>
           </div>
         </div>
 
         <button
-          // type="submit"
           type="button"
           className="btn btn-dark btn-lg btn-block"
           onClick={this.verify_login}
         >
           Sign in
         </button>
-        <p className="forgot-password text-right">
-          Forgot <Link to="/forgot">password?</Link>
-        </p>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "auto auto",
+          }}
+        >
+          <div style={{ gridColumn: "1/2" }} className="text-left">
+            <Link to="/signup"> Sign up </Link>
+          </div>
+          <div style={{ gridColumn: "2/3" }} className="text-right">
+            Forgot <Link to="/forgot">password?</Link>
+          </div>
+        </div>
       </form>
     );
   }

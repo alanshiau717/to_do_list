@@ -33,6 +33,7 @@ const access = {
         res.status(400).send({ message: "Error: Internal Server Error" });
         return res.end();
       } else if (previousUsers.length > 0) {
+        console.log('User Found')
         res.status(400).send({ message: "Error: Email Exists" });
         return res.end();
       }
