@@ -5,7 +5,7 @@ import { changeListView } from "../../../redux/reducers/mainViewSlice";
 import IList from "../../../models/client/list";
 import { Trash, ListCheck } from "react-bootstrap-icons";
 import { Ieditlist } from "../../wrappers/main_view_wrapper";
-import { Nav, Container, Col, Row } from "react-bootstrap";
+import { Nav } from "react-bootstrap";
 
 interface Props extends RouteComponentProps {
   list: IList;

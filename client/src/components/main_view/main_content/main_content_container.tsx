@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { changeListView } from "../../../redux/reducers/mainViewSlice";

@@ -1,12 +1,7 @@
 import React, { Component } from "react";
 import ITask from "../../../models/client/task";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import {
-  CheckCircleFill,
-  Trash,
-  Circle,
-  Check,
-} from "react-bootstrap-icons";
+import { Trash, Check } from "react-bootstrap-icons";
 import {
   InputGroup,
   FormControl,

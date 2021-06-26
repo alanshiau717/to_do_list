@@ -1,12 +1,5 @@
 import React, { Component } from "react";
-import {
-  Accordion,
-  Nav,
-  Container,
-  Col,
-  Row,
-  Dropdown,
-} from "react-bootstrap";
+import { Accordion, Nav, Dropdown } from "react-bootstrap";
 import { changeListView } from "../../../redux/reducers/mainViewSlice";
 import { connect } from "react-redux";
 import IFolder from "../../../models/client/folder";

@@ -381,7 +381,7 @@ export class MainViewPage extends Component<Props, State> {
         typeof payload.name === "string" &&
         typeof payload.folderId === "string"
       ) {
-        var folderindex = -1;
+        folderindex = -1;
         this.state.folders.forEach((folder, curr_folder_index) => {
           if (folder._id === payload.folderId) {
             folderindex = curr_folder_index;
