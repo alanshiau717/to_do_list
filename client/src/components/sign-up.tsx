@@ -6,7 +6,8 @@ import {
   Col,
   // FormControlElement,
 } from "react-bootstrap";
-import { ThemeConsumer } from "react-bootstrap/esm/ThemeProvider";
+import { RouteComponentProps, withRouter } from "react-router-dom";
+
 interface ErrorObj {
   pwd: {
     error_msg: string;
@@ -32,7 +33,7 @@ interface FormValues {
   confpwd: string;
   email: string;
 }
-interface Props {}
+interface Props extends RouteComponentProps {}
 interface State {
   banner_message: string;
   validation: boolean;
@@ -40,11 +41,12 @@ interface State {
   formValues: FormValues;
 }
 
-export default class LoginPage extends React.Component<Props, State> {
+class LoginPage extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.signin = this.signin.bind(this);
     this.state = {
       banner_message: "",
       validation: false,
@@ -140,6 +142,20 @@ export default class LoginPage extends React.Component<Props, State> {
       },
     });
   }
+
+  signin() {
+    UserAccessService.signin({
+      email: this.state.formValues.email,
+      password: this.state.formValues.pwd,
+      uservalid: true,
+    })
+      .then((reponse) => {
+        this.props.history.push("/main");
+      })
+      .catch((e) => {
+        console.log("Unexpected Error Occured during signup");
+      });
+  }
   handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     e.stopPropagation();
@@ -157,11 +173,21 @@ export default class LoginPage extends React.Component<Props, State> {
       };
       UserAccessService.signup(data)
         .then((response) => {
-          console.log(response);
-          return response;
+          this.signin();
         })
         .catch((e) => {
+          console.log("hit error");
+          console.log(e.response.data);
           if (e.response.data.message === "Error: Email Exists") {
+            this.setState({
+              error: {
+                ...this.state.error,
+                email: {
+                  error_msg: "Email Already Exists",
+                  is_err: true,
+                },
+              },
+            });
           }
         });
     }
@@ -237,7 +263,7 @@ export default class LoginPage extends React.Component<Props, State> {
             isInvalid={this.state.error.email.is_err}
           />
           <Form.Control.Feedback type="invalid">
-            Please provide a valid email
+            {this.state.error.email.error_msg}
           </Form.Control.Feedback>
         </Form.Group>
 
@@ -291,8 +317,9 @@ export default class LoginPage extends React.Component<Props, State> {
         <Button variant="primary" type="submit">
           Submit
         </Button>
-        <div className="invalid-feedback d-block">Hello</div>
       </Form>
     );
   }
 }
+
+export default withRouter(LoginPage);

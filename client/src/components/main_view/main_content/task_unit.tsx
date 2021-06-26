@@ -99,7 +99,15 @@ class TaskUnit extends Component<Props, State> {
           >
             <Row style={{ maxWidth: "100%", minWidth: "100%" }}>
               <Col style={{ padding: "0px" }} md="auto">
-                <div className="circle">
+                <div
+                  className="circle"
+                  onClick={() =>
+                    this.props.editTask(
+                      "complete",
+                      this.props.task._id,
+                    )
+                  }
+                >
                   <Check className="check" />
                 </div>
                 {/* {this.state.hoverTick ? (
