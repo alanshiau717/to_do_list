@@ -43,3 +43,11 @@ functions:
       - http:
           path: tasks
           method: post
+          authorizer: aws_iam
+  createFolder:
+    handler: folders.createFolder
+    events:
+      - http:
+          path: folders
+          method: post
+          authorizer: aws_iam
