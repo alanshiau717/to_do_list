@@ -4,7 +4,7 @@ import Alert from "react-bootstrap/Alert";
 import UserAccessService from "../services/user.access";
 import UserLoginType from "../models/shared/user.login";
 import { Link } from "react-router-dom";
-
+import { Auth } from "aws-amplify";
 interface Props extends RouteComponentProps {}
 interface State extends UserLoginType {
   loading: boolean;
@@ -26,21 +26,32 @@ const Login = class LoginPage extends Component<Props, State> {
     };
   }
 
-  verify_login() {
-    UserAccessService.signin(this.state)
-      .then((response) => {
-        this.setState({ uservalid: true });
-        this.props.history.push("/main");
-      })
-      .catch((e) => {
-        console.log(e.response);
-        if (e.response.status === 401) {
-          this.setState({ uservalid: false });
-          this.setState({ trycount: this.state.trycount + 1 });
-        } else {
-          console.log("Uncaught Error");
-        }
-      });
+  async verify_login() {
+    // UserAccessService.signin(this.state)
+    //   .then((response) => {
+    //     this.setState({ uservalid: true });
+    //     this.props.history.push("/main");
+    //   })
+    //   .catch((e) => {
+    //     console.log(e.response);
+    //     if (e.response.status === 401) {
+    //       this.setState({ uservalid: false });
+    //       this.setState({ trycount: this.state.trycount + 1 });
+    //     } else {
+    //       console.log("Uncaught Error");
+    //     }
+    //   });
+    try {
+      await Auth.signIn(this.state.email, this.state.password);
+      this.props.history.push("/main");
+    } catch (e) {
+      if (e.code === "NotAuthorizedException") {
+        this.setState({ uservalid: false });
+        this.setState({ trycount: this.state.trycount + 1 });
+      } else {
+        console.log(e);
+      }
+    }
   }
   onChangeEmail(e: React.ChangeEvent<HTMLInputElement>) {
     const email = e.target.value;

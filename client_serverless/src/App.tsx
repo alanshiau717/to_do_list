@@ -8,7 +8,25 @@ import ForgotPwd from "./components/forgot-password";
 import Wrapper from "./components/wrappers/verification_wrapper";
 import MainView from "./components/wrappers/main_view_wrapper";
 import SignUp from "./components/sign-up";
+import { Auth } from "aws-amplify";
+
 class App extends Component {
+  async onLoad() {
+    try {
+      await Auth.currentSession();
+      console.log("found current session");
+    } catch (e) {
+      console.log(e);
+      if (e !== "No current user") {
+        console.log("No current User");
+        alert(e);
+      }
+    }
+  }
+  componentDidMount() {
+    this.onLoad();
+  }
+
   render() {
     return (
       <div className="App">

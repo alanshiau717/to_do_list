@@ -7,6 +7,7 @@ import {
   // FormControlElement,
 } from "react-bootstrap";
 import { RouteComponentProps, withRouter } from "react-router-dom";
+import { Auth } from "aws-amplify";
 
 interface ErrorObj {
   pwd: {
@@ -149,14 +150,14 @@ class LoginPage extends React.Component<Props, State> {
       password: this.state.formValues.pwd,
       uservalid: true,
     })
-      .then((reponse) => {
+      .then((response) => {
         this.props.history.push("/main");
       })
       .catch((e) => {
         console.log("Unexpected Error Occured during signup");
       });
   }
-  handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     e.stopPropagation();
     this.setState({
@@ -171,25 +172,49 @@ class LoginPage extends React.Component<Props, State> {
         email: this.state.formValues.email,
         password: this.state.formValues.pwd,
       };
-      UserAccessService.signup(data)
-        .then((response) => {
-          this.signin();
-        })
-        .catch((e) => {
-          console.log("hit error");
-          console.log(e.response.data);
-          if (e.response.data.message === "Error: Email Exists") {
-            this.setState({
-              error: {
-                ...this.state.error,
-                email: {
-                  error_msg: "Email Already Exists",
-                  is_err: true,
-                },
-              },
-            });
-          }
+      // UserAccessService.signup(data)
+      //   .then((response) => {
+      //     this.signin();
+      //   })
+      //   .catch((e) => {
+      //     console.log("hit error");
+      //     console.log(e.response.data);
+      //     if (e.response.data.message === "Error: Email Exists") {
+      //       this.setState({
+      //         error: {
+      //           ...this.state.error,
+      //           email: {
+      //             error_msg: "Email Already Exists",
+      //             is_err: true,
+      //           },
+      //         },
+      //       });
+      //     }
+      //   });
+      try {
+        const newUser = await Auth.signUp({
+          username: data.email,
+          password: data.password,
+          attributes: {
+            "custom:firstName": data.firstName,
+            "custom:lastName": data.lastName,
+          },
         });
+      } catch (e) {
+        if (e.code === "UsernameExistsException") {
+          this.setState({
+            error: {
+              ...this.state.error,
+              email: {
+                error_msg: "Email Already Exists",
+                is_err: true,
+              },
+            },
+          });
+        } else {
+          console.log(e);
+        }
+      }
     }
   }
   render() {
