@@ -5,7 +5,12 @@ import UserAccessService from "../services/user.access";
 import UserLoginType from "../models/shared/user.login";
 import { Link } from "react-router-dom";
 import { Auth } from "aws-amplify";
-interface Props extends RouteComponentProps {}
+import { connect } from "react-redux";
+import { userHasAuthenticated } from "../redux/reducers/userSessionSlice";
+interface Props extends RouteComponentProps {
+  userHasAuthenticated: any;
+  isAuthenticated: boolean;
+}
 interface State extends UserLoginType {
   loading: boolean;
   trycount: number;
@@ -43,6 +48,7 @@ const Login = class LoginPage extends Component<Props, State> {
     //   });
     try {
       await Auth.signIn(this.state.email, this.state.password);
+      this.props.userHasAuthenticated();
       this.props.history.push("/main");
     } catch (e) {
       if (e.code === "NotAuthorizedException") {
@@ -157,4 +163,12 @@ const Login = class LoginPage extends Component<Props, State> {
   }
 };
 
-export default withRouter(Login);
+const mapStateToProps = (state: any) => {
+  return {
+    isAuthenticated: state.usersession.isAuthenticated,
+  };
+};
+
+export default withRouter(
+  connect(mapStateToProps, { userHasAuthenticated })(Login),
+);

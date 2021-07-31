@@ -9,12 +9,23 @@ import Wrapper from "./components/wrappers/verification_wrapper";
 import MainView from "./components/wrappers/main_view_wrapper";
 import SignUp from "./components/sign-up";
 import { Auth } from "aws-amplify";
+import { connect } from "react-redux";
+import {
+  userHasAuthenticated,
+  userIsAuthenticating,
+} from "./redux/reducers/userSessionSlice";
 
-class App extends Component {
+interface Props {
+  isAuthenticating: boolean;
+  isAuthenticated: boolean;
+  userHasAuthenticated: any;
+  userIsAuthenticating: any;
+}
+class App extends Component<Props> {
   async onLoad() {
     try {
       await Auth.currentSession();
-      console.log("found current session");
+      this.props.userHasAuthenticated();
     } catch (e) {
       console.log(e);
       if (e !== "No current user") {
@@ -22,6 +33,7 @@ class App extends Component {
         alert(e);
       }
     }
+    this.props.userIsAuthenticating(false);
   }
   componentDidMount() {
     this.onLoad();
@@ -29,26 +41,42 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <div>
-          <Switch>
-            <Route
-              exact
-              path={["/"]}
-              component={Wrapper(LoginPage)}
-            />
-            <Route
-              exact
-              path="/forgot"
-              component={Wrapper(ForgotPwd)}
-            />
-            <Route exact path="/signup" component={Wrapper(SignUp)} />
-            <Route path="/main" component={MainView} />
-          </Switch>
+      !this.props.isAuthenticating && (
+        <div className="App">
+          <div>
+            <Switch>
+              <Route
+                exact
+                path={["/"]}
+                component={Wrapper(LoginPage)}
+              />
+              <Route
+                exact
+                path="/forgot"
+                component={Wrapper(ForgotPwd)}
+              />
+              <Route
+                exact
+                path="/signup"
+                component={Wrapper(SignUp)}
+              />
+              <Route path="/main" component={MainView} />
+            </Switch>
+          </div>
         </div>
-      </div>
+      )
     );
   }
 }
 
-export default App;
+const mapStateToProps = (state: any) => {
+  return {
+    isAuthenticating: state.usersession.isAuthenticating,
+    isAuthenticated: state.usersession.isAuthenticated,
+  };
+};
+
+export default connect(mapStateToProps, {
+  userHasAuthenticated,
+  userIsAuthenticating,
+})(App);
