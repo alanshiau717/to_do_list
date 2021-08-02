@@ -25,12 +25,11 @@ class App extends Component<Props> {
   async onLoad() {
     try {
       await Auth.currentSession();
-      this.props.userHasAuthenticated();
+      this.props.userHasAuthenticated(true);
     } catch (e) {
       console.log(e);
       if (e !== "No current user") {
         console.log("No current User");
-        alert(e);
       }
     }
     this.props.userIsAuthenticating(false);

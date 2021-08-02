@@ -176,35 +176,6 @@ class SideBar extends Component<Props, State> {
               closeModal={this.closeListModal}
               modalShow={this.state.listModalShow}
             />
-            {/* <Modal
-              show={this.state.modalShow}
-              onHide={this.closeModal}
-            >
-              <Modal.Header closeButton>
-                <Modal.Title>
-                  Please enter {this.state.modalSetting} name
-                </Modal.Title>
-              </Modal.Header>
-
-              <Modal.Body>
-                <form onSubmit={this.handleSubmit}>
-                  <label>
-                    Name:
-                    <input
-                      type="text"
-                      value={this.state.newItemName}
-                      onChange={this.handleChange}
-                    />
-                  </label>
-                  <input type="submit" value="Submit" />
-                </form>
-              </Modal.Body>
-
-              <Modal.Footer>
-                <Button variant="secondary">Close</Button>
-                <Button variant="primary">Save changes</Button>
-              </Modal.Footer>
-            </Modal> */}
           </div>
         </Nav>
       </Navbar>

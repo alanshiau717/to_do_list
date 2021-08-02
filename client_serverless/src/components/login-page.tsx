@@ -30,25 +30,15 @@ const Login = class LoginPage extends Component<Props, State> {
       trycount: 0,
     };
   }
-
+  componentDidMount() {
+    if (this.props.isAuthenticated) {
+      this.props.history.push("/main");
+    }
+  }
   async verify_login() {
-    // UserAccessService.signin(this.state)
-    //   .then((response) => {
-    //     this.setState({ uservalid: true });
-    //     this.props.history.push("/main");
-    //   })
-    //   .catch((e) => {
-    //     console.log(e.response);
-    //     if (e.response.status === 401) {
-    //       this.setState({ uservalid: false });
-    //       this.setState({ trycount: this.state.trycount + 1 });
-    //     } else {
-    //       console.log("Uncaught Error");
-    //     }
-    //   });
     try {
       await Auth.signIn(this.state.email, this.state.password);
-      this.props.userHasAuthenticated();
+      this.props.userHasAuthenticated(true);
       this.props.history.push("/main");
     } catch (e) {
       if (e.code === "NotAuthorizedException") {

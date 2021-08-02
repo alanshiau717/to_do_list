@@ -105,31 +105,6 @@ class TaskUnit extends Component<Props, State> {
                 >
                   <Check className="check" />
                 </div>
-                {/* {this.state.hoverTick ? (
-                  <CheckCircleFill
-                    id="circle_fill"
-                    onClick={() =>
-                      this.props.editTask(
-                        "complete",
-                        this.props.task._id,
-                      )
-                    }
-                    onMouseEnter={() => this.changeHoverTick(true)}
-                    onMouseLeave={() => this.changeHoverTick(false)}
-                  />
-                ) : (
-                  <Circle
-                    id="circle"
-                    onClick={() =>
-                      this.props.editTask(
-                        "complete",
-                        this.props.task._id,
-                      )
-                    }
-                    onMouseEnter={() => this.changeHoverTick(true)}
-                    onMouseLeave={() => this.changeHoverTick(false)}
-                  />
-                )} */}
               </Col>
               <Col onClick={this.toggleNameChange}>
                 {this.state.TaskName}

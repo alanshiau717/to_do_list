@@ -1,8 +1,13 @@
 import { Component } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import UserAccessService from "../../services/user.access";
-import { Navbar } from "react-bootstrap";
-import { List } from "react-bootstrap-icons";
+import {
+  Navbar,
+  Container,
+  NavDropdown,
+  Dropdown,
+} from "react-bootstrap";
+import { List, PersonFill } from "react-bootstrap-icons";
 import "../../css/main_view.css";
 import SideBar from "../main_view/sidebar/sidebar";
 import MainService from "../../services/main.service";
@@ -12,6 +17,11 @@ import { connect } from "react-redux";
 import { changeListView } from "../../redux/reducers/mainViewSlice";
 import SidebarTaskContainer from "../main_view/main_content/main_content_container";
 import update from "immutability-helper";
+import { Auth } from "aws-amplify";
+import {
+  userHasAuthenticated,
+  userIsAuthenticating,
+} from "../../redux/reducers/userSessionSlice";
 
 export type Iedittask = (
   action: "complete" | "delete" | "edit" | "add",
@@ -60,6 +70,8 @@ interface Props extends RouteComponentProps {
   activeList: string;
   activeFolder: string;
   changeListView: any;
+  userHasAuthenticated: any;
+  isAuthenticated: boolean;
 }
 interface State {
   sidebaractive: boolean;
@@ -82,9 +94,17 @@ export class MainViewPage extends Component<Props, State> {
     };
     this.toggleSidebar = this.toggleSidebar.bind(this);
     this.editTask = this.editTask.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
   }
-
+  async handleLogout() {
+    await Auth.signOut();
+    this.props.userHasAuthenticated(false);
+    this.props.history.push("/");
+  }
   componentDidMount() {
+    if (!this.props.isAuthenticated) {
+      this.props.history.push("/");
+    }
     MainService.getFolder({})
       .then((response) => {
         // setting up props
@@ -446,9 +466,53 @@ export class MainViewPage extends Component<Props, State> {
     return (
       <div id="outer_wrapper">
         <Navbar bg="primary" expand="lg">
-          <Navbar.Brand href="#home">
-            <List onClick={this.toggleSidebar} />
-          </Navbar.Brand>
+          <Container
+            style={{
+              margin: "0px",
+              maxWidth: "100%",
+              minWidth: "100%",
+            }}
+          >
+            <Navbar.Brand href="#home">
+              <List onClick={this.toggleSidebar} />
+            </Navbar.Brand>
+
+            <NavDropdown
+              title={
+                <div style={{ display: "inline-block" }}>
+                  <PersonFill /> Dropdown{" "}
+                </div>
+              }
+              id="basic-nav-dropdown"
+            >
+              <NavDropdown.Item href="#action3">
+                Action
+              </NavDropdown.Item>
+              <NavDropdown.Item href="#action4">
+                Another action
+              </NavDropdown.Item>
+            </NavDropdown>
+
+            <Navbar.Brand
+              href="#home1"
+              className="justify-content-end"
+            >
+              <Dropdown alignRight>
+                <Dropdown.Toggle as={PersonFill}>
+                  Custom toggle
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                  <Dropdown.Item
+                    eventKey="1"
+                    onClick={() => this.handleLogout()}
+                  >
+                    Logout
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </Navbar.Brand>
+          </Container>
         </Navbar>
         <div className="wrapper">
           <div
@@ -479,9 +543,13 @@ const mapStateToProps = (state: any) => {
   return {
     activeList: state.mainview.currentList,
     activeFolder: state.mainview.currentFolder,
+    isAuthenticating: state.usersession.isAuthenticating,
+    isAuthenticated: state.usersession.isAuthenticated,
   };
 };
 
-export default connect(mapStateToProps, { changeListView })(
-  MainViewPage,
-);
+export default connect(mapStateToProps, {
+  changeListView,
+  userHasAuthenticated,
+  userIsAuthenticating,
+})(MainViewPage);
