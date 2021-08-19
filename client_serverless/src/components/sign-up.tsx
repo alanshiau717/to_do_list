@@ -8,6 +8,7 @@ import {
 } from "react-bootstrap";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { Auth } from "aws-amplify";
+import ConfirmationPage from "./confirmation-page";
 
 interface ErrorObj {
   pwd: {
@@ -40,6 +41,7 @@ interface State {
   validation: boolean;
   error: ErrorObj;
   formValues: FormValues;
+  submitted: boolean;
 }
 
 class LoginPage extends React.Component<Props, State> {
@@ -49,6 +51,7 @@ class LoginPage extends React.Component<Props, State> {
     this.handleChange = this.handleChange.bind(this);
     this.signin = this.signin.bind(this);
     this.state = {
+      submitted: false,
       banner_message: "",
       validation: false,
       error: {
@@ -145,6 +148,7 @@ class LoginPage extends React.Component<Props, State> {
   }
 
   signin() {
+    console.log("hit signin");
     UserAccessService.signin({
       email: this.state.formValues.email,
       password: this.state.formValues.pwd,
@@ -200,6 +204,8 @@ class LoginPage extends React.Component<Props, State> {
             "custom:lastName": data.lastName,
           },
         });
+        console.log(newUser);
+        this.setState({ submitted: true });
       } catch (e) {
         if (e.code === "UsernameExistsException") {
           this.setState({
@@ -218,7 +224,7 @@ class LoginPage extends React.Component<Props, State> {
     }
   }
   render() {
-    return (
+    return !this.state.submitted ? (
       <Form onSubmit={this.handleSubmit}>
         <Form.Row>
           <Form.Group as={Col}>
@@ -343,6 +349,11 @@ class LoginPage extends React.Component<Props, State> {
           Submit
         </Button>
       </Form>
+    ) : (
+      <ConfirmationPage
+        email={this.state.formValues.email}
+        pwd={this.state.formValues.pwd}
+      />
     );
   }
 }

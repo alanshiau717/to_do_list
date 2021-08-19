@@ -47,17 +47,17 @@ class App extends Component<Props> {
               <Route
                 exact
                 path={["/"]}
-                component={Wrapper(LoginPage)}
+                component={Wrapper(LoginPage, {})}
               />
               <Route
                 exact
                 path="/forgot"
-                component={Wrapper(ForgotPwd)}
+                component={Wrapper(ForgotPwd, {})}
               />
               <Route
                 exact
                 path="/signup"
-                component={Wrapper(SignUp)}
+                component={Wrapper(SignUp, {})}
               />
               <Route path="/main" component={MainView} />
             </Switch>

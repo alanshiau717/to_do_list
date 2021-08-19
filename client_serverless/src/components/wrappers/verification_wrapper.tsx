@@ -1,5 +1,8 @@
 import React from "react";
-export default function loginWrapper(WrappedComponent: React.ComponentType) {
+export default function loginWrapper(
+  WrappedComponent: React.ComponentType,
+  props: any,
+) {
   return class extends React.Component {
     render() {
       const outer = {
