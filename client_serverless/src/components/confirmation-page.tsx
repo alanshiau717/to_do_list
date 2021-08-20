@@ -1,7 +1,8 @@
 import React from "react";
+
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { Auth } from "aws-amplify";
-import { Form, Button, Col } from "react-bootstrap";
+import { Form, Alert } from "react-bootstrap";
 import { connect } from "react-redux";
 import { userHasAuthenticated } from "../redux/reducers/userSessionSlice";
 interface Props extends RouteComponentProps {
@@ -13,6 +14,7 @@ interface Props extends RouteComponentProps {
 
 interface State {
   confirmationCode: string;
+  emailSent: boolean;
 }
 
 const Confirm = class ConfirmationPage extends React.Component<
@@ -23,10 +25,25 @@ const Confirm = class ConfirmationPage extends React.Component<
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleFieldChange = this.handleFieldChange.bind(this);
+    this.handleResubmit = this.handleResubmit.bind(this);
     this.state = {
       confirmationCode: "",
+      emailSent: false,
     };
   }
+  async handleResubmit(e: React.MouseEvent<HTMLElement>) {
+    e.preventDefault();
+    try {
+      Auth.resendSignUp(this.props.email);
+
+      this.setState({ emailSent: true });
+    } catch (e) {
+      console.log(e);
+    }
+
+    console.log("hit");
+  }
+
   async handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     e.stopPropagation();
@@ -47,6 +64,9 @@ const Confirm = class ConfirmationPage extends React.Component<
   render() {
     return (
       <Form onSubmit={this.handleSubmit}>
+        {this.state.emailSent && (
+          <Alert variant="primary">New Email Sent</Alert>
+        )}
         <Form.Group controlId="confirmationCode">
           <Form.Label>Confirmation Code</Form.Label>
           <Form.Control
@@ -58,6 +78,11 @@ const Confirm = class ConfirmationPage extends React.Component<
           />
           <Form.Text muted>
             Please check your email for the code.
+          </Form.Text>
+          <Form.Text>
+            <a onClick={this.handleResubmit} href="url">
+              Resend Code
+            </a>
           </Form.Text>
         </Form.Group>
       </Form>

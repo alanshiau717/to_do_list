@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import { connect } from "react-redux";
 import { userHasAuthenticated } from "../redux/reducers/userSessionSlice";
+import ConfirmPage from "./confirmation-page";
 interface Props extends RouteComponentProps {
   userHasAuthenticated: any;
   isAuthenticated: boolean;
@@ -14,6 +15,7 @@ interface Props extends RouteComponentProps {
 interface State extends UserLoginType {
   loading: boolean;
   trycount: number;
+  loadConfirm: boolean;
 }
 
 const Login = class LoginPage extends Component<Props, State> {
@@ -28,6 +30,7 @@ const Login = class LoginPage extends Component<Props, State> {
       uservalid: true,
       loading: false,
       trycount: 0,
+      loadConfirm: false,
     };
   }
   componentDidMount() {
@@ -44,6 +47,8 @@ const Login = class LoginPage extends Component<Props, State> {
       if (e.code === "NotAuthorizedException") {
         this.setState({ uservalid: false });
         this.setState({ trycount: this.state.trycount + 1 });
+      } else if (e.code === "UserNotConfirmedException") {
+        this.setState({ loadConfirm: true });
       } else {
         console.log(e);
       }
@@ -63,7 +68,7 @@ const Login = class LoginPage extends Component<Props, State> {
   }
   render() {
     const { email, password, uservalid, trycount } = this.state;
-    return (
+    return !this.state.loadConfirm ? (
       <form>
         <h3>Log in</h3>
         {uservalid === false && trycount <= 4 && (
@@ -149,6 +154,11 @@ const Login = class LoginPage extends Component<Props, State> {
           </div>
         </div>
       </form>
+    ) : (
+      <ConfirmPage
+        email={this.state.email}
+        pwd={this.state.password}
+      />
     );
   }
 };
