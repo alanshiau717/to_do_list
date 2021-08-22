@@ -8,13 +8,13 @@ import ForgotPwd from "./components/forgot-password";
 import Wrapper from "./components/wrappers/verification_wrapper";
 import MainView from "./components/wrappers/main_view_wrapper";
 import SignUp from "./components/sign-up";
-import { Auth } from "aws-amplify";
 import { connect } from "react-redux";
 import {
   userHasAuthenticated,
   userIsAuthenticating,
 } from "./redux/reducers/userSessionSlice";
 
+import UserAccessService from "./services/user.access.serverless";
 interface Props {
   isAuthenticating: boolean;
   isAuthenticated: boolean;
@@ -24,8 +24,9 @@ interface Props {
 class App extends Component<Props> {
   async onLoad() {
     try {
-      await Auth.currentSession();
-      this.props.userHasAuthenticated(true);
+      await UserAccessService.currentSession();
+      // await Auth.currentSession();
+      // this.props.userHasAuthenticated(true);
     } catch (e) {
       console.log(e);
       if (e !== "No current user") {

@@ -1,5 +1,6 @@
 import React from "react";
-import UserAccessService from "../services/user.access";
+import UserAccessService from "../services/user.access.serverless";
+
 import {
   Form,
   Button,
@@ -49,7 +50,6 @@ class LoginPage extends React.Component<Props, State> {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.signin = this.signin.bind(this);
     this.state = {
       submitted: false,
       banner_message: "",
@@ -147,20 +147,6 @@ class LoginPage extends React.Component<Props, State> {
     });
   }
 
-  signin() {
-    console.log("hit signin");
-    UserAccessService.signin({
-      email: this.state.formValues.email,
-      password: this.state.formValues.pwd,
-      uservalid: true,
-    })
-      .then((response) => {
-        this.props.history.push("/main");
-      })
-      .catch((e) => {
-        console.log("Unexpected Error Occured during signup");
-      });
-  }
   async handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     e.stopPropagation();
@@ -176,35 +162,9 @@ class LoginPage extends React.Component<Props, State> {
         email: this.state.formValues.email,
         password: this.state.formValues.pwd,
       };
-      // UserAccessService.signup(data)
-      //   .then((response) => {
-      //     this.signin();
-      //   })
-      //   .catch((e) => {
-      //     console.log("hit error");
-      //     console.log(e.response.data);
-      //     if (e.response.data.message === "Error: Email Exists") {
-      //       this.setState({
-      //         error: {
-      //           ...this.state.error,
-      //           email: {
-      //             error_msg: "Email Already Exists",
-      //             is_err: true,
-      //           },
-      //         },
-      //       });
-      //     }
-      //   });
+
       try {
-        const newUser = await Auth.signUp({
-          username: data.email,
-          password: data.password,
-          attributes: {
-            "custom:firstName": data.firstName,
-            "custom:lastName": data.lastName,
-          },
-        });
-        console.log(newUser);
+        await UserAccessService.signup(data);
         this.setState({ submitted: true });
       } catch (e) {
         if (e.code === "UsernameExistsException") {

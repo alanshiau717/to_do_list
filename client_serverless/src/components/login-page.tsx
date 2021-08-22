@@ -1,13 +1,12 @@
 import React, { Component } from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import Alert from "react-bootstrap/Alert";
-import UserAccessService from "../services/user.access";
 import UserLoginType from "../models/shared/user.login";
 import { Link } from "react-router-dom";
-import { Auth } from "aws-amplify";
 import { connect } from "react-redux";
 import { userHasAuthenticated } from "../redux/reducers/userSessionSlice";
 import ConfirmPage from "./confirmation-page";
+import UserAccessService from "../services/user.access.serverless";
 interface Props extends RouteComponentProps {
   userHasAuthenticated: any;
   isAuthenticated: boolean;
@@ -35,13 +34,17 @@ const Login = class LoginPage extends Component<Props, State> {
   }
   componentDidMount() {
     if (this.props.isAuthenticated) {
+      console.log("hit component did mount");
       this.props.history.push("/main");
     }
   }
   async verify_login() {
     try {
-      await Auth.signIn(this.state.email, this.state.password);
-      this.props.userHasAuthenticated(true);
+      await UserAccessService.signIn(
+        this.state.email,
+        this.state.password,
+      );
+      console.log("hit");
       this.props.history.push("/main");
     } catch (e) {
       if (e.code === "NotAuthorizedException") {

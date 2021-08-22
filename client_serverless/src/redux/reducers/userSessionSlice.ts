@@ -1,5 +1,4 @@
-import { createSlice, PayloadAction} from "@reduxjs/toolkit";
-// import { RootState } from "../store";
+import { createSlice, PayloadAction, createStore, combineReducers} from "@reduxjs/toolkit";
 
 
 export interface UserState {
@@ -25,6 +24,10 @@ export const userSessionSlice = createSlice({
     }
 })
 
+
+
 export const { userHasAuthenticated, userIsAuthenticating } = userSessionSlice.actions
+
+
 
 export default userSessionSlice.reducer
