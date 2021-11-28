@@ -8,6 +8,7 @@ import { FolderModel as Folder } from "../models/folders";
 
 const access = {
   signup: (req: Request, res: Response) => {
+    console.log("hit signup")
     const { body } = req;
     const { firstName, lastName, email, password } = body;
     if (!firstName) {
@@ -30,6 +31,7 @@ const access = {
     const lower_email = email.toLowerCase();
     User.find({ email: lower_email }, (err, previousUsers) => {
       if (err) {
+        console.log(err)
         res.status(400).send({ message: "Error: Internal Server Error" });
         return res.end();
       } else if (previousUsers.length > 0) {

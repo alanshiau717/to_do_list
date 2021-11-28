@@ -5,7 +5,7 @@
   "main": "server.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "DEBUG=* nodemon server.ts"
+    "start": "set DEBUG=express:* & nodemon server.ts"
   },
   "author": "Alan",
   "license": "ISC",
@@ -26,7 +26,7 @@
     "@types/node": "^14.14.25",
     "eslint": "^7.19.0",
     "eslint-config-prettier": "^7.2.0",
-    "nodemon": "^2.0.7",
+    "nodemon": "^2.0.15",
     "prettier": "2.2.1",
     "ts-node": "^9.1.1",
     "typescript": "^4.1.3"

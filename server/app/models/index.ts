@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 // mongoose.Promise = global.Promise;
 const db = {
   mongoose: mongoose,
-  url: dbconfig.url,
+  url: dbconfig.DB_URL,
 };
 
 export default db;
