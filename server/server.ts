@@ -27,8 +27,7 @@ app.get("/", (req, res) => {
 
 db.mongoose
   .connect(db.url, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+    ...db.configs
   })
   .then(() => {
     console.log("Connected to the database!");
@@ -46,3 +45,5 @@ const port = process.env.PORT || 8080;
 app.listen(port, () => {
   console.log(`server started at http://localhost:${port}`);
 });
+
+

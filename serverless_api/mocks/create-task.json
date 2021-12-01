@@ -1,9 +1,0 @@
-{
-    "body": "{\"name\":\"test task\",\"due\":\"test due\",\"order\":\"1\"}"
-    ,
-    "requestContext": {
-        "identity": {
-            "cognitoIdentityId": "USER-SUB-1234"
-        }
-    }
-}
