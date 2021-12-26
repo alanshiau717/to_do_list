@@ -8,6 +8,7 @@ import ForgotPwd from "./components/forgot-password";
 import Wrapper from "./components/wrappers/verification_wrapper";
 import MainView from "./components/wrappers/main_view_wrapper";
 import SignUp from "./components/sign-up";
+import Calendar from "./components/test.component"
 class App extends Component {
   render() {
     return (
@@ -26,6 +27,7 @@ class App extends Component {
             />
             <Route exact path="/signup" component={Wrapper(SignUp)} />
             <Route path="/main" component={MainView} />
+            <Route path="/calendar" component={Calendar} />
           </Switch>
         </div>
       </div>

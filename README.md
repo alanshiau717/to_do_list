@@ -4,6 +4,13 @@
 
 This project is a simple to do list which utilized a MERN (MongoDB, Express, React and Node.JS) written in typescript.
 
+## Technologies and techniques utilised in this project
+1. Typescript
+2. Express
+3. React
+4. Node.js
+5. JSON Web Tokens for user authorization
+
 ## Requisites
 1. NPM
 2. Docker
