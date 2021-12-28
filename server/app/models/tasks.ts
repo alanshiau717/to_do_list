@@ -21,6 +21,7 @@ const TaskSchemaFields: Record<keyof ITask, any> = {
   isDeleted: { type: Boolean, required: true, default: false },
   user: { type: String, required: true },
   list: { type: Schema.Types.ObjectId, ref: "list", required: true },
+  // scheduledDateTime: { type: Date, required: false }
 };
 
 const TaskSchema = new Schema<TaskDoc>(TaskSchemaFields);

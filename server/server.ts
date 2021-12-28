@@ -2,10 +2,30 @@ import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import { allowedNodeEnvironmentFlags } from "process";
+import swaggerJsDoc from "swagger-jsdoc"
+import swaggerUi from "swagger-ui-express"
 
 // const path = __dirname + "/app/views";
 const app = express();
 
+const swaggerOptions = {
+  swaggerDefinition: {
+    info: {
+      title: 'Customer API',
+      description: "Customer API Information",
+      contact: {
+        name: "Amzing Developer"
+      },
+      version: "3.0",
+      servers: ["http://localhost:8080"]
+    }
+  },
+  apis: ["./app/routes*.ts"]
+}
+
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 var corsOptions = {
   origin: "http://localhost:3000",
 };

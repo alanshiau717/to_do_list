@@ -8,4 +8,5 @@ export default interface Task {
   order: number;
   isDeleted: boolean;
   user: string;
+  // scheduledDateTime?: Date;
 }

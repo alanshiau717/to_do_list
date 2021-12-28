@@ -1,6 +1,7 @@
 import { Router, Request, Response } from "express";
 import access from "../controller/access";
 var router = Router();
+
 router.get("/", (req: Request, res: Response) => {
   res.send("Hit api");
 });
