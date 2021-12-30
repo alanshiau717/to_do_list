@@ -1,0 +1,483 @@
+{
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"Types.ObjectId": {
+				"type": "string"
+			},
+			"IFolderClientCreate": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"created": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"done": {
+						"type": "boolean"
+					},
+					"order": {
+						"type": "number",
+						"format": "double"
+					},
+					"isDeleted": {
+						"type": "boolean"
+					},
+					"user": {
+						"type": "string"
+					},
+					"_id": {
+						"$ref": "#/components/schemas/Types.ObjectId"
+					},
+					"lists": {
+						"items": {
+							"$ref": "#/components/schemas/Types.ObjectId"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"name",
+					"created",
+					"done",
+					"order",
+					"isDeleted",
+					"user",
+					"_id",
+					"lists"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ICreateFolderRequest": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"done": {
+						"type": "boolean"
+					},
+					"order": {
+						"type": "number",
+						"format": "double"
+					},
+					"user": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"done",
+					"order",
+					"user"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ITask": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"created": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"due": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"done": {
+						"type": "boolean"
+					},
+					"order": {
+						"type": "number",
+						"format": "double"
+					},
+					"isDeleted": {
+						"type": "boolean"
+					},
+					"user": {
+						"type": "string"
+					},
+					"list": {
+						"$ref": "#/components/schemas/Types.ObjectId"
+					}
+				},
+				"required": [
+					"name",
+					"created",
+					"done",
+					"order",
+					"isDeleted",
+					"user",
+					"list"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IList": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"created": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"user": {
+						"type": "string"
+					},
+					"isDeleted": {
+						"type": "boolean"
+					},
+					"order": {
+						"type": "number",
+						"format": "double"
+					},
+					"folder": {
+						"$ref": "#/components/schemas/Types.ObjectId"
+					},
+					"tasks": {
+						"items": {
+							"$ref": "#/components/schemas/ITask"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"name",
+					"created",
+					"user",
+					"isDeleted",
+					"order",
+					"folder",
+					"tasks"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IUser": {
+				"properties": {
+					"email": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"address": {
+						"type": "string"
+					},
+					"id": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"date_created": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"date_updated": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"email",
+					"name",
+					"id",
+					"date_created",
+					"date_updated"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ICreateUserRequest": {
+				"properties": {
+					"email": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"address": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"email",
+					"name"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IUpdateUserRequest": {
+				"properties": {
+					"email": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"address": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"email",
+					"name"
+				],
+				"type": "object",
+				"additionalProperties": false
+			}
+		},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": ""
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/folder": {
+			"post": {
+				"operationId": "CreateFolder",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IFolderClientCreate"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Folders"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ICreateFolderRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/list": {
+			"get": {
+				"operationId": "GetUsers",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IList"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Lists"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/users": {
+			"get": {
+				"operationId": "GetUsers",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IUser"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Users"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "page_number",
+						"required": false,
+						"schema": {
+							"default": 1,
+							"format": "int32",
+							"type": "integer",
+							"minimum": 1
+						}
+					},
+					{
+						"in": "query",
+						"name": "page_size",
+						"required": false,
+						"schema": {
+							"default": 20,
+							"format": "int32",
+							"type": "integer",
+							"minimum": 1
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "CreateUser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IUser"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Users"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ICreateUserRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/users/{user_id}": {
+			"get": {
+				"operationId": "GetUserById",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IUser"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Users"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "user_id",
+						"required": true,
+						"schema": {
+							"format": "int32",
+							"type": "integer",
+							"minimum": 1
+						}
+					}
+				]
+			},
+			"patch": {
+				"operationId": "UpdateUser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IUser"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Users"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "user_id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IUpdateUserRequest"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteUser",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Users"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "user_id",
+						"required": true,
+						"schema": {
+							"format": "int32",
+							"type": "integer",
+							"minimum": 1
+						}
+					}
+				]
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/api"
+		}
+	]
+}

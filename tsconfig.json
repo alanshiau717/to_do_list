@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.base.json",
+  "files": [],
+  "references": [
+    { "path": "./src/client" },
+    { "path": "./src/server" },
+    { "path": "./src/cli" },
+    { "path": "./src/common" },
+    { "path": "./src/node" },
+    { "path": "./src/openapi-client" },
+    { "path": "./src/cypress" }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "../../dist/client",
+    "target": "es5",
+    "lib": ["esnext", "dom"]
+  },
+  "references": [
+    {
+      "path": "../common"
+    },
+    {
+      "path": "../openapi-client"
+    }
+  ]
+}
