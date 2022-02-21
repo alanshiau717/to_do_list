@@ -4,8 +4,22 @@ import Alert from "react-bootstrap/Alert";
 import UserAccessService from "../services/user.access";
 import UserLoginType from "../models/shared/user.login";
 import { Link } from "react-router-dom";
+import GoogleSignInButton from "./login/googleSignIn"
+import axios from "axios"
+import {
+  userHasAuthenticated,
+  userIsAuthenticating
+} from "../redux/reducers/userSessionSlice"
+import {connect } from "react-redux"
+import {store} from "../redux/store"
 
-interface Props extends RouteComponentProps {}
+
+interface Props extends RouteComponentProps {
+  isAuthenticating: boolean;
+  isAuthenticated: boolean;
+  userHasAuthenticated: any;
+  userIsAuthenticating: any;
+}
 interface State extends UserLoginType {
   loading: boolean;
   trycount: number;
@@ -17,6 +31,7 @@ const Login = class LoginPage extends Component<Props, State> {
     this.verify_login = this.verify_login.bind(this);
     this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
+    this.handleSuccessfulSignIn = this.handleSuccessfulSignIn.bind(this)
     this.state = {
       email: "",
       password: "",
@@ -26,21 +41,25 @@ const Login = class LoginPage extends Component<Props, State> {
     };
   }
 
-  verify_login() {
-    UserAccessService.signin(this.state)
-      .then((response) => {
-        this.setState({ uservalid: true });
-        this.props.history.push("/main");
-      })
-      .catch((e) => {
-        console.log(e.response);
-        if (e.response.status === 401) {
-          this.setState({ uservalid: false });
-          this.setState({ trycount: this.state.trycount + 1 });
-        } else {
-          console.log("Uncaught Error");
-        }
-      });
+  async verify_login() {
+    try{
+      store.dispatch(userIsAuthenticating(true))
+      await UserAccessService.nativeUserSignIn(this.state.email, this.state.password)
+      this.handleSuccessfulSignIn()
+    }
+    catch(err:  unknown){
+      if(axios.isAxiosError(err)){
+        this.setState({uservalid: false})
+        this.setState({trycount: this.state.trycount + 1})
+      }
+      else{
+        console.log("Uncaught Error")
+      }
+    }
+  }
+  handleSuccessfulSignIn(){
+    store.dispatch(userHasAuthenticated(true))
+    this.props.history.push("/main");
   }
   onChangeEmail(e: React.ChangeEvent<HTMLInputElement>) {
     const email = e.target.value;
@@ -128,6 +147,7 @@ const Login = class LoginPage extends Component<Props, State> {
         >
           Sign in
         </button>
+        <GoogleSignInButton handleSuccessfulSignIn={this.handleSuccessfulSignIn}/>
         <div
           style={{
             display: "grid",
@@ -146,4 +166,14 @@ const Login = class LoginPage extends Component<Props, State> {
   }
 };
 
-export default withRouter(Login);
+const mapStateToProps = (state: any) => ({
+  isAuthenticating: state.usersession.isAuthenticating,
+  isAuthenticated: state.usersession.isAuthenticated,
+});
+
+export default withRouter(connect(mapStateToProps, {
+  userHasAuthenticated,
+  userIsAuthenticating,
+})(Login));
+
+// export default Login);

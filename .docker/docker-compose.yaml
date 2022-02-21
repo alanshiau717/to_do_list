@@ -1,0 +1,34 @@
+version: '3'
+services:
+  redis:
+    logging:
+      driver: none
+    image: redis
+    ports:
+      - 6379:6379
+    restart: always
+    container_name: tsapp_redis
+  postgres:
+    build:
+      context: ./postgres
+      dockerfile: Dockerfile
+    ports:
+      - 5432:5432
+    environment:
+      - PGDATA=/var/lib/postgresql/data
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=defaultdb
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    container_name: tsapp_postgres
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    ports:
+      - "27017:27017"
+volumes:
+  pgdata:
+    driver: local

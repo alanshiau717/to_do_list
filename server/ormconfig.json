@@ -1,0 +1,27 @@
+{
+   "type": "postgres",
+   "host": "localhost",
+   "port": 5432,
+   "username": "postgres",
+   "password": "admin",
+   "database": "defaultdb",
+   "synchronize": true,
+   "logging": false,
+   "autoLoadEntities": true,
+   "entities": [
+      "database/entity/**/*.ts",
+      "database/entity/**/*.js"
+      
+   ],
+   "migrations": [
+      "database/migration/**/*.ts"
+   ],
+   "subscribers": [
+      "database/subscriber/**/*.ts"
+   ],
+   "cli": {
+      "entitiesDir": "database/entity",
+      "migrationsDir": "database/migration",
+      "subscribersDir": "database/subscriber"
+   }
+}

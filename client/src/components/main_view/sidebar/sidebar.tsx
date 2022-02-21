@@ -4,6 +4,7 @@ import { RouteComponentProps, withRouter } from "react-router-dom";
 import IFolder from "../../../models/client/folder";
 import SidebarFolder from "./sidebar_folder";
 import IJWT from "../../../models/shared/jwt";
+import {UserDetails} from "../../../services/user.access";
 import { connect } from "react-redux";
 import { changeListView } from "../../../redux/reducers/mainViewSlice";
 import {
@@ -19,7 +20,7 @@ import ListUnit from "./list_unit";
 
 interface Props extends RouteComponentProps {
   folders: IFolder[];
-  userDetails: IJWT;
+  userDetails: UserDetails;
   changeListView: any;
   editList: Ieditlist;
   editFolder: Ieditfolder;
@@ -102,7 +103,7 @@ class SideBar extends Component<Props, State> {
         >
           <div>
             {folders.map((folder) => {
-              return folder._id !== userDetails.default_folder ? (
+              return folder._id !== userDetails.defaultFolder ? (
                 !folder.isDeleted && (
                   <SidebarFolder
                     folder={folder}
@@ -171,7 +172,7 @@ class SideBar extends Component<Props, State> {
               closeModal={this.closeFolderModal}
             />
             <AddModalList
-              folderId={this.props.userDetails.default_folder}
+              folderId={this.props.userDetails.defaultFolder}
               editList={this.props.editList}
               closeModal={this.closeListModal}
               modalShow={this.state.listModalShow}

@@ -1,0 +1,6 @@
+{
+    "exec": "set DEBUG=express:* & ts-node server/start.ts",
+    "watch": ["server", "node"],
+    "ignore": ["server/routes.ts"],
+    "ext": "ts"
+  }

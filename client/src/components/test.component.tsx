@@ -4,16 +4,21 @@ import ToDoList from "../services/main.service";
 import Calendar from '@toast-ui/react-calendar';
 import TUICalendar, { IEventObject, IEventScheduleObject, IEventWithCreationPopup, ISchedule, TEventBeforeCreateSchedule } from 'tui-calendar';
 import 'tui-calendar/dist/tui-calendar.css';
-
-
+// import {ListsApiFactory} from "../../../build/api"
+import { GoogleLogin, GoogleLoginResponse, GoogleLoginResponseOffline } from 'react-google-login';
+import {UserApiFactory, FoldersApiFactory} from "../apiClient/api"
+import {Configuration} from "../apiClient/configuration"
 import 'tui-date-picker/dist/tui-date-picker.css';
 import 'tui-time-picker/dist/tui-time-picker.css';
+import Cookies from "universal-cookie"
+// import { BaseAPI, BASE_PATH } from "../apiClient/base";
 interface Props { }
 interface State {
   calendarRef: any,
   calendarConfig: any;
   schedule: ISchedule[];
 }
+
 
 export default class TestPage extends React.Component<Props, State> {
 
@@ -51,6 +56,55 @@ export default class TestPage extends React.Component<Props, State> {
     this.onClickSchedule = this.onClickSchedule.bind(this);
     this.onBeforeCreateSchedule = this.onBeforeCreateSchedule.bind(this);
     this.onBeforeUpdateSchedule = this.onBeforeUpdateSchedule.bind(this);
+    this.testCall = this.testCall.bind(this)
+  }
+  responseGoogleFailure(response: GoogleLoginResponse | GoogleLoginResponseOffline) {
+    console.log("")
+    console.log(response)
+  }
+  callProtectedRoute(){
+    console.log(process.env.REACT_APP_SECRET_NAME)
+    let config = new Configuration();
+    config.baseOptions = {withCredentials: true}
+    FoldersApiFactory(config,"http://localhost:3001",undefined).getFolder().then((res) => {
+      console.log(res.data)
+    }).catch((err) => {
+      console.log(err.response)
+    })
+  }
+  responseGoogleSuccess(response: GoogleLoginResponse | GoogleLoginResponseOffline) {
+    if("profileObj" in response) {
+      console.log(response.getAuthResponse().id_token)
+      UserApiFactory(undefined,"http://localhost:3001",undefined).googleLogin({idToken:response.getAuthResponse().id_token}).then((response)=> {
+        console.log("this is the token",response.data)
+        console.log("this is headers", response.headers)
+        const cookies = new Cookies();
+        cookies.set('token', response.data, { path: '/' });
+        let config = new Configuration();
+        config.baseOptions = {withCredentials: true}
+        FoldersApiFactory(config,"http://localhost:3001",undefined).getFolder().then((res) => {
+          console.log(res.data)
+        }).catch((err) => {
+
+          console.log(err)
+        })
+        
+      }).catch(
+        (err) => {
+          console.log(err.response.data)
+          console.log(err)
+        }
+      )
+      
+    }
+  }
+
+  
+  testCall() {
+    // ListsApiFactory().getUsers();
+    
+    const jwt = localStorage.getItem("jwt")
+    FoldersApiFactory().getFolder()
   }
   getUser() {
     console.log(UserAccessService.getCurrentUser());
@@ -120,6 +174,15 @@ export default class TestPage extends React.Component<Props, State> {
         <button onClick={() => this.changeView('week')}> Week View</button>
         <button onClick={() => this.changeView('day')}>Day View</button>
         <button onClick={() => this.changeView('month')}>Month View</button>
+        {/* <button onClick={() => this.testCall()}>Test Button</button> */}
+        <button onClick={() => this.callProtectedRoute()}>Test Button</button>
+        <GoogleLogin
+        clientId="154518758211-0h56764sro2iimsjkh1hu2svmsc86c76.apps.googleusercontent.com"
+        buttonText="Login"
+        onSuccess={this.responseGoogleSuccess}
+        onFailure={this.responseGoogleFailure}
+        cookiePolicy={'single_host_origin'}
+      />
 
 
 

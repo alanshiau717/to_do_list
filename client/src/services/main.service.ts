@@ -1,15 +1,26 @@
+import { FoldersApiFactory } from "../apiClient";
 import http from "../http-common";
 import authHeader from "../utils/auth.header";
+import authConfig from "../utils/axios.auth.config"
+
 
 class ToDoList {
+  foldersApiFactory = FoldersApiFactory(authConfig,process.env.REACT_APP_EXPRESS_SERVER_BASE_URL,undefined)
+
   getTask(params: {}) {
     return http.get(`/todolist/`, { headers: authHeader() });
   }
-  getFolder(params: {}) {
-    return http.get(`/todolist/getfolder`, {
-      headers: authHeader(),
-      params: params,
-    });
+  // getFolder(params: {}) {  
+  //   return http.get(`/todolist/getfolder`, {
+  //     headers: authHeader(),
+  //     params: params,
+  //   });
+  // }
+
+  async getFolders(){
+    const folders = await this.foldersApiFactory.getFolder()
+    console.log(folders)
+    return folders
   }
   completeTask(taskId: string) {
     return http.post(`/todolist/completetask`, {

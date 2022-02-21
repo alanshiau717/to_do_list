@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 import UserAccessService from "../../services/user.access";
 import { Navbar } from "react-bootstrap";
 import { List } from "react-bootstrap-icons";
@@ -7,11 +7,11 @@ import "../../css/main_view.css";
 import SideBar from "../main_view/sidebar/sidebar";
 import MainService from "../../services/main.service";
 import IFolder from "../../models/client/folder";
-import IJWT from "../../models/shared/jwt";
 import { connect } from "react-redux";
 import { changeListView } from "../../redux/reducers/mainViewSlice";
 import SidebarTaskContainer from "../main_view/main_content/main_content_container";
 import update from "immutability-helper";
+import {UserDetails} from "../../services/user.access"
 
 export type Iedittask = (
   action: "complete" | "delete" | "edit" | "add",
@@ -64,7 +64,7 @@ interface Props extends RouteComponentProps {
 interface State {
   sidebaractive: boolean;
   folders: IFolder[];
-  userDetails: IJWT;
+  userDetails: UserDetails;
 }
 
 //wrapper for the main view
@@ -85,13 +85,14 @@ export class MainViewPage extends Component<Props, State> {
   }
 
   componentDidMount() {
-    MainService.getFolder({})
+    console.log("hit component did mount")
+    MainService.getFolders()
       .then((response) => {
         // setting up props
         this.setState({ folders: response.data });
         this.props.changeListView({
           list_id: this.state.userDetails.inbox,
-          folder_id: this.state.userDetails.default_folder,
+          folder_id: this.state.userDetails.defaultFolder,
         });
       })
       .catch((e) => console.log(e));
@@ -289,7 +290,7 @@ export class MainViewPage extends Component<Props, State> {
         if (payload === this.props.activeFolder) {
           this.props.changeListView({
             list_id: this.state.userDetails.inbox,
-            folder_id: this.state.userDetails.default_folder,
+            folder_id: this.state.userDetails.defaultFolder,
           });
         }
       } else {
@@ -482,6 +483,13 @@ const mapStateToProps = (state: any) => {
   };
 };
 
-export default connect(mapStateToProps, { changeListView })(
+export default withRouter(connect(mapStateToProps, { changeListView })(
   MainViewPage,
-);
+));
+
+
+
+
+// export default withRouter(
+//   connect(mapStateToProps, { changeListView })(SidebarListContainer),
+// );

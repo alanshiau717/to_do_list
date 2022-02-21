@@ -1,0 +1,20 @@
+{
+    "basePath": "/api",
+    "entryFile": "./server",
+    "noImplicitAdditionalProperties": "silently-remove-extras",
+    "controllerPathGlobs": ["server/controllers/**/*-controller.ts"],
+    "spec": {
+      "outputDirectory": "./server",
+      "specVersion": 3,
+      "securityDefinitions": {
+        "api_key": {
+            "type": "apiKey",
+            "name": "access_token",
+            "in": "cookie"
+        }
+      }
+    },
+    "routes": {
+      "routesDir": "./server"
+    }
+  }
