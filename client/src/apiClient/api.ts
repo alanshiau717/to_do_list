@@ -993,6 +993,37 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        validateCurrentSession: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/user/validateSession`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication api_key required
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -1033,6 +1064,15 @@ export const UserApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.nativeUserSignUp(iUserCreateProps, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async validateCurrentSession(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.validateCurrentSession(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
     }
 };
 
@@ -1069,6 +1109,14 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
          */
         nativeUserSignUp(iUserCreateProps: IUserCreateProps, options?: any): AxiosPromise<object> {
             return localVarFp.nativeUserSignUp(iUserCreateProps, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        validateCurrentSession(options?: any): AxiosPromise<boolean> {
+            return localVarFp.validateCurrentSession(options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -1111,6 +1159,16 @@ export class UserApi extends BaseAPI {
      */
     public nativeUserSignUp(iUserCreateProps: IUserCreateProps, options?: AxiosRequestConfig) {
         return UserApiFp(this.configuration).nativeUserSignUp(iUserCreateProps, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApi
+     */
+    public validateCurrentSession(options?: AxiosRequestConfig) {
+        return UserApiFp(this.configuration).validateCurrentSession(options).then((request) => request(this.axios, this.basePath));
     }
 }
 

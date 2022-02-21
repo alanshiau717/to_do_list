@@ -6,6 +6,9 @@ import { Controller, ValidationService, FieldErrors, ValidateError, TsoaRoute, H
 import { FolderController } from './controllers/folders-controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { UserController } from './controllers/user-controller';
+import { expressAuthentication } from './middleware/authentication';
+// @ts-ignore - no great way to install types from subpackage
+const promiseAny = require('promise.any');
 import * as express from 'express';
 
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
