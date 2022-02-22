@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@types/cookie-parser": "^1.4.2",
+    "apollo-server": "^3.6.3",
     "bcrypt": "^5.0.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -25,6 +26,7 @@
     "supertest": "^6.1.6",
     "swagger-jsdoc": "^6.1.0",
     "swagger-ui-express": "^4.3.0",
+    "type-graphql": "^1.1.1",
     "typeorm": "^0.2.41"
   },
   "devDependencies": {

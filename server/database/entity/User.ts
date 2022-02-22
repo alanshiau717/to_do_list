@@ -3,6 +3,7 @@ import { Folder, IFolder } from "./Folder";
 import { BaseEntity, IBaseEntity } from "./Base";
 import { UserSession, IUserSession } from "./UserSession";
 import { List, IList } from "./List";
+import { Field, ObjectType } from "type-graphql";
 
 export interface IUserCreateProps {
     firstName?: string;
@@ -31,16 +32,19 @@ export interface IUser extends IBaseEntity {
     googleUserSub: string
 }
 
+@ObjectType()
 @Entity("User")
 export class User extends BaseEntity {
-    
+    @Field(() => String)
     @Column()
     firstName: string;
 
+    @Field(() => String)
     @Column()
     lastName: string;
 
     @Column()
+    @Field(() => String)
     email: string;
 
     @Column(
@@ -48,6 +52,7 @@ export class User extends BaseEntity {
             nullable: true
         }
     )
+    @Field(() => String)
     password: string;
 
     @Column(
@@ -56,6 +61,7 @@ export class User extends BaseEntity {
             default: false
         }
     )
+    @Field(() => Boolean)
     isDeleted: boolean
 
     @Column(
@@ -64,6 +70,7 @@ export class User extends BaseEntity {
             default: false
         }
     )
+    @Field(() => Boolean)
     activated: boolean
 
     @Column(
@@ -71,26 +78,31 @@ export class User extends BaseEntity {
             nullable: true
         }
     )
+    @Field(() => String)
     googleUserSub: string
     
-    @OneToMany(() => Folder, folder => folder.user)
-    folders: Folder[];
+    // @OneToMany(() => Folder, folder => folder.user)
+    // @Field(()=> [Folder])
+    // folders: Folder[];
     
     @OneToMany(() => UserSession, userSession => userSession.user)
+    @Field(()=>[UserSession])
     userSessions: UserSession[];
 
-    @OneToOne(() => Folder, folder => folder.user, {onUpdate: 'CASCADE', onDelete: 'CASCADE' })
-    @JoinColumn()
-    defaultFolder: Folder;
+    // @OneToOne(() => Folder, folder => folder.user, {onUpdate: 'CASCADE', onDelete: 'CASCADE' })
+    // @JoinColumn()
+    // @Field(()=> Folder)
+    // defaultFolder: Folder;
     
-    @OneToOne(() => List, list => list.user, {onUpdate: 'CASCADE', onDelete: 'CASCADE' })
-    @JoinColumn()
-    inbox: List;
+    // @OneToOne(() => List, list => list.user, {onUpdate: 'CASCADE', onDelete: 'CASCADE' })
+    // @Field(()=> List)
+    // @JoinColumn()
+    // inbox: List;
     
-    @RelationId((user: User) => user.defaultFolder)
-    defaultFolderId: number
+    // @RelationId((user: User) => user.defaultFolder)
+    // defaultFolderId: number
 
-    @RelationId((user: User) => user.inbox)
-    inboxId: number
+    // @RelationId((user: User) => user.inbox)
+    // inboxId: number
 
 }
