@@ -2,7 +2,7 @@ import {Entity,  Column,  OneToMany, OneToOne, RelationId, JoinColumn} from "typ
 import { Folder, IFolder } from "./Folder";
 import { BaseEntity, IBaseEntity } from "./Base";
 import { UserSession, IUserSession } from "./UserSession";
-import { List } from "./List";
+import { List, IList } from "./List";
 
 export interface IUserCreateProps {
     firstName?: string;
@@ -24,9 +24,9 @@ export interface IUser extends IBaseEntity {
     activated: boolean
     folders: IFolder[]
     userSessions: IUserSession[]
-    defaultFolder: Folder
+    defaultFolder: IFolder
     defaultFolderId: number
-    inbox: List
+    inbox: IList
     inboxId: number
     googleUserSub: string
 }

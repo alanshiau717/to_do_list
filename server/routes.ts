@@ -22,113 +22,25 @@ const models: TsoaRoute.Models = {
             "date_updated": {"dataType":"datetime","required":true},
             "order": {"dataType":"double","required":true},
             "isDeleted": {"dataType":"boolean","required":true},
-            "user": {"ref":"IUser","required":true},
-            "name": {"dataType":"string","required":true},
-            "done": {"dataType":"boolean","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IUser": {
-        "dataType": "refObject",
-        "properties": {
-            "id": {"dataType":"integer","required":true},
-            "date_created": {"dataType":"datetime","required":true},
-            "date_updated": {"dataType":"datetime","required":true},
-            "firstName": {"dataType":"string","required":true},
-            "lastName": {"dataType":"string","required":true},
-            "email": {"dataType":"string","required":true},
-            "password": {"dataType":"string","required":true},
-            "isDeleted": {"dataType":"boolean","required":true},
-            "activated": {"dataType":"boolean","required":true},
-            "folders": {"dataType":"array","array":{"dataType":"refObject","ref":"IFolder"},"required":true},
-            "userSessions": {"dataType":"array","array":{"dataType":"refObject","ref":"IUserSession"},"required":true},
-            "defaultFolder": {"ref":"Folder","required":true},
-            "defaultFolderId": {"dataType":"double","required":true},
-            "inbox": {"ref":"List","required":true},
-            "inboxId": {"dataType":"double","required":true},
-            "googleUserSub": {"dataType":"string","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IUserSession": {
-        "dataType": "refObject",
-        "properties": {
-            "id": {"dataType":"integer","required":true},
-            "date_created": {"dataType":"datetime","required":true},
-            "date_updated": {"dataType":"datetime","required":true},
-            "user": {"ref":"IUser","required":true},
-            "isRevoked": {"dataType":"boolean","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Folder": {
-        "dataType": "refObject",
-        "properties": {
-            "id": {"dataType":"double","required":true},
-            "date_created": {"dataType":"datetime","required":true},
-            "date_updated": {"dataType":"datetime","required":true},
-            "name": {"dataType":"string","required":true},
-            "done": {"dataType":"boolean","required":true},
-            "order": {"dataType":"double","required":true},
-            "isDeleted": {"dataType":"boolean","required":true},
-            "user": {"ref":"User","required":true},
             "userId": {"dataType":"double","required":true},
-            "lists": {"dataType":"array","array":{"dataType":"refObject","ref":"List"},"required":true},
+            "name": {"dataType":"string","required":true},
+            "done": {"dataType":"boolean","required":true},
+            "lists": {"dataType":"array","array":{"dataType":"refObject","ref":"IList"},"required":true},
             "listIds": {"dataType":"array","array":{"dataType":"double"},"required":true},
         },
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "User": {
-        "dataType": "refObject",
-        "properties": {
-            "id": {"dataType":"double","required":true},
-            "date_created": {"dataType":"datetime","required":true},
-            "date_updated": {"dataType":"datetime","required":true},
-            "firstName": {"dataType":"string","required":true},
-            "lastName": {"dataType":"string","required":true},
-            "email": {"dataType":"string","required":true},
-            "password": {"dataType":"string","required":true},
-            "isDeleted": {"dataType":"boolean","required":true},
-            "activated": {"dataType":"boolean","required":true},
-            "googleUserSub": {"dataType":"string","required":true},
-            "folders": {"dataType":"array","array":{"dataType":"refObject","ref":"Folder"},"required":true},
-            "userSessions": {"dataType":"array","array":{"dataType":"refObject","ref":"UserSession"},"required":true},
-            "defaultFolder": {"ref":"Folder","required":true},
-            "inbox": {"ref":"List","required":true},
-            "defaultFolderId": {"dataType":"double","required":true},
-            "inboxId": {"dataType":"double","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "UserSession": {
-        "dataType": "refObject",
-        "properties": {
-            "id": {"dataType":"integer","required":true},
-            "date_created": {"dataType":"datetime","required":true},
-            "date_updated": {"dataType":"datetime","required":true},
-            "user": {"ref":"User","required":true},
-            "isRevoked": {"dataType":"boolean","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "List": {
+    "IList": {
         "dataType": "refObject",
         "properties": {
             "id": {"dataType":"integer","required":true},
             "date_created": {"dataType":"datetime","required":true},
             "date_updated": {"dataType":"datetime","required":true},
             "name": {"dataType":"string","required":true},
-            "user": {"ref":"User","required":true},
-            "folder": {"ref":"Folder","required":true},
+            "folder": {"ref":"IFolder","required":true},
             "order": {"dataType":"double","required":true},
             "isDeleted": {"dataType":"boolean","required":true},
-            "done": {"dataType":"boolean","required":true},
         },
         "additionalProperties": false,
     },
@@ -295,28 +207,6 @@ export function RegisterRoutes(app: express.Router) {
 
 
               const promise = controller.nativeUserLogin.apply(controller, validatedArgs as any);
-              promiseHandler(controller, promise, response, undefined, next);
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/user',
-
-            function UserController_getUser(request: any, response: any, next: any) {
-            const args = {
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request, response);
-
-                const controller = new UserController();
-
-
-              const promise = controller.getUser.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);

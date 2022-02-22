@@ -103,7 +103,7 @@ class SideBar extends Component<Props, State> {
         >
           <div>
             {folders.map((folder) => {
-              return folder._id !== userDetails.defaultFolder ? (
+              return folder._id !== userDetails.defaultFolder.toString() ? (
                 !folder.isDeleted && (
                   <SidebarFolder
                     folder={folder}
@@ -139,7 +139,7 @@ class SideBar extends Component<Props, State> {
                             editList={this.props.editList}
                             noDelete={
                               list._id ===
-                              this.props.userDetails.inbox
+                              this.props.userDetails.inbox.toString()
                                 ? true
                                 : false
                             }
@@ -172,7 +172,7 @@ class SideBar extends Component<Props, State> {
               closeModal={this.closeFolderModal}
             />
             <AddModalList
-              folderId={this.props.userDetails.defaultFolder}
+              folderId={this.props.userDetails.defaultFolder.toString()}
               editList={this.props.editList}
               closeModal={this.closeListModal}
               modalShow={this.state.listModalShow}

@@ -1,7 +1,7 @@
 import { Entity, Column, ManyToOne } from "typeorm";
 import { IBaseEntity, BaseEntity } from "./Base";
 import {User} from "./User"
-import {Folder} from "./Folder"
+import {Folder, IFolder} from "./Folder"
 
 export interface IListCreateProps{
     name: string,
@@ -10,8 +10,8 @@ export interface IListCreateProps{
 }
 export interface IList extends IBaseEntity {
     name: string,
-    user: User,
-    folder: Folder
+    // user: User,
+    folder: IFolder
     order: number
     isDeleted: boolean
 }

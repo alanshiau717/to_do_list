@@ -2,8 +2,8 @@ import { Entity, Column,  ManyToOne, OneToMany
     , RelationId 
 } from "typeorm";
 import { IBaseEntity, BaseEntity } from "./Base";
-import { List } from "./List";
-import {User, IUser} from "./User"
+import { List, IList } from "./List";
+import {User} from "./User"
 
 export interface IFolderCreateProps{
     name: string,
@@ -13,9 +13,12 @@ export interface IFolderCreateProps{
 export interface IFolder extends IBaseEntity {
     order: number
     isDeleted: boolean
-    user: IUser
+    // user: IUser
+    userId: number
     name: string
     done: boolean
+    lists: IList[]
+    listIds: number[]
 }
 
 

@@ -24,6 +24,8 @@ export interface UserLoginResponse{
 type NativeUserLoginRequest = Pick<IUser, "email"|"password">
 
 
+
+
  
 @Route("user")
 export class UserController extends Controller {
@@ -56,10 +58,10 @@ export class UserController extends Controller {
         }
     }
     
-    @Get("")
-    public async getUser(): Promise<IUser> {
-        return await this.userService.getUser(1);
-    }
+    // @Get("")
+    // public async getUser(): Promise<IUser> {
+    //     return await this.userService.getUser(1);
+    // }
 
 
     @Post("/nativeUserSignup")
