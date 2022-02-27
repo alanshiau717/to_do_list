@@ -9,8 +9,8 @@ import { OperationError } from "./common/operation-error";
 import swaggerUi from "swagger-ui-express";
 import { InternalServerError } from "./common/internal-server-error";
 import { AuthError } from "./common/auth-error";
-import {ObjectType, Field, ID} from "type-graphql"
-import { Entity } from "typeorm";
+// import {ObjectType, Field, ID} from "type-graphql"
+// import { Entity } from "typeorm";
 
 interface IError {
   status?: number;

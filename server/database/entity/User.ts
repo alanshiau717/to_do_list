@@ -1,8 +1,12 @@
 import {Entity,  Column,  OneToMany, OneToOne, RelationId, JoinColumn} from "typeorm";
-import { Folder, IFolder } from "./Folder";
+import { 
+    Folder,
+     IFolder } from "./Folder";
 import { BaseEntity, IBaseEntity } from "./Base";
 import { UserSession, IUserSession } from "./UserSession";
-import { List, IList } from "./List";
+import { 
+    List,
+     IList } from "./List";
 import { Field, ObjectType } from "type-graphql";
 
 export interface IUserCreateProps {
@@ -81,28 +85,28 @@ export class User extends BaseEntity {
     @Field(() => String)
     googleUserSub: string
     
-    // @OneToMany(() => Folder, folder => folder.user)
-    // @Field(()=> [Folder])
-    // folders: Folder[];
+    @OneToMany(() => Folder, folder => folder.user)
+    @Field(()=> [Folder])
+    folders: Folder[];
     
     @OneToMany(() => UserSession, userSession => userSession.user)
     @Field(()=>[UserSession])
     userSessions: UserSession[];
 
-    // @OneToOne(() => Folder, folder => folder.user, {onUpdate: 'CASCADE', onDelete: 'CASCADE' })
-    // @JoinColumn()
-    // @Field(()=> Folder)
-    // defaultFolder: Folder;
+    @OneToOne(() => Folder, folder => folder.user, {onUpdate: 'CASCADE', onDelete: 'CASCADE' })
+    @JoinColumn()
+    @Field(()=> Folder)
+    defaultFolder: Folder;
     
-    // @OneToOne(() => List, list => list.user, {onUpdate: 'CASCADE', onDelete: 'CASCADE' })
-    // @Field(()=> List)
-    // @JoinColumn()
-    // inbox: List;
+    @OneToOne(() => List, list => list.user, {onUpdate: 'CASCADE', onDelete: 'CASCADE' })
+    @Field(()=> List)
+    @JoinColumn()
+    inbox: List;
     
-    // @RelationId((user: User) => user.defaultFolder)
-    // defaultFolderId: number
+    @RelationId((user: User) => user.defaultFolder)
+    defaultFolderId: number
 
-    // @RelationId((user: User) => user.inbox)
-    // inboxId: number
+    @RelationId((user: User) => user.inbox)
+    inboxId: number
 
 }

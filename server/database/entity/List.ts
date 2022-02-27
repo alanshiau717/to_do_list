@@ -2,6 +2,7 @@ import { Entity, Column, ManyToOne } from "typeorm";
 import { IBaseEntity, BaseEntity } from "./Base";
 import {User} from "./User"
 import {Folder, IFolder} from "./Folder"
+import { Field, ObjectType } from "type-graphql";
 
 export interface IListCreateProps{
     name: string,
@@ -16,12 +17,14 @@ export interface IList extends IBaseEntity {
     isDeleted: boolean
 }
 
+@ObjectType()
 @Entity()
 export class List extends BaseEntity implements IList{
-    
+    @Field(() => String)
     @Column()
     name: string;
 
+    @Field(() => Boolean)
     @Column(
         {
             nullable: true,
@@ -30,6 +33,7 @@ export class List extends BaseEntity implements IList{
     )
     done: boolean;
     
+    @Field(() => Number)
     @Column(
         {
             nullable: true,
@@ -37,7 +41,8 @@ export class List extends BaseEntity implements IList{
         }
     )
     order: number;
-
+    
+    @Field(() => Boolean)
     @Column(
         {
             nullable: true,
@@ -46,9 +51,11 @@ export class List extends BaseEntity implements IList{
     )
     isDeleted: boolean
     
+    @Field(() => User)
     @ManyToOne(() => User, user=> user.folders)
     user: User;
-
+    
+    @Field(() => [Folder])
     @ManyToOne(()=> Folder, folder=> folder)
     folder: Folder
 }
