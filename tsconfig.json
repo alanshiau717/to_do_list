@@ -3,7 +3,7 @@
   "files": [],
   "references": [
     { "path": "./client" },
-    { "path": "./server" },
-    { "path": "./node" }
+    { "path": "./server" }
+    // { "path": "./node" }
   ]
 }

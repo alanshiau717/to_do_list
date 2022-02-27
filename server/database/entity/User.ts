@@ -10,13 +10,13 @@ import {
 import { Field, ObjectType } from "type-graphql";
 
 export interface IUserCreateProps {
-    firstName?: string;
-    lastName?: string;
-    email?: string
-    password?: string
-    defaultFolder?: number
-    inbox?: number
-    googleUserSub?: string
+    firstName: string;
+    lastName: string;
+    email: string
+    password: string
+    defaultFolder: number
+    inbox: number
+    googleUserSub: string
 }
 
 
@@ -93,14 +93,16 @@ export class User extends BaseEntity {
     @Field(()=>[UserSession])
     userSessions: UserSession[];
 
-    @OneToOne(() => Folder, folder => folder.user, {onUpdate: 'CASCADE', onDelete: 'CASCADE' })
+    @OneToOne(() => Folder, folder => folder.user, 
+    {onUpdate: 'CASCADE', onDelete: 'CASCADE', cascade: true })
     @JoinColumn()
     @Field(()=> Folder)
     defaultFolder: Folder;
     
-    @OneToOne(() => List, list => list.user, {onUpdate: 'CASCADE', onDelete: 'CASCADE' })
-    @Field(()=> List)
+    @OneToOne(() => List, list => list.user, 
+    {onUpdate: 'CASCADE', onDelete: 'CASCADE', cascade: true })
     @JoinColumn()
+    @Field(()=> List)
     inbox: List;
     
     @RelationId((user: User) => user.defaultFolder)

@@ -4,6 +4,7 @@ import {UserService} from "../services/user-service"
 import * as jwt from "jsonwebtoken";
 import { AuthError } from "../common/auth-error";
 import { HttpStatusCode } from "../common/http-status-code";
+// import { AuthenticationError } from "apollo-server";
 
 // declare module "jsonwebtoken" {
 //   export interface JwtPayload {
@@ -47,6 +48,7 @@ export async function expressAuthentication(
   }
   return Promise.reject({})
 
+
 //   if (securityName === "jwt") {
 //     const token =
 //       request.body.token ||
@@ -73,4 +75,39 @@ export async function expressAuthentication(
 //     });
 //   }
 }
+export default async (req: express.Request) => {
+  console.log("Hit graphql authentication")
+  // return {user: "testuser"}
+  try {
+    const userService = new UserService();
+    let jwtToken = req.cookies['token']
+    console.log("jwtToken", jwtToken)
+    const decodedToken = jwt.verify(jwtToken,process.env.JWT_SECRET!)
+    if (typeof decodedToken === 'string' || decodedToken instanceof String) {
+      return {user: "testUser"}
+      // return null
+      // throw new AuthenticationError("Authentication Error")
+    }
+    else{     
+      console.log("Hit decoded string") 
+      let isValidUserSession = await userService.isValidUserSession(decodedToken.sessionId, decodedToken.userId)
+      if (isValidUserSession){
+        console.log('resolving promise')
 
+        return Promise.resolve({
+          userId: decodedToken.userId,
+          sessionId: decodedToken.sessionId
+        })
+
+      }
+      return {user: "testUser"}
+      // return null
+      // throw new AuthenticationError("You Must Be Logged In")
+    }
+  }catch{
+    return {user: "testUser"}
+    // return null
+    // throw new AuthenticationError("Authentication Error")
+  }
+
+}
