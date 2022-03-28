@@ -10,18 +10,18 @@ class ToDoList {
   getTask(params: {}) {
     return http.get(`/todolist/`, { headers: authHeader() });
   }
-  // getFolder(params: {}) {  
-  //   return http.get(`/todolist/getfolder`, {
-  //     headers: authHeader(),
-  //     params: params,
-  //   });
-  // }
-
-  async getFolders(){
-    const folders = await this.foldersApiFactory.getFolder()
-    console.log(folders)
-    return folders
+  getFolder(params: {}) {  
+    return http.get(`/todolist/getfolder`, {
+      headers: authHeader(),
+      params: params,
+    });
   }
+
+  // async getFolders(){
+  //   const folders = await this.foldersApiFactory.getFolder()
+  //   console.log(folders)
+  //   return folders
+  // }
   completeTask(taskId: string) {
     return http.post(`/todolist/completetask`, {
       taskId: taskId

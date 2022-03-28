@@ -5,8 +5,13 @@ import {UserApiFactory, UserLoginResponse} from "../apiClient/api"
 import Cookies from "universal-cookie"
 import authConfig from "../utils/axios.auth.config"
 
-
 export type UserDetails = Pick<UserLoginResponse, "defaultFolder"| "inbox">
+
+// const users = () => {
+//   const {data} = useQuery(GetUsersDocument)
+//   return data?.getUsers
+// }
+
 
 class UserAccessService {
   userApiFactory = UserApiFactory(authConfig,process.env.REACT_APP_EXPRESS_SERVER_BASE_URL,undefined)
@@ -62,7 +67,6 @@ class UserAccessService {
   
   async isCurrentSessionValid(): Promise<boolean>{
     // TODO: Check whether this function needs to be async or not.
-  
     try{
       const response = await this.userApiFactory.validateCurrentSession()
       return response.data

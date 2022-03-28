@@ -86,7 +86,7 @@ export class MainViewPage extends Component<Props, State> {
 
   componentDidMount() {
     console.log("hit component did mount")
-    MainService.getFolders()
+    MainService.getFolder({})
       .then((response) => {
         // setting up props
         this.setState({ folders: response.data });

@@ -1,8 +1,10 @@
 // import { Context } from "apollo-server-core";
 import { Resolver, Query, Mutation, Arg, Ctx } from "type-graphql";
+// import { UserLoginResponse } from "../controllers/user-controller";
 import { User } from "../database/entity/User";
 import {UserRepository} from "../database/repositories/UserRepository"
-import { CreateUserInput } from "../inputs/UserInputs";
+import { CreateUserInput, GoogleUserLoginInput } from "../inputs/UserInputs";
+import { UserLoginResponse } from "../schemas/UserLoginResponse";
 import { UserService } from "../services/user-service";
 @Resolver()
 export class UserResolver {
@@ -26,6 +28,17 @@ export class UserResolver {
       })
       console.log(user)
       return user
+  }
+  //TODO: 
+  @Mutation(() => UserLoginResponse)
+  async googleLogin(@Arg("data") data: GoogleUserLoginInput): Promise<UserLoginResponse | void> {
+    console.log("hit googleLogin")
+    const validGoogleUser = await this.userService.verifyGoogleAuthToken(data.idToken)
+    if(validGoogleUser.email){
+        const userLoginResponse = await this.userService.handleValidGoogleUserLogin(validGoogleUser)
+        return userLoginResponse;
+    }
+    throw new Error("Invalid User")
   }
 
   // @Mutation(() => User)

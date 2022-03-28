@@ -225,8 +225,11 @@ export class UserService implements IUserService {
         //         {is}
         // }
         // );
-        const session = await this.userSessionRepository.findOneById(sessionId, {})
-
+        const session = await this.userSessionRepository.findOneById(sessionId, 
+            {
+                relations: ["user"]
+            })
+        console.debug("Session:",session)
         // const session = await this.userSessionRepository.findById(sessionId).exec()
         if (!session){
             return false

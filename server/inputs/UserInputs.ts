@@ -15,3 +15,10 @@ export class CreateUserInput {
     @Field()
     password: string;
 }
+
+
+@InputType()
+export class GoogleUserLoginInput {
+    @Field()
+    idToken: string   
+}

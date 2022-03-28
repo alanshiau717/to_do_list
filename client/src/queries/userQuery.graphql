@@ -1,0 +1,17 @@
+query GetUsers {
+  getUsers {
+    id
+  }
+}
+
+query IsValidUserSession {
+  isValidUserSession
+}
+
+mutation GoogleLogin($data: GoogleUserLoginInput!) {
+  googleLogin(data: $data) {
+    accessToken
+    defaultFolder
+    inbox
+  }
+}
