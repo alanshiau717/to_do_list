@@ -1,13 +1,10 @@
-import { Resolver, Query, Mutation, Arg, Ctx, ArgsType} from "type-graphql";
+import { Resolver, Mutation, Arg, Ctx} from "type-graphql";
 import {Task} from "../database/entity/Task"
 import {CreateTaskInput, ModifyTaskInput} from "../inputs/TaskInputs"
+import { ModificationResponse } from "../schemas/ModificationResponse";
 import {TaskService} from "../services/task-service"
 @Resolver()
 export class TaskResolver {
-    // @Query(() => [Task])
-    // async tasks() {
-
-    // }
     @Mutation(() => Task)
     createTask(@Arg("data") data: CreateTaskInput, @Ctx() ctx: any) {
         if(!ctx.userId) {
@@ -20,6 +17,16 @@ export class TaskResolver {
         return new TaskService
     }
 
+    @Mutation(() => ModificationResponse)
+    async modifyTask(@Arg("data") data: ModifyTaskInput, @Ctx() ctx: any) {
+        if(!ctx.userId) {
+            throw "USER NOT AUTHENTICATED"
+        }
+        const taskId = await this.taskService.modifyTaskAndReturnId(ctx.userId, data)
+        return {id: taskId}
+    }
+
+    
 
 
 

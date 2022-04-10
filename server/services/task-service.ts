@@ -1,10 +1,8 @@
 // import {TaskModel} from "../../node/mongo/entities/task"
 
 import { getRepository } from "typeorm";
-import { string } from "yargs";
 import { ITaskCreateProps, Task } from "../database/entity/Task";
 import { ModifyTaskInput } from "../inputs/TaskInputs";
-import { FolderService } from "./folder-service";
 import { ListService } from "./list-service";
 
 // export class TaskService {
@@ -46,13 +44,14 @@ export class TaskService {
             await this.repository.update({id: id}, {...modifyTaskProps})
             return id
         }
+        throw "TASK DOESN'T BELONG TO USER"
     }
 
     private async isValidTaskModification(userId: number, payload: ModifyTaskInput) {
         if(payload.listId){
-            return await this.folderService.folderBelongsToUser(userId, payload.listId)
+            return await this.listService.listBelongsToUser(userId, payload.listId)
         }
-        return "FOLDER DOESN'T BELONG TO USER"
+        return true
     }
 
     private get repository() {
@@ -62,8 +61,6 @@ export class TaskService {
     private get listService() {
         return new ListService();
     }
-    private get folderService() {
-        return new FolderService();
-    }
+
     
 }

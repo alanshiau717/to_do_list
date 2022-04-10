@@ -31,8 +31,8 @@ export class ListResolver {
         if(!ctx.userId) {
             throw "USER NOT AUTHENTICATED"
         }
-        const folderId = await this.listService.modifyListAndReturnId(ctx.userId, data)
-        return {id: folderId}
+        const listId = await this.listService.modifyListAndReturnId(ctx.userId, data)
+        return {id: listId}
     }
 
 }

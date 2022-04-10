@@ -59,7 +59,6 @@ export class ListService {
 
     private get repository() {
         return getRepository(List)
-        // return new ListRepository 
     }
     private get folderService() {
         return new FolderService();
