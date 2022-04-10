@@ -8,6 +8,7 @@ import {
     List,
      IList } from "./List";
 import { Field, ObjectType } from "type-graphql";
+import { Task } from "./Task";
 
 export interface IUserCreateProps {
     firstName: string;
@@ -92,6 +93,9 @@ export class User extends BaseEntity {
     @OneToMany(() => UserSession, userSession => userSession.user)
     @Field(()=>[UserSession])
     userSessions: UserSession[];
+
+    @OneToMany(() => Task, task => task.user)
+    tasks: Task[];
 
     @OneToOne(() => Folder, folder => folder.user, 
     {onUpdate: 'CASCADE', onDelete: 'CASCADE', cascade: true })

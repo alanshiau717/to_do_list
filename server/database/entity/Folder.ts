@@ -26,7 +26,7 @@ export interface IFolder extends IBaseEntity {
 
 @ObjectType()
 @Entity()
-export class Folder extends BaseEntity{
+export class Folder extends BaseEntity implements IFolder{
     
     @Field(() => String)
     @Column()
@@ -64,7 +64,7 @@ export class Folder extends BaseEntity{
     user: User;
     
     @Field(() => Number)
-    @RelationId((folder: Folder) => folder.user)
+    @Column({type: "int", nullable: true})
     userId: number;
     
     @Field(() => [List])

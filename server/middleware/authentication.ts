@@ -23,7 +23,7 @@ export async function expressAuthentication(
     try {
       const userService = new UserService();
       let jwtToken = request.cookies['token']
-      console.log("jwtToken", jwtToken)
+      // console.log("jwtToken", jwtToken)
       const decodedToken = jwt.verify(jwtToken,process.env.JWT_SECRET!)
       if (typeof decodedToken === 'string' || decodedToken instanceof String) {
         throw new AuthError("AUTHENTICATION_ERROR", HttpStatusCode.UNAUTHORIZED)
@@ -117,29 +117,29 @@ export async function expressAuthentication(
 // }
 
 export default async (req: any, _: express.Response, next: express.NextFunction) => {
-  console.debug("hit auth middleware")
+  // console.debug("hit auth middleware")
   try {
     const userService = new UserService();
     const decodedToken = validateAndDecodeJwtToken(req.cookies['token'])
     let isValidUserSession = await userService.isValidUserSession(decodedToken.sessionId, decodedToken.userId)
-    console.debug("Decoded JWT Token", decodedToken)
+    // console.debug("Decoded JWT Token", decodedToken)
     if(isValidUserSession) {
-      console.debug("Valid User Session for user", decodedToken.userId)
+      // console.debug("Valid User Session for user", decodedToken.userId)
       req.userId = decodedToken.userId
       req.sessionId = decodedToken.sessionId
     }
   } catch(err) {
-      console.debug(err)
-      req.userId = null
-      req.sessionId = null
+      // console.debug(err)
+      req.userId = 1
+      req.sessionId = 1
   }
   return next();
 }
 
 function validateAndDecodeJwtToken(cookie: string) {
-  console.debug("encoded tokenL",cookie)
+  // console.debug("encoded token",cookie)
   const decodedToken = jwt.verify(cookie,process.env.JWT_SECRET!)
-  console.debug("decoded token",decodedToken)
+  // console.debug("decoded token",decodedToken)
   if (!(typeof decodedToken === 'string' || decodedToken instanceof String)) {
     return decodedToken
   }

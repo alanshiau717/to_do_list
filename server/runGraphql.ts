@@ -9,6 +9,8 @@ import { UserSessionResolver } from "./resolvers/UserSessionResolver";
 import express from "express"
 import cookieParser from "cookie-parser"
 import bodyParser from "body-parser"
+import { FolderResolver } from "./resolvers/FolderResolver";
+import { ListResolver } from "./resolvers/ListResolver";
 // import http from 'http';
 // const express = require("express")
 // import express from "express"
@@ -22,7 +24,7 @@ import bodyParser from "body-parser"
 async function main() {
   createConnection()
   const schema = await buildSchema({
-    resolvers : [TestResolver, UserResolver, UserSessionResolver],
+    resolvers : [TestResolver, UserResolver, UserSessionResolver, FolderResolver, ListResolver],
   })
   const corsOptions = {
     origin: ['http://localhost:3000', "http://localhost", "https://studio.apollographql.com"],
