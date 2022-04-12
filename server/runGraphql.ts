@@ -22,7 +22,7 @@ import { TaskResolver } from "./resolvers/TaskResolver";
 
 
 
-async function main() {
+export default async function main() {
   createConnection()
   const schema = await buildSchema({
     resolvers : [TestResolver, UserResolver, UserSessionResolver, FolderResolver, ListResolver, TaskResolver],
@@ -60,7 +60,9 @@ async function main() {
   //   credentials: true
   // }})
 
-  app.listen({port: 4000}, () => 
+  return app.listen({port: 4000}, () => 
     console.log("Server is ready"))
+  
 }
-main()
+
+// main()
