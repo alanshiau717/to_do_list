@@ -1,9 +1,9 @@
 // let assert = require('assert');
 // import assert from "assert"
-import { getTestServer } from "../get-test-server"
+import { getTestServer } from "./get-test-server"
 import {describe} from "mocha"
 import {expect} from "chai"
-import { HttpStatusCode } from "../../common/http-status-code"
+import { HttpStatusCode } from "../common/http-status-code"
 
 // import connectToDB from "../../../node/mongo/get-db-connection"
 describe("FolderControllerTest", () => {

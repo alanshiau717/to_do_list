@@ -1,7 +1,7 @@
 import path from "path";
 // import { CommandModule } from "yargs";
 import Mocha from "mocha"
-import connectToDb from "../../node/mongo/get-db-connection"
+// import connectToDb from "../../node/mongo/get-db-connection"
 // import { runCLI } from "jest";
 // import { startDocker } from "../../../node/dev/start-docker";
 // import { setupDatabase } from "../../../node/dev/setup-database";
@@ -51,9 +51,9 @@ import fs from "fs";
 // export default mocha;
 
 
-process.env.DB_CONNECTION = "defaultdb_test";
-process.env.NODE_ENV = "test";
-process.env.SERVER_PORT = "3037";
+// process.env.DB_CONNECTION = "defaultdb_test";
+// process.env.NODE_ENV = "test";
+// process.env.SERVER_PORT = "3037";
 console.log('hit mocha tests');
 // await startDocker();
 // await setupDatabase(false);
@@ -70,7 +70,7 @@ fs.readdirSync(testDir).filter(function(file) {
 }
 )
 
-connectToDb()
+// connectToDb()
 
 mocha.run(function(failures) {
   process.exitCode = failures ? 1 : 0 

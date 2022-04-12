@@ -1,3 +1,4 @@
+import { Field, ObjectType } from "type-graphql";
 import { Entity, Column,  ManyToOne, OneToMany
     , RelationId 
 } from "typeorm";
@@ -23,13 +24,15 @@ export interface IFolder extends IBaseEntity {
 
 
 
-
+@ObjectType()
 @Entity()
-export class Folder extends BaseEntity{
+export class Folder extends BaseEntity implements IFolder{
     
+    @Field(() => String)
     @Column()
     name: string;
 
+    @Field(() => Boolean)
     @Column( 
     {
         nullable: true,
@@ -38,6 +41,7 @@ export class Folder extends BaseEntity{
     )
     done: boolean;
     
+    @Field(() => Number)
     @Column(
         {
             nullable: true,
@@ -45,7 +49,8 @@ export class Folder extends BaseEntity{
         }
     )
     order: number;
-
+    
+    @Field(()=> Boolean)
     @Column(
         {
             nullable: true,
@@ -54,15 +59,19 @@ export class Folder extends BaseEntity{
     )
     isDeleted: boolean
     
+    @Field(() => User)
     @ManyToOne(() => User, user=> user.folders)
     user: User;
-
-    @RelationId((folder: Folder) => folder.user)
+    
+    @Field(() => Number)
+    @Column({type: "int", nullable: true})
     userId: number;
-
+    
+    @Field(() => [List])
     @OneToMany(() => List, list=> list.folder)
     lists: List[];
-
+    
+    @Field(() => [Number])
     @RelationId((folder: Folder) => folder.lists)
     listIds: number[];
 }

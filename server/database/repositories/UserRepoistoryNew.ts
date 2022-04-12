@@ -5,7 +5,7 @@ import {
     FindOneOptions,
     QueryFailedError,
     Repository,
-    // UpdateResult,
+    UpdateResult,
     // DeepPartial
   } from "typeorm";
 // import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
@@ -30,7 +30,6 @@ import {
     Class extends BaseEntity & Props,
     // Properties required to create this record
     CreateProps
-    // Properties required to update this record
   > {
     constructor(private readonly classFn: new () => Class) {}
   
@@ -66,7 +65,7 @@ import {
       )
     }
 
-    public update(model: Partial<Props>): Promise<Props> {
+    public update(model: Props): Promise<Props> {
       return this.execute((repo) =>
         repo.save({
           ...model,
@@ -75,10 +74,9 @@ import {
       );
     }
 
-    public updateOne(id: number, props: Partial<Props>): Promise<Props> {
+    public updateOne(id: number, props: CreateProps): Promise<UpdateResult> {
       return this.execute((repo) => 
-        repo.save({
-          id: id,
+        repo.update(id,{
           ...props,
           date_updated: new Date()
         } as CreateProps & Props)

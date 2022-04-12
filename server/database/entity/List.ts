@@ -1,7 +1,9 @@
-import { Entity, Column, ManyToOne } from "typeorm";
+import { Entity, Column, ManyToOne, OneToMany, JoinColumn } from "typeorm";
 import { IBaseEntity, BaseEntity } from "./Base";
 import {User} from "./User"
 import {Folder, IFolder} from "./Folder"
+import { Field, ObjectType } from "type-graphql";
+import { Task } from "./Task";
 
 export interface IListCreateProps{
     name: string,
@@ -16,12 +18,14 @@ export interface IList extends IBaseEntity {
     isDeleted: boolean
 }
 
+@ObjectType()
 @Entity()
 export class List extends BaseEntity implements IList{
-    
+    @Field(() => String)
     @Column()
     name: string;
 
+    @Field(() => Boolean)
     @Column(
         {
             nullable: true,
@@ -30,6 +34,7 @@ export class List extends BaseEntity implements IList{
     )
     done: boolean;
     
+    @Field(() => Number)
     @Column(
         {
             nullable: true,
@@ -37,7 +42,8 @@ export class List extends BaseEntity implements IList{
         }
     )
     order: number;
-
+    
+    @Field(() => Boolean)
     @Column(
         {
             nullable: true,
@@ -46,10 +52,26 @@ export class List extends BaseEntity implements IList{
     )
     isDeleted: boolean
     
-    @ManyToOne(() => User, user=> user.folders)
+    @Field(() => User)
+    @ManyToOne(() => User)
+    @JoinColumn({name:"userId"})
     user: User;
 
-    @ManyToOne(()=> Folder, folder=> folder)
+    @Column({type: "int", nullable: true})
+    userId: number;
+    
+    @Field(() => Folder)
+    @ManyToOne(()=> Folder)
+    @JoinColumn({name:"folderId"})
     folder: Folder
+
+    @Column({type: "int", nullable: true})
+    folderId: number;
+
+    @Field(() => [Task])
+    @OneToMany(() => Task, task => task.list)
+    tasks: Task[];
+
 }
+
 
