@@ -1,57 +1,67 @@
-import http from "http";
-// import path from "path";
-import express from "express";
-// import { environment } from "../node/environment";
-// import { log } from "../node/utils/log";
-// import { getAssetsJSON } from "./common/get-assets-json";
-import { registerRoutes } from "./register-routes";
-import bodyParser from "body-parser";
-// import connectToDb from "../node/mongo/get-db-connection"
+import "reflect-metadata";
+import { createConnection } from "typeorm";
+import { ApolloServer } from "apollo-server-express";
+import { buildSchema } from "type-graphql";
+import {TestResolver} from "./resolvers/TestResolver"
+import { UserResolver } from "./resolvers/UserResolver";
+import auth from "./middleware/authentication";
+import { UserSessionResolver } from "./resolvers/UserSessionResolver";
+import express from "express"
 import cookieParser from "cookie-parser"
-// import cors from "cors"
-import dotenv from "dotenv";
-// const result = dotenv.config({path: "../.env"})
-const result = dotenv.config({ path: `${__dirname}/../.env` }) 
-console.log(result.parsed)
-// .config({path: '../.env'})
-export const server = () => {
-  const app = express()
-    // .set("view engine", "ejs")
-    // .use(express.static(".public"));
-  //parse requests of content-type -application/json
-  app.use(bodyParser.json());
+import bodyParser from "body-parser"
+import { FolderResolver } from "./resolvers/FolderResolver";
+import { ListResolver } from "./resolvers/ListResolver";
+import { TaskResolver } from "./resolvers/TaskResolver";
+// import http from 'http';
+// const express = require("express")
+// import express from "express"
+// import expressJwt from "express-jwt"
+// appendFile.use(
+//   expressJwt()
+// )
+
+
+
+export default async function main() {
+  createConnection()
+  const schema = await buildSchema({
+    resolvers : [TestResolver, UserResolver, UserSessionResolver, FolderResolver, ListResolver, TaskResolver],
+  })
+  const corsOptions = {
+    origin: ['http://localhost:3000', "http://localhost", "https://studio.apollographql.com"],
+    credentials: true
+  }
+  const app = express();
+  app.use(bodyParser.json())
   app.use(cookieParser())
-  // app.use(cors())
-  // console.log("JWT Environment",process.env)
-  app.use(function(req, res, next) {
-    // console.log(req)
-    console.log(req.body)
-    res.header('Access-Control-Allow-Credentials', "true");
-    res.header('Access-Control-Allow-Origin', "http://localhost:3000");
-  //   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,UPDATE,OPTIONS');
-  //   res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
-    next();
-  });
+  app.use(auth)
+  app.listen()
+  const server = new ApolloServer({
+    schema,
+    context: ({req, res}: any) => {    
+      const context = {
+        req,
+        res,
+        userId: req.userId,
+        sessionId: req.sessionId
+
+      }
+      return context
+    }
+  })
+
+  await server.start()
+  server.applyMiddleware({app, cors: corsOptions, path: '/'})
 
 
+  // const server = new ApolloServer({ schema, context: auth, cors: {
+  //   origin: ['http://localhost:3000', "http://localhost", "https://studio.apollographql.com"],
+  //   credentials: true
+  // }})
 
-  // connectToDb();
-  // parse requests of content-type - application/x-www-form-urlencoded
-  app.use(bodyParser.urlencoded({ extended: true }));
-  // app.get("/", async (_req, res) => {
-  //   const assetsJSON = await getAssetsJSON();
+  return app.listen({port: 4000}, () => 
+    console.log("Server is ready"))
+  
+}
 
-  //   res.render(path.join(__dirname, "../../views/index.ejs"), { assetsJSON });
-  // });
-
-  registerRoutes(app);
-
-  // const { SERVER_PORT } = environment();
- const SERVER_PORT = 3001
-  return new Promise<http.Server>((resolve) => {
-    const s = app.listen(SERVER_PORT, () => {
-      // log.success(`Started server at http://localhost:${SERVER_PORT}`);
-      resolve(s);
-    });
-  });
-};
+// main()

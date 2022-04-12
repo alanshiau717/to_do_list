@@ -1,6 +1,6 @@
 import request from "supertest"
 import {describe} from "mocha"
-import createApolloServer from "../../runGraphql"
+import createApolloServer from "../../index"
 import { Server } from "http";
 // import { doesNotThrow } from "assert";
 // import {expect} from "chai"
@@ -24,8 +24,6 @@ describe('test demo', () => {
     it('says hello', async () => {
         const response = await request(url).post('/').send(queryData)
         console.log(response.body)
-    
-        // expect(true)
     })
     
 })
