@@ -50,15 +50,12 @@ function AddModalListFunctional(props: Props) {
       closeModal();
     }, 1);
   }
-  function openModal(item: "folder" | "list") {
-    setModalShow(true);
-  }
   function closeModal() {
     setModalShow(false);
     props.closeModal();
   }
   return (
-    <Modal show={modalShow} onHide={closeModal}>
+    <Modal show={props.modalShow} onHide={closeModal}>
       <Modal.Header closeButton>
         <Modal.Title>Please enter list name</Modal.Title>
       </Modal.Header>

@@ -61,6 +61,7 @@ class SideBar extends Component<Props, State> {
     });
   }
   openModal(item: "folder" | "list") {
+    console.log("hit open modal");
     if (item === "folder") {
       this.setState({
         folderModalShow: true,

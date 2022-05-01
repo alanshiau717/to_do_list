@@ -45,7 +45,7 @@ function AddModalFolderFunctional(props: Props) {
   }
 
   return (
-    <Modal show={modalShow} onHide={closeModal}>
+    <Modal show={props.modalShow} onHide={closeModal}>
       <Modal.Header closeButton>
         <Modal.Title>Please enter folder name</Modal.Title>
       </Modal.Header>

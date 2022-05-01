@@ -31,6 +31,7 @@ export default function SidebarFolder(props: Props) {
     setModalShow(false);
   }
   function openModal(folder_id: string) {
+    console.log("hit open modal");
     setModalShow(true);
     setCurrFolder(folder_id);
   }

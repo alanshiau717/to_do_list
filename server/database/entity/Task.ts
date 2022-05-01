@@ -22,7 +22,7 @@ export class Task extends BaseEntity {
     @Column()
     name: string;
 
-    @Field(()=> Date)
+    @Field(()=> Date, {nullable: true})
     @Column(
         {
             nullable: true
