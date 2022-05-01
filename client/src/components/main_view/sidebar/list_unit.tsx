@@ -19,87 +19,6 @@ interface Props extends RouteComponentProps {
   noDelete: boolean;
 }
 
-// interface State {
-//   hover: boolean;
-// }
-
-// class ListUnit extends Component<Props, State> {
-//   constructor(props: Props) {
-//     super(props);
-//     this.state = {
-//       hover: false,
-//     };
-//     this.changeHover = this.changeHover.bind(this);
-//   }
-//   static defaultProps = {
-//     noDelete: false,
-//   };
-//   changeHover(state: boolean) {
-//     this.setState({ hover: state });
-//   }
-//   render() {
-//     return (
-//       !this.props.list.isDeleted && (
-//         <Nav.Link
-//           onMouseEnter={() => this.changeHover(true)}
-//           onMouseLeave={() => this.changeHover(false)}
-//           style={{ padding: "0px" }}
-//         >
-//           <div
-//             onClick={() =>
-//               this.props.changeListView({
-//                 list_id: this.props.list._id,
-//                 folder_id: this.props.folderId,
-//               })
-//             }
-//           >
-//             <div
-//               style={{
-//                 display: "grid",
-//                 gridTemplateColumns: "30px auto 30px",
-//               }}
-//             >
-//               <div
-//                 style={{
-//                   gridColumn: "1 / 2",
-//                 }}
-//               >
-//                 <ListCheck />
-//               </div>
-//               <div
-//                 style={{
-//                   gridColumn: "2 / 3",
-//                   justifySelf: "start",
-//                   maxWidth: "100%",
-//                 }}
-//                 className="text-truncate"
-//               >
-//                 {this.props.list.name}
-//               </div>
-//               {this.state.hover && !this.props.noDelete && (
-//                 <div
-//                   style={{
-//                     gridColumn: "3 / 4",
-//                   }}
-//                 >
-//                   <Trash
-//                     onClick={() =>
-//                       this.props.editList("delete", {
-//                         listId: this.props.list._id,
-//                         folderId: this.props.folderId,
-//                       })
-//                     }
-//                   />
-//                 </div>
-//               )}
-//             </div>
-//           </div>
-//         </Nav.Link>
-//       )
-//     );
-//   }
-// }
-
 export function ListUnitFunctional(props: Props) {
   const [hover, setHover] = useState(false);
   const [modifyList, { data, loading, error }] = useMutation(
@@ -153,7 +72,7 @@ export function ListUnitFunctional(props: Props) {
           >
             {props.list.name}
           </div>
-          {hover && props.noDelete && (
+          {hover && !props.noDelete && (
             <div
               style={{
                 gridColumn: "3 / 4",
@@ -161,7 +80,8 @@ export function ListUnitFunctional(props: Props) {
             >
               <Trash
                 onClick={
-                  () =>
+                  () => {
+                    console.log("hit modifylist");
                     modifyList({
                       variables: {
                         data: {
@@ -169,7 +89,8 @@ export function ListUnitFunctional(props: Props) {
                           isDeleted: true,
                         },
                       },
-                    })
+                    });
+                  }
                   // this.props.editList("delete", {
                   //   listId: this.props.list._id,
                   //   folderId: this.props.folderId,

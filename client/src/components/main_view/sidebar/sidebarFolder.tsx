@@ -135,18 +135,15 @@ export default function SidebarFolder(props: Props) {
                     list={list}
                     folderId={props.folder._id}
                     noDelete={false}
-                    // editList={this.props.editList}
                   />
                 </div>
               )
             );
           })}
         </div>
-        {/* </Card.Body> */}
       </Accordion.Collapse>
       <AddModalList
         folderId={currFolder}
-        // editList={this.props.editList}
         closeModal={closeModal}
         modalShow={modalShow}
       />

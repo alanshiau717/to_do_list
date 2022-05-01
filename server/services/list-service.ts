@@ -1,19 +1,10 @@
-// import { ListModel } from "../../node/mongo/entities/list";
 import { getRepository } from "typeorm";
 import { IListCreateProps } from "../database/entity/List";
 import { List } from "../database/entity/List";
 import { ModifyListInput } from "../inputs/ListInputs";
-// import { TestResolver } from "../resolvers/TestResolver";
+import { removeUndefinedKeys } from "../utils/objectUtils";
 import { FolderService } from "./folder-service";
-// export class ListService {
-//     public async get() {
-//         return await this.repository.find().populate("tasks")
-//     }
 
-//     private get repository() {
-//         return ListModel;
-//     }
-// }
 
 export class ListService {
 
@@ -43,6 +34,7 @@ export class ListService {
         if ((await this.listBelongsToUser(userId, id) && (await this.isValidListModification(userId, payload)))
 
         ) {
+            removeUndefinedKeys(modifyListProps)
             await this.repository.update({ id: id }, { ...modifyListProps })
             return id
         }

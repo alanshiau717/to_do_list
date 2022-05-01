@@ -129,19 +129,21 @@ class SideBar extends Component<Props, State> {
                   <div>
                     {folder.lists.map((list) => {
                       return (
-                        <div key={list._id}>
-                          <ListUnit
-                            list={list}
-                            folderId={folder._id}
-                            // editList={this.props.editList}
-                            noDelete={
-                              list._id ===
-                              this.props.userDetails.inbox.toString()
-                                ? true
-                                : false
-                            }
-                          />
-                        </div>
+                        !list.isDeleted && (
+                          <div key={list._id}>
+                            <ListUnit
+                              list={list}
+                              folderId={folder._id}
+                              // editList={this.props.editList}
+                              noDelete={
+                                list._id ===
+                                this.props.userDetails.inbox.toString()
+                                  ? true
+                                  : false
+                              }
+                            />
+                          </div>
+                        )
                       );
                     })}
                   </div>

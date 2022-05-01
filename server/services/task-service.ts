@@ -4,6 +4,7 @@ import { getRepository } from "typeorm";
 import { ITaskCreateProps, Task } from "../database/entity/Task";
 import { ModifyTaskInput } from "../inputs/TaskInputs";
 import { ListService } from "./list-service";
+import { removeUndefinedKeys } from "../utils/objectUtils";
 
 // export class TaskService {
 //     public async getUserLists() {
@@ -41,6 +42,7 @@ export class TaskService {
     public async modifyTaskAndReturnId(userId: number, payload: ModifyTaskInput) {
         const {id, ...modifyTaskProps} = payload
         if((await this.taskBelongsToUser(userId, id) && (await this.isValidTaskModification(userId, payload)))) {
+            removeUndefinedKeys(modifyTaskProps)
             await this.repository.update({id: id}, {...modifyTaskProps})
             return id
         }

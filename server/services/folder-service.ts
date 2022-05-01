@@ -9,6 +9,7 @@ import { IFolder, IFolderCreateProps } from "../database/entity/Folder";
 import { ModifyFolderInput } from "../inputs/FolderInputs";
 import { getRepository } from "typeorm";
 import {Folder} from "../database/entity/Folder"
+import { removeUndefinedKeys } from "../utils/objectUtils";
 
 
 export class FolderService {
@@ -35,6 +36,7 @@ export class FolderService {
     public async modifyFolderAndReturnId(userId: number, payload: ModifyFolderInput): Promise<number> {
         const {id, ...modifyFolderProps} = payload
         if(await this.folderBelongsToUser(userId, payload.id)){
+            removeUndefinedKeys(modifyFolderProps)
             await this.repository.update({id: id}, {...modifyFolderProps})
             return id
         }
@@ -54,8 +56,8 @@ export class FolderService {
     //TODO: Remove Test
     public async getAllFolder() {
         const folders = await this.repository.find({relations: ["lists", "user", "lists.tasks", "lists.user"]})
-        console.debug("Get All Folder Folders:", folders)
-        console.debug("Get All Lists", folders[0].lists)
+        // console.debug("Get All Folder Folders:", folders)
+        // console.debug("Get All Lists", folders[0].lists)
         return folders
     }
 
