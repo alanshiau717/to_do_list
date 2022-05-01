@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import ITask from "../../../models/client/task";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { Trash, Check } from "react-bootstrap-icons";
@@ -9,11 +9,16 @@ import {
   Col,
   Row,
 } from "react-bootstrap";
-import { Iedittask } from "../../wrappers/main_view_wrapper";
+// import { Iedittask } from "../../wrappers/main_view_wrapper";
+import {
+  GetFoldersQuery,
+  ModifyTaskDocument,
+} from "../../../generated";
 import "./css/task_unit.css";
+import { useMutation } from "@apollo/client";
 interface Props extends RouteComponentProps {
-  task: ITask;
-  editTask: Iedittask;
+  task: GetFoldersQuery["folders"][0]["lists"][0]["tasks"][0];
+  // editTask: Iedittask;
 }
 
 interface State {
@@ -26,86 +31,89 @@ interface State {
   yPos: string;
 }
 
-class TaskUnit extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      TaskName: this.props.task.name,
-      inputMode: false,
-      hoverTask: false,
-      showMenu: false,
-      hoverTick: false,
-      xPos: "0px",
-      yPos: "0px",
-    };
-    this.toggleNameChange = this.toggleNameChange.bind(this);
-    this.handleNameChange = this.handleNameChange.bind(this);
-    this.changeName = this.changeName.bind(this);
-    this.changeHoverTask = this.changeHoverTask.bind(this);
-    this.changeHoverTick = this.changeHoverTick.bind(this);
-  }
+function TaskUnitFunctional(props: Props) {
+  const [modifyTask, { data, loading, error }] = useMutation(
+    ModifyTaskDocument,
+  );
+  const [taskName, setTaskName] = useState(props.task.name);
+  const [inputMode, setInputMode] = useState(false);
+  const [hoverTask, setHoverTask] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
+  const [hoverTick, setHoverTick] = useState(false);
+  const [xPos, setXPos] = useState("0px");
+  const [yPos, setYPos] = useState("0px");
 
-  toggleNameChange(e: React.MouseEvent) {
+  function toggleNameChange(e: React.MouseEvent) {
     if (e.altKey) {
-      this.setState({ inputMode: true });
+      setInputMode(true);
+      // this.setState({ inputMode: true });
     }
   }
-  changeHoverTick(state: boolean) {
-    this.setState({ hoverTick: state });
+  function changeHoverTick(state: boolean) {
+    setHoverTick(state);
+    // this.setState({ hoverTick: state });
   }
-  changeHoverTask(state: boolean) {
-    this.setState({ hoverTask: state });
+  function changeHoverTask(state: boolean) {
+    setHoverTask(state);
+    // this.setState({ hoverTask: state });
   }
-  handleNameChange(e: React.ChangeEvent<HTMLInputElement>) {
-    this.setState({ TaskName: e.target.value });
+  function handleNameChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setTaskName(e.target.value);
+    // this.setState({ TaskName: e.target.value });
   }
-  changeName() {
-    this.props.editTask("edit", {
-      name: this.state.TaskName,
-      _id: this.props.task._id,
+  function changeName() {
+    modifyTask({
+      variables: {
+        data: {
+          name: taskName,
+          id: parseInt(props.task._id),
+        },
+      },
     });
-    this.setState({ inputMode: false });
+    setInputMode(false);
   }
-
-  render() {
-    return (
-      <div>
-        {this.state.inputMode ? (
-          <InputGroup>
-            <FormControl
-              autoFocus
-              placeholder="Task Name"
-              value={this.state.TaskName}
-              onChange={this.handleNameChange}
-              onKeyPress={(
-                e: React.KeyboardEvent<HTMLInputElement>,
-              ) => {
-                if (e.key === "Enter") {
-                  this.changeName();
+  return (
+    <div>
+      {inputMode ? (
+        <InputGroup>
+          <FormControl
+            autoFocus
+            placeholder="Task Name"
+            value={taskName}
+            onChange={handleNameChange}
+            onKeyPress={(
+              e: React.KeyboardEvent<HTMLInputElement>,
+            ) => {
+              if (e.key === "Enter") {
+                changeName();
+              }
+            }}
+            onBlur={() => changeName()}
+          />
+        </InputGroup>
+      ) : (
+        <Container
+          onMouseEnter={() => changeHoverTask(true)}
+          onMouseOut={() => changeHoverTask(false)}
+        >
+          <Row style={{ maxWidth: "100%", minWidth: "100%" }}>
+            <Col style={{ padding: "0px" }} md="auto">
+              <div
+                className="circle"
+                onClick={() =>
+                  modifyTask({
+                    variables: {
+                      data: {
+                        done: true,
+                        id: parseInt(props.task._id),
+                      },
+                    },
+                  })
                 }
-              }}
-              onBlur={() => this.changeName()}
-            />
-          </InputGroup>
-        ) : (
-          <Container
-            onMouseEnter={() => this.changeHoverTask(true)}
-            onMouseOut={() => this.changeHoverTask(false)}
-          >
-            <Row style={{ maxWidth: "100%", minWidth: "100%" }}>
-              <Col style={{ padding: "0px" }} md="auto">
-                <div
-                  className="circle"
-                  onClick={() =>
-                    this.props.editTask(
-                      "complete",
-                      this.props.task._id,
-                    )
-                  }
-                >
-                  <Check className="check" />
-                </div>
-                {/* {this.state.hoverTick ? (
+              >
+                <Check className="check" />
+              </div>
+              {/* {this.state.hoverTick ? (
                   <CheckCircleFill
                     id="circle_fill"
                     onClick={() =>
@@ -130,27 +138,31 @@ class TaskUnit extends Component<Props, State> {
                     onMouseLeave={() => this.changeHoverTick(false)}
                   />
                 )} */}
-              </Col>
-              <Col onClick={this.toggleNameChange}>
-                {this.state.TaskName}
-              </Col>
-              <Col className="ml-auto" md="auto">
-                {this.state.hoverTask && (
-                  <Trash
-                    onClick={() =>
-                      this.props.editTask(
-                        "delete",
-                        this.props.task._id,
-                      )
-                    }
-                  />
-                )}
-              </Col>
-            </Row>
-          </Container>
-        )}
-      </div>
-    );
-  }
+            </Col>
+            <Col onClick={toggleNameChange}>{taskName}</Col>
+            <Col className="ml-auto" md="auto">
+              {hoverTask && (
+                <Trash
+                  onClick={
+                    () =>
+                      modifyTask({
+                        variables: {
+                          data: {
+                            isDeleted: true,
+                            id: parseInt(props.task._id),
+                          },
+                        },
+                      })
+                    // this.props.editTask("delete", this.props.task._id)
+                  }
+                />
+              )}
+            </Col>
+          </Row>
+        </Container>
+      )}
+    </div>
+  );
 }
-export default withRouter(TaskUnit);
+
+export default withRouter(TaskUnitFunctional);

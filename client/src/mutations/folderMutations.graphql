@@ -1,0 +1,15 @@
+mutation CreateFolder($data: CreateFolderInput!) {
+  createFolder(data: $data) {
+    id
+    name
+    done
+    isDeleted
+    userId
+  }
+}
+
+mutation ModifyFolder($data: ModifyFolderInput!) {
+  modifyFolder(data: $data) {
+    id
+  }
+}

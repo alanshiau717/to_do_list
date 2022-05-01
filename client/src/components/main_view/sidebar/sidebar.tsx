@@ -2,15 +2,12 @@ import { Component } from "react";
 
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import IFolder from "../../../models/client/folder";
-import SidebarFolder from "./sidebar_folder";
+import SidebarFolder from "./sidebarFolder";
 import IJWT from "../../../models/shared/jwt";
-import {UserDetails} from "../../../services/user.access";
+import { UserDetails } from "../../../services/user.access";
 import { connect } from "react-redux";
 import { changeListView } from "../../../redux/reducers/mainViewSlice";
-import {
-  Ieditlist,
-  Ieditfolder,
-} from "../../wrappers/main_view_wrapper";
+import { GetFoldersQuery } from "../../../generated";
 import { Navbar, Nav, Row, Container, Col } from "react-bootstrap";
 import { Plus } from "react-bootstrap-icons";
 import AddModalFolder from "./add_modal_folder";
@@ -19,11 +16,10 @@ import AddModalList from "./add_modal_list";
 import ListUnit from "./list_unit";
 
 interface Props extends RouteComponentProps {
-  folders: IFolder[];
+  folders: GetFoldersQuery["folders"];
   userDetails: UserDetails;
   changeListView: any;
-  editList: Ieditlist;
-  editFolder: Ieditfolder;
+  // editFolder: Ieditfolder;
 }
 interface State {
   folderModalShow: boolean;
@@ -32,7 +28,7 @@ interface State {
   modalSetting: "list" | "folder" | "";
 }
 
-//This component is a skeleton for the sidebart
+//This component is a skeleton for the sidebar
 //Will take data regarding folders and lists and pass them to children props
 //which will render the folders and lists
 //It will however render the default folders - Inbox etc
@@ -44,7 +40,7 @@ class SideBar extends Component<Props, State> {
     this.openModal = this.openModal.bind(this);
     this.closeFolderModal = this.closeFolderModal.bind(this);
     this.closeListModal = this.closeListModal.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    // this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.state = {
       folderModalShow: false,
@@ -75,17 +71,16 @@ class SideBar extends Component<Props, State> {
       });
     }
   }
-  handleSubmit(e: React.FormEvent) {
-    if (this.state.modalSetting === "folder") {
-      this.props.editFolder("add", this.state.newItemName);
-    } else if (this.state.modalSetting === "list") {
-      this.props.editList("add", this.state.newItemName);
-    } else {
-      console.log("An error has occured adding a list or folder");
-    }
-
-    e.preventDefault();
-  }
+  // handleSubmit(e: React.FormEvent) {
+  //   if (this.state.modalSetting === "folder") {
+  //     this.props.editFolder("add", this.state.newItemName);
+  //   } else if (this.state.modalSetting === "list") {
+  //     this.props.editList("add", this.state.newItemName);
+  //   } else {
+  //     console.log("An error has occured adding a list or folder");
+  //   }
+  //   e.preventDefault();
+  // }
   changeListViewHandler(listid: string, folderid: string) {
     var payload = {
       list_id: listid,
@@ -103,13 +98,14 @@ class SideBar extends Component<Props, State> {
         >
           <div>
             {folders.map((folder) => {
-              return folder._id !== userDetails.defaultFolder.toString() ? (
+              return folder._id !==
+                userDetails.defaultFolder.toString() ? (
                 !folder.isDeleted && (
                   <SidebarFolder
                     folder={folder}
                     key={folder._id}
-                    editFolder={this.props.editFolder}
-                    editList={this.props.editList}
+                    // editFolder={this.props.editFolder}
+                    // editList={this.props.editList}
                   />
                 )
               ) : (
@@ -136,7 +132,7 @@ class SideBar extends Component<Props, State> {
                           <ListUnit
                             list={list}
                             folderId={folder._id}
-                            editList={this.props.editList}
+                            // editList={this.props.editList}
                             noDelete={
                               list._id ===
                               this.props.userDetails.inbox.toString()
@@ -167,45 +163,16 @@ class SideBar extends Component<Props, State> {
               );
             })}
             <AddModalFolder
-              editFolder={this.props.editFolder}
+              // editFolder={this.props.editFolder}
               modalShow={this.state.folderModalShow}
               closeModal={this.closeFolderModal}
             />
             <AddModalList
               folderId={this.props.userDetails.defaultFolder.toString()}
-              editList={this.props.editList}
+              // editList={this.props.editList}
               closeModal={this.closeListModal}
               modalShow={this.state.listModalShow}
             />
-            {/* <Modal
-              show={this.state.modalShow}
-              onHide={this.closeModal}
-            >
-              <Modal.Header closeButton>
-                <Modal.Title>
-                  Please enter {this.state.modalSetting} name
-                </Modal.Title>
-              </Modal.Header>
-
-              <Modal.Body>
-                <form onSubmit={this.handleSubmit}>
-                  <label>
-                    Name:
-                    <input
-                      type="text"
-                      value={this.state.newItemName}
-                      onChange={this.handleChange}
-                    />
-                  </label>
-                  <input type="submit" value="Submit" />
-                </form>
-              </Modal.Body>
-
-              <Modal.Footer>
-                <Button variant="secondary">Close</Button>
-                <Button variant="primary">Save changes</Button>
-              </Modal.Footer>
-            </Modal> */}
           </div>
         </Nav>
       </Navbar>
@@ -213,6 +180,4 @@ class SideBar extends Component<Props, State> {
   }
 }
 
-// export default connect(null, {changeListView})(SideBar)
 export default withRouter(connect(null, { changeListView })(SideBar));
-// export default withRouter(SideBar);

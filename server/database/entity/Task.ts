@@ -28,7 +28,7 @@ export class Task extends BaseEntity {
             nullable: true
         }
     )
-    due: Date;
+    due?: Date;
 
     @Field(() => Number)
     @Column(

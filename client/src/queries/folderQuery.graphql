@@ -1,0 +1,22 @@
+query getFolders {
+  folders {
+    _id: id
+    lists {
+      _id: id
+      name
+      tasks {
+        _id: id
+        name
+        due
+        isDeleted
+        done
+      }
+      done
+      isDeleted
+    }
+    done
+    isDeleted
+    name
+    userId
+  }
+}

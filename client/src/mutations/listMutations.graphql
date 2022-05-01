@@ -1,0 +1,14 @@
+mutation CreateList($data: CreateListInput!) {
+  createList(data: $data) {
+    id
+    name
+    done
+    isDeleted
+  }
+}
+
+mutation ModifyList($data: ModifyListInput!) {
+  modifyList(data: $data) {
+    id
+  }
+}
