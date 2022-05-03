@@ -6,6 +6,7 @@ import { ThreeDotsVertical, Folder } from "react-bootstrap-icons";
 import ListUnit from "./list_unit";
 import AddModalList from "./add_modal_list";
 import {
+  GetFoldersDocument,
   GetFoldersQuery,
   ModifyFolderDocument,
 } from "../../../generated";
@@ -14,9 +15,6 @@ import { useMutation } from "@apollo/client";
 
 interface Props {
   folder: GetFoldersQuery["folders"][0];
-  // changeListView: any;
-  // editFolder: Ieditfolder;
-  // editList: Ieditlist;
 }
 
 export default function SidebarFolder(props: Props) {
@@ -26,6 +24,9 @@ export default function SidebarFolder(props: Props) {
   const [currFolder, setCurrFolder] = useState("");
   const [modifyFolder, { data, loading, error }] = useMutation(
     ModifyFolderDocument,
+    {
+      refetchQueries: [GetFoldersDocument],
+    },
   );
   function closeModal() {
     setModalShow(false);
@@ -34,14 +35,6 @@ export default function SidebarFolder(props: Props) {
     console.log("hit open modal");
     setModalShow(true);
     setCurrFolder(folder_id);
-  }
-
-  function changeListViewHandler(listid: string, folderid: string) {
-    var payload = {
-      list_id: listid,
-      folder_id: folderid,
-    };
-    dispatch(changeListView(payload));
   }
   function changeHover(state: boolean) {
     setHover(state);

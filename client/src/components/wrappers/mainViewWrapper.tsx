@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 // import UserAccessService from "../../services/user.access";
 import { useQuery } from "@apollo/client";
 import { GetFoldersDocument, GetFoldersQuery } from "../../generated";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 // import { changeListView } from "../../redux/reducers/mainViewSlice";
 // import { Component } from "react";
 import { RouteComponentProps } from "react-router-dom";
@@ -79,7 +79,9 @@ export default function MainViewPage(props: Props) {
     [],
   );
   // const [folders, folderDispatch] = useReducer(reducer, []);
-
+  const currentList = useSelector(
+    (state: any) => state.mainview.currentList,
+  );
   const { loading, error, data } = useQuery(GetFoldersDocument);
   const dispatch = useDispatch();
   const toggleSidebar = () => {
@@ -90,15 +92,17 @@ export default function MainViewPage(props: Props) {
     }
   };
   useEffect(() => {
-    console.log("hit use effect");
     if (data) {
-      console.log("this is the data");
-      dispatch(
-        changeListView({
-          list_id: userDetails.inbox.toString(),
-          folder_id: userDetails.defaultFolder.toString(),
-        }),
-      );
+      if (currentList == null) {
+        console.log("changing List view from mainViewWrapper");
+        dispatch(
+          changeListView({
+            list_id: userDetails.inbox.toString(),
+            folder_id: userDetails.defaultFolder.toString(),
+            test: "mainviewwrapper",
+          }),
+        );
+      }
       setFolders(data.folders);
     }
     if (error) {
@@ -138,15 +142,7 @@ export default function MainViewPage(props: Props) {
         </div>
         <div id="content">
           <div>
-            <SidebarTaskContainer
-              folders={folders}
-              // editTask={
-              //   // TODO: Addback Edit Task
-              //   () => {
-              //     console.log("TODO");
-              //   }
-              // }
-            />
+            <SidebarTaskContainer folders={folders} />
           </div>
         </div>
       </div>

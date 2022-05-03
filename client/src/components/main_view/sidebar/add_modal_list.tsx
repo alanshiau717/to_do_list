@@ -4,7 +4,10 @@ import { RouteComponentProps, withRouter } from "react-router-dom";
 import { Modal, Button, Form } from "react-bootstrap";
 // import { Ieditlist } from "../../wrappers/main_view_wrapper";
 import { useMutation } from "@apollo/client";
-import { CreateListDocument } from "../../../generated";
+import {
+  CreateListDocument,
+  GetFoldersDocument,
+} from "../../../generated";
 
 interface Props extends RouteComponentProps {
   modalShow: boolean;
@@ -15,6 +18,9 @@ interface Props extends RouteComponentProps {
 function AddModalListFunctional(props: Props) {
   const [addList, { data, loading, error }] = useMutation(
     CreateListDocument,
+    {
+      refetchQueries: [GetFoldersDocument],
+    },
   );
   const [modalShow, setModalShow] = useState(props.modalShow);
   const [newItemName, setNewItemName] = useState("");

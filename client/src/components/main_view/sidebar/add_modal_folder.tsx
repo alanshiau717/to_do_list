@@ -3,7 +3,7 @@ import React, { Component, useEffect, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { Modal, Button, Form } from "react-bootstrap";
 // import { Ieditfolder } from "../../wrappers/main_view_wrapper";
-import { CreateFolderDocument } from "../../../generated";
+import { CreateFolderDocument, GetFoldersDocument } from "../../../generated";
 import { useMutation } from "@apollo/client";
 interface Props extends RouteComponentProps {
   modalShow: boolean;
@@ -17,6 +17,9 @@ interface State {
 function AddModalFolderFunctional(props: Props) {
   const [addFolder, { data, loading, error }] = useMutation(
     CreateFolderDocument,
+    {
+      refetchQueries: [GetFoldersDocument],
+    },
   );
   const [modalShow, setModalShow] = useState(props.modalShow);
   const [newItemName, setNewItemName] = useState("");

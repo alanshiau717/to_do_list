@@ -9,13 +9,13 @@ import { ListGroup, InputGroup, FormControl } from "react-bootstrap";
 import { Plus } from "react-bootstrap-icons";
 import {
   CreateTaskDocument,
+  GetFoldersDocument,
   GetFoldersQuery,
 } from "../../../generated";
 import { useMutation } from "@apollo/client";
 
 interface Props extends RouteComponentProps {
   list: GetFoldersQuery["folders"][0]["lists"][0];
-  // editTask: Iedittask;
 }
 
 function SidebarListFunctional(props: Props) {
@@ -26,6 +26,9 @@ function SidebarListFunctional(props: Props) {
   const [newTaskName, setNewTaskName] = useState("");
   const [addList, { data, loading, error }] = useMutation(
     CreateTaskDocument,
+    {
+      refetchQueries: [GetFoldersDocument],
+    },
   );
   function handleSubmit(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter") {

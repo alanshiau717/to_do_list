@@ -1,28 +1,36 @@
-import React, { Component, useState } from "react";
+import { useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
-import { connect, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { changeListView } from "../../../redux/reducers/mainViewSlice";
-import IList from "../../../models/client/list";
+import UserAccessService from "../../../services/user.access";
 import { Trash, ListCheck } from "react-bootstrap-icons";
 import { Nav } from "react-bootstrap";
 import {
+  GetFoldersDocument,
   GetFoldersQuery,
   ModifyListDocument,
 } from "../../../generated";
-import { render } from "@testing-library/react";
 import { useMutation } from "@apollo/client";
 interface Props extends RouteComponentProps {
   list: GetFoldersQuery["folders"][0]["lists"][0];
   folderId: string;
-  // changeListView: any;
-  // editList: Ieditlist;
   noDelete: boolean;
 }
 
 export function ListUnitFunctional(props: Props) {
   const [hover, setHover] = useState(false);
+  const [userDetails, setUserDetails] = useState(
+    UserAccessService.getCurrentUser(),
+  );
+
+  const currentList = useSelector(
+    (state: any) => state.mainview.currentList,
+  );
   const [modifyList, { data, loading, error }] = useMutation(
     ModifyListDocument,
+    {
+      refetchQueries: [GetFoldersDocument],
+    },
   );
   const dispatch = useDispatch();
   function changeHover(state: boolean) {
@@ -34,21 +42,7 @@ export function ListUnitFunctional(props: Props) {
       onMouseLeave={() => changeHover(false)}
       style={{ padding: "0px" }}
     >
-      <div
-        onClick={
-          () =>
-            dispatch(
-              changeListView({
-                list_id: props.list._id,
-                folder_id: props.folderId,
-              }),
-            )
-          // props.changeListView({
-          //   list_id: props.list._id,
-          //   folder_id: props.folderId,
-          // })
-        }
-      >
+      <div>
         <div
           style={{
             display: "grid",
@@ -59,6 +53,15 @@ export function ListUnitFunctional(props: Props) {
             style={{
               gridColumn: "1 / 2",
             }}
+            onClick={() =>
+              dispatch(
+                changeListView({
+                  list_id: props.list._id,
+                  folder_id: props.folderId,
+                  test: "list unit on click",
+                }),
+              )
+            }
           >
             <ListCheck />
           </div>
@@ -69,6 +72,15 @@ export function ListUnitFunctional(props: Props) {
               maxWidth: "100%",
             }}
             className="text-truncate"
+            onClick={() =>
+              dispatch(
+                changeListView({
+                  list_id: props.list._id,
+                  folder_id: props.folderId,
+                  test: "list unit on click",
+                }),
+              )
+            }
           >
             {props.list.name}
           </div>
@@ -79,23 +91,32 @@ export function ListUnitFunctional(props: Props) {
               }}
             >
               <Trash
-                onClick={
-                  () => {
-                    console.log("hit modifylist");
-                    modifyList({
-                      variables: {
-                        data: {
-                          id: parseInt(props.list._id),
-                          isDeleted: true,
-                        },
+                onClick={() => {
+                  modifyList({
+                    variables: {
+                      data: {
+                        id: parseInt(props.list._id),
+                        isDeleted: true,
                       },
-                    });
+                    },
+                  });
+                  console.log(props.list._id, currentList);
+                  if (props.list._id === currentList) {
+                    console.log("changing list view");
+                    console.log(
+                      userDetails.inbox.toString(),
+                      userDetails.defaultFolder.toString(),
+                    );
+                    dispatch(
+                      changeListView({
+                        list_id: userDetails.inbox.toString(),
+                        folder_id:
+                          userDetails.defaultFolder.toString(),
+                        test: "list unit after deleting",
+                      }),
+                    );
                   }
-                  // this.props.editList("delete", {
-                  //   listId: this.props.list._id,
-                  //   folderId: this.props.folderId,
-                  // })
-                }
+                }}
               />
             </div>
           )}
@@ -105,7 +126,4 @@ export function ListUnitFunctional(props: Props) {
   );
 }
 
-// export default withRouter(
-//   connect(null, { changeListView })(ListUnit),
-// );
 export default withRouter(ListUnitFunctional);

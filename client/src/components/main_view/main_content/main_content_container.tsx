@@ -8,6 +8,7 @@ import SidebarList from "./main_content_list";
 // import { Iedittask } from "../../wrappers/main_view_wrapper";
 import {
   CreateTaskDocument,
+  GetFoldersDocument,
   GetFoldersQuery,
 } from "../../../generated";
 import { useMutation } from "@apollo/client";
@@ -19,6 +20,9 @@ interface Props extends RouteComponentProps {
 function SidebarListContainerFunctional(props: Props) {
   const [addTask, { data, loading, error }] = useMutation(
     CreateTaskDocument,
+    {
+      refetchQueries: [GetFoldersDocument],
+    },
   );
   const currentList = useSelector(
     (state: any) => state.mainview.currentList,
@@ -54,7 +58,6 @@ function SidebarListContainerFunctional(props: Props) {
             <SidebarList
               key={list._id}
               list={list}
-              // editTask={this.props.editTask}
             />
           ) : null;
         });

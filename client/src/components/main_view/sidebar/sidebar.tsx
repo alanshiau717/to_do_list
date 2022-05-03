@@ -87,6 +87,7 @@ class SideBar extends Component<Props, State> {
       list_id: listid,
       folder_id: folderid,
     };
+    console.log("changeListView from sidebar.tsx");
     this.props.changeListView(payload);
   }
   render() {

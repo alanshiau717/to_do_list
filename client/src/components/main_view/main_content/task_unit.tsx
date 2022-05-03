@@ -11,6 +11,7 @@ import {
 } from "react-bootstrap";
 // import { Iedittask } from "../../wrappers/main_view_wrapper";
 import {
+  GetFoldersDocument,
   GetFoldersQuery,
   ModifyTaskDocument,
 } from "../../../generated";
@@ -34,6 +35,9 @@ interface State {
 function TaskUnitFunctional(props: Props) {
   const [modifyTask, { data, loading, error }] = useMutation(
     ModifyTaskDocument,
+    {
+      refetchQueries: [GetFoldersDocument],
+    },
   );
   const [taskName, setTaskName] = useState(props.task.name);
   const [inputMode, setInputMode] = useState(false);
