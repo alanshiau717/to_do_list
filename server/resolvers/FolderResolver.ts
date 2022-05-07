@@ -7,8 +7,8 @@ import { FolderService } from "../services/folder-service";
 @Resolver()
 export class FolderResolver {
     @Query(() => [Folder])
-    async folders() {
-        return this.folderService.getAllFolder()
+    async folders(@Ctx() ctx: any) {
+        return this.folderService.getAllFolder(ctx.userId)
     }
 
     @Mutation(() => Folder)

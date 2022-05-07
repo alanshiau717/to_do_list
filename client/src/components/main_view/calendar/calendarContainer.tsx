@@ -189,7 +189,6 @@ export default function CalendarContainer() {
         <div 
           className="fc-event" 
           title={task.title} 
-          // data={task.id} 
           key ={task.id}
         >
           {task.title}

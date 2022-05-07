@@ -20,7 +20,6 @@ interface Props extends RouteComponentProps {
   userDetails: UserDetails;
   changeListView: any;
   changeMainView: any;
-  // editFolder: Ieditfolder;
 }
 interface State {
   folderModalShow: boolean;
@@ -72,22 +71,11 @@ class SideBar extends Component<Props, State> {
       });
     }
   }
-  // handleSubmit(e: React.FormEvent) {
-  //   if (this.state.modalSetting === "folder") {
-  //     this.props.editFolder("add", this.state.newItemName);
-  //   } else if (this.state.modalSetting === "list") {
-  //     this.props.editList("add", this.state.newItemName);
-  //   } else {
-  //     console.log("An error has occured adding a list or folder");
-  //   }
-  //   e.preventDefault();
-  // }
   changeListViewHandler(listid: string, folderid: string) {
     var payload = {
       list_id: listid,
       folder_id: folderid,
     };
-    console.log("changeListView from sidebar.tsx");
     this.props.changeListView(payload);
   }
   render() {
@@ -106,8 +94,6 @@ class SideBar extends Component<Props, State> {
                   <SidebarFolder
                     folder={folder}
                     key={folder._id}
-                  // editFolder={this.props.editFolder}
-                  // editList={this.props.editList}
                   />
                 )
               ) : (
@@ -186,6 +172,10 @@ class SideBar extends Component<Props, State> {
             }
               
               }>Take me to Calendar</button>
+          </div>
+              
+          <div>
+            
           </div>
         </Nav>
       </Navbar>

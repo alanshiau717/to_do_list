@@ -8,6 +8,7 @@ import { Navbar } from "react-bootstrap";
 import { List } from "react-bootstrap-icons";
 import "../../css/main_view.css";
 import SideBar from "../main_view/sidebar/sidebar";
+import SidebarFunctional from "../main_view/sidebar/sidebarFunctional";
 import { changeListView } from "../../redux/reducers/mainViewSlice";
 import SidebarTaskContainer from "../main_view/main_content/main_content_container";
 import Calendar from "../main_view/calendar/calendarContainer"
@@ -124,7 +125,7 @@ export default function MainViewPage(props: Props) {
           id="sidebar"
           className={`${sideBarActive ? "active" : ""}`}
         >
-          <SideBar
+          <SidebarFunctional
             folders={folders}
             userDetails={userDetails}
           />

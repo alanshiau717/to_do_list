@@ -54,10 +54,8 @@ export class FolderService {
         return false
     }
     //TODO: Remove Test
-    public async getAllFolder() {
-        const folders = await this.repository.find({relations: ["lists", "user", "lists.tasks", "lists.user"]})
-        // console.debug("Get All Folder Folders:", folders)
-        // console.debug("Get All Lists", folders[0].lists)
+    public async getAllFolder(userId: number) {
+        const folders = await this.repository.find({relations: ["lists", "user", "lists.tasks", "lists.user"], where: {userId: userId}})
         return folders
     }
 

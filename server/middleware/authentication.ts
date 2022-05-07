@@ -10,7 +10,7 @@ export default async (req: any, _: express.Response, next: express.NextFunction)
     let isValidUserSession = await userService.isValidUserSession(decodedToken.sessionId, decodedToken.userId)
     // console.debug("Decoded JWT Token", decodedToken)
     if(isValidUserSession) {
-      // console.debug("Valid User Session for user", decodedToken.userId)
+      console.debug("Valid User Session for user", decodedToken.userId)
       req.userId = decodedToken.userId
       req.sessionId = decodedToken.sessionId
     }
