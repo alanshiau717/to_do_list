@@ -6,7 +6,7 @@ import SidebarFolder from "./sidebarFolder";
 import IJWT from "../../../models/shared/jwt";
 import { UserDetails } from "../../../services/user.access";
 import { connect } from "react-redux";
-import { changeListView } from "../../../redux/reducers/mainViewSlice";
+import { changeListView, changeMainView } from "../../../redux/reducers/mainViewSlice";
 import { GetFoldersQuery } from "../../../generated";
 import { Navbar, Nav, Row, Container, Col } from "react-bootstrap";
 import { Plus } from "react-bootstrap-icons";
@@ -19,6 +19,7 @@ interface Props extends RouteComponentProps {
   folders: GetFoldersQuery["folders"];
   userDetails: UserDetails;
   changeListView: any;
+  changeMainView: any;
   // editFolder: Ieditfolder;
 }
 interface State {
@@ -40,7 +41,6 @@ class SideBar extends Component<Props, State> {
     this.openModal = this.openModal.bind(this);
     this.closeFolderModal = this.closeFolderModal.bind(this);
     this.closeListModal = this.closeListModal.bind(this);
-    // this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.state = {
       folderModalShow: false,
@@ -106,8 +106,8 @@ class SideBar extends Component<Props, State> {
                   <SidebarFolder
                     folder={folder}
                     key={folder._id}
-                    // editFolder={this.props.editFolder}
-                    // editList={this.props.editList}
+                  // editFolder={this.props.editFolder}
+                  // editList={this.props.editList}
                   />
                 )
               ) : (
@@ -138,7 +138,7 @@ class SideBar extends Component<Props, State> {
                               // editList={this.props.editList}
                               noDelete={
                                 list._id ===
-                                this.props.userDetails.inbox.toString()
+                                  this.props.userDetails.inbox.toString()
                                   ? true
                                   : false
                               }
@@ -177,6 +177,15 @@ class SideBar extends Component<Props, State> {
               closeModal={this.closeListModal}
               modalShow={this.state.listModalShow}
             />
+            <button onClick={() => { 
+              this.props.changeMainView({
+                currentView: "calendar"
+              })
+              
+              // this.props.history.push("/calendar") 
+            }
+              
+              }>Take me to Calendar</button>
           </div>
         </Nav>
       </Navbar>
@@ -184,4 +193,4 @@ class SideBar extends Component<Props, State> {
   }
 }
 
-export default withRouter(connect(null, { changeListView })(SideBar));
+export default withRouter(connect(null, { changeListView, changeMainView })(SideBar));

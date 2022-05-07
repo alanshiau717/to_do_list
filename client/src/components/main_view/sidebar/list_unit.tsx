@@ -58,7 +58,6 @@ export function ListUnitFunctional(props: Props) {
                 changeListView({
                   list_id: props.list._id,
                   folder_id: props.folderId,
-                  test: "list unit on click",
                 }),
               )
             }
@@ -76,8 +75,7 @@ export function ListUnitFunctional(props: Props) {
               dispatch(
                 changeListView({
                   list_id: props.list._id,
-                  folder_id: props.folderId,
-                  test: "list unit on click",
+                  folder_id: props.folderId
                 }),
               )
             }
@@ -112,7 +110,6 @@ export function ListUnitFunctional(props: Props) {
                         list_id: userDetails.inbox.toString(),
                         folder_id:
                           userDetails.defaultFolder.toString(),
-                        test: "list unit after deleting",
                       }),
                     );
                   }

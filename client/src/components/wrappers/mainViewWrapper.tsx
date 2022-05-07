@@ -1,25 +1,17 @@
-// import { RouteComponentProps, withRouter } from "react-router-dom";
-// import { UserDetails } from "../../services/user.access";
-// import IFolder from "../../models/client/folder";
 import { useEffect, useState } from "react";
-// import UserAccessService from "../../services/user.access";
 import { useQuery } from "@apollo/client";
 import { GetFoldersDocument, GetFoldersQuery } from "../../generated";
 import { useDispatch, useSelector } from "react-redux";
-// import { changeListView } from "../../redux/reducers/mainViewSlice";
-// import { Component } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import UserAccessService from "../../services/user.access";
 import { Navbar } from "react-bootstrap";
 import { List } from "react-bootstrap-icons";
 import "../../css/main_view.css";
 import SideBar from "../main_view/sidebar/sidebar";
-import MainService from "../../services/main.service";
-import IFolder from "../../models/client/folder";
 import { changeListView } from "../../redux/reducers/mainViewSlice";
 import SidebarTaskContainer from "../main_view/main_content/main_content_container";
-import update from "immutability-helper";
-import { UserDetails } from "../../services/user.access";
+import Calendar from "../main_view/calendar/calendarContainer"
+// import Calendar from "../main_view/calendar"
 
 export type Iedittask = (
   action: "complete" | "delete" | "edit" | "add",
@@ -82,6 +74,9 @@ export default function MainViewPage(props: Props) {
   const currentList = useSelector(
     (state: any) => state.mainview.currentList,
   );
+  const currentView = useSelector(
+    (state: any) => state.mainview.currentView
+  )
   const { loading, error, data } = useQuery(GetFoldersDocument);
   const dispatch = useDispatch();
   const toggleSidebar = () => {
@@ -94,12 +89,10 @@ export default function MainViewPage(props: Props) {
   useEffect(() => {
     if (data) {
       if (currentList == null) {
-        console.log("changing List view from mainViewWrapper");
         dispatch(
           changeListView({
             list_id: userDetails.inbox.toString(),
-            folder_id: userDetails.defaultFolder.toString(),
-            test: "mainviewwrapper",
+            folder_id: userDetails.defaultFolder.toString()
           }),
         );
       }
@@ -134,16 +127,20 @@ export default function MainViewPage(props: Props) {
           <SideBar
             folders={folders}
             userDetails={userDetails}
-            // changeListView={changeListView}
-            // {...folders}
-            // editList={editList}
-            // editFolder={editFolder}
           />
         </div>
         <div id="content">
+          { currentView == "tasks" ?
           <div>
             <SidebarTaskContainer folders={folders} />
-          </div>
+          </div> : null
+          }
+          { currentView == "calendar" ?
+          <div>
+            <Calendar/>
+            {/* // <SidebarTaskContainer folders={folders} /> */}
+          </div> : null
+          }
         </div>
       </div>
     </div>
