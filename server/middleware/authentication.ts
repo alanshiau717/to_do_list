@@ -8,18 +8,13 @@ export default async (req: any, _: express.Response, next: express.NextFunction)
     const userService = new UserService();
     const decodedToken = validateAndDecodeJwtToken(req.cookies['token'])
     let isValidUserSession = await userService.isValidUserSession(decodedToken.sessionId, decodedToken.userId)
-    // console.debug("Decoded JWT Token", decodedToken)
     if(isValidUserSession) {
-      console.debug("Valid User Session for user", decodedToken.userId)
       req.userId = decodedToken.userId
       req.sessionId = decodedToken.sessionId
     }
   } catch(err) {
-      // console.debug(err)
       req.userId = null
       req.sessionId = null
-      // req.userId = 1
-      // req.sessionId = 1
   }
   return next();
 }

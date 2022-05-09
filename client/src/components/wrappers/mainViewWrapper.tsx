@@ -115,11 +115,14 @@ export default function MainViewPage(props: Props) {
   ]);
   return (
     <div id="outer_wrapper">
-      <Navbar bg="primary" expand="lg">
+        <div id="navbar">        
+          <Navbar bg="primary" expand="lg">
         <Navbar.Brand href="#home">
           <List onClick={toggleSidebar} />
         </Navbar.Brand>
-      </Navbar>
+      </Navbar></div>
+    
+
       <div className="wrapper">
         <div
           id="sidebar"
@@ -137,10 +140,9 @@ export default function MainViewPage(props: Props) {
           </div> : null
           }
           { currentView == "calendar" ?
-          <div>
+          
             <Calendar/>
-            {/* // <SidebarTaskContainer folders={folders} /> */}
-          </div> : null
+           : null
           }
         </div>
       </div>

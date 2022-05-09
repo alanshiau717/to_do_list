@@ -158,6 +158,7 @@ import dayGridPlugin from "@fullcalendar/daygrid"
 import timeGridPlugin from "@fullcalendar/timegrid"
 import interactionPlugin, { Draggable } from "@fullcalendar/interaction"
 import { useEffect, useState } from "react"
+import "../../../css/calendarView.css"
 export default function CalendarContainer() {
   const [tasks, setTasks] = useState([
     { title: "Event 1", id: "1" },
@@ -167,7 +168,7 @@ export default function CalendarContainer() {
     { title: "Event 5", id: "5" }
   ])
   useEffect(() => {
-    let draggableEl = document.getElementById("taskbar");
+    let draggableEl = document.getElementById("taskbarContainer");
     if(draggableEl){
     new Draggable(draggableEl, {
       itemSelector: ".fc-event",
@@ -183,8 +184,8 @@ export default function CalendarContainer() {
   }
   })
   return (
-    <div >
-    <div id = "taskbar">
+    <div className="calendarWrapper">
+    <div id = "taskbarContainer">
       {tasks.map(task => (
         <div 
           className="fc-event" 
@@ -195,10 +196,16 @@ export default function CalendarContainer() {
         </div>
       ))}
     </div>
-    <FullCalendar
+    <div id="calendar">
+    <FullCalendar 
     plugins={[timeGridPlugin, interactionPlugin, dayGridPlugin]}
     initialView="timeGridWeek"
+    // contentHeight="auto"
+    aspectRatio={1}
+    height="100%"
     />
+    </div>
+ 
 
   </div>
   )

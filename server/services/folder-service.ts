@@ -1,10 +1,3 @@
-// import { throws } from "assert"
-// import { FolderDocPopulated,  IFolderClientCreate } from "../../node/mongo/entities/folder"
-// import { ICreateFolderRequest } from "../controllers/folders-controller"
-// import {ListDoc} from "../../node/mongo/entities/list"
-// import { Types } from "mongoose"
-// import {FolderRepository} from "../database/repositories/FolderRepository";
-// import {InternalServerError} from "../common/internal-server-error"
 import { IFolder, IFolderCreateProps } from "../database/entity/Folder";
 import { ModifyFolderInput } from "../inputs/FolderInputs";
 import { getRepository } from "typeorm";
@@ -20,18 +13,6 @@ export class FolderService {
         return await this.repository.save(folder)
 
     }
-    
-    // public async getUserFolders(queryParams, userId) : Promise<IFolder[]> {
-    //     console.log("hit get user folders")
-    //     // const folders =  await this.repository.find({ ...queryParams, user: userId }).populate({ path: "lists", populate: { path: "tasks" } })
-    //     try {
-    //     const folders = await this.repository.find({...queryParams, user: userId, relations: ["user"]})
-    //     return folders}
-    //     catch(err) {
-    //         console.log(err.message)
-    //         throw new Error("Uncaught Exception")
-    //     }
-    // }
 
     public async modifyFolderAndReturnId(userId: number, payload: ModifyFolderInput): Promise<number> {
         const {id, ...modifyFolderProps} = payload
