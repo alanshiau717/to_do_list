@@ -141,7 +141,7 @@ export default function MainViewPage(props: Props) {
           }
           { currentView == "calendar" ?
           
-            <Calendar/>
+            <Calendar folders = {folders}/>
            : null
           }
         </div>
