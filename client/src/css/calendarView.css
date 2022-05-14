@@ -15,13 +15,5 @@
 
 
 #calendar {
-    /* background-color: blue; */
-    /* flex-grow: 1; */
-    /* min-height: 100%;
-
-    max-height: 100%; */
-    /* overflow-x: scroll;
-    min-width: 100%;
-    max-width: 100%;     */
     flex-grow: 1;
   }

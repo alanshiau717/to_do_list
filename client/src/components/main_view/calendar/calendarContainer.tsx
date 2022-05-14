@@ -42,7 +42,6 @@ function CalendarContainer(props: Props) {
   }
   
   useEffect(() => {
-    console.log("hit this")
     setTasks2(getTasksFromCurrentList(currentList, currentFolder))
   })
 
@@ -69,15 +68,6 @@ function CalendarContainer(props: Props) {
   return (
     <div className="calendarWrapper">
     <div id = "taskbarContainer">
-      {/* {tasks.map(task => (
-        <div 
-          className="fc-event" 
-          title={task.title} 
-          key ={task.id}
-        >
-          {task.title}
-        </div>
-      ))} */}
       {tasks2?.map(task => (
         <div 
         className="fc-event" 
@@ -92,9 +82,9 @@ function CalendarContainer(props: Props) {
     <FullCalendar 
     plugins={[timeGridPlugin, interactionPlugin, dayGridPlugin]}
     initialView="timeGridWeek"
-    // contentHeight="auto"
     aspectRatio={1}
     height="100%"
+    headerToolbar={{left: "dayGridMonth,timeGridWeek,timeGridDay", center: "title"}}
     />
     </div>
  
