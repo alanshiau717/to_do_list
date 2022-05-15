@@ -6,15 +6,6 @@ import { ModifyTaskInput } from "../inputs/TaskInputs";
 import { ListService } from "./list-service";
 import { removeUndefinedKeys } from "../utils/objectUtils";
 
-// export class TaskService {
-//     public async getUserLists() {
-           
-//     }
-
-//     private get repository() {
-//         return TaskModel;
-//     }
-// }
 
 export class TaskService {
 

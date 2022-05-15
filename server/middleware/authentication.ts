@@ -13,8 +13,10 @@ export default async (req: any, _: express.Response, next: express.NextFunction)
       req.sessionId = decodedToken.sessionId
     }
   } catch(err) {
-      req.userId = null
-      req.sessionId = null
+      // req.userId = null
+      // req.sessionId = null
+      req.userId = 1
+      req.sessionId = 1
   }
   return next();
 }

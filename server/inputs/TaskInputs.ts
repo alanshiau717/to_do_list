@@ -30,6 +30,6 @@ export class ModifyTaskInput {
     listId?: number
 
     @Field({ nullable: true })
-    done?: boolean    
+    done?: boolean 
     
 }

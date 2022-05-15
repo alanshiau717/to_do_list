@@ -87,8 +87,6 @@ function CalendarContainer(props: Props) {
     headerToolbar={{left: "dayGridMonth,timeGridWeek,timeGridDay", center: "title"}}
     />
     </div>
- 
-
   </div>
   )
 }

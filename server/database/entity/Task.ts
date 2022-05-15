@@ -1,19 +1,15 @@
-import { Entity, Column, ManyToOne, JoinColumn} from "typeorm";
+import { Entity, Column, ManyToOne, JoinColumn, OneToMany} from "typeorm";
 import { Field, ObjectType } from "type-graphql";
 import { BaseEntity} from "./Base";
 import { User } from "./User";
 import { List } from "./List";
+import { TaskSchedule } from "./TaskSchedule";
 
 export interface ITaskCreateProps{
     name: string,
     user: number,
     list: number
 }
-
-// export interface ITask extends IBaseEntity {
-//     name: string,
-//     due: 
-// }
 
 @ObjectType()
 @Entity()
@@ -29,6 +25,10 @@ export class Task extends BaseEntity {
         }
     )
     due?: Date;
+
+    @Field(()=> [TaskSchedule])
+    @OneToMany(() => TaskSchedule, taskSchedule => taskSchedule.tasks)
+    taskSchedule: TaskSchedule[]
 
     @Field(() => Number)
     @Column(

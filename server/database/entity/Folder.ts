@@ -14,7 +14,6 @@ export interface IFolderCreateProps{
 export interface IFolder extends IBaseEntity {
     order: number
     isDeleted: boolean
-    // user: IUser
     userId: number
     name: string
     done: boolean

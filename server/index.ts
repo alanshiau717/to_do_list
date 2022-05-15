@@ -12,6 +12,7 @@ import bodyParser from "body-parser"
 import { FolderResolver } from "./resolvers/FolderResolver";
 import { ListResolver } from "./resolvers/ListResolver";
 import { TaskResolver } from "./resolvers/TaskResolver";
+import { TaskScheduleResolver } from "./resolvers/TaskScheduleResolver";
 // import http from 'http';
 // const express = require("express")
 // import express from "express"
@@ -25,7 +26,7 @@ import { TaskResolver } from "./resolvers/TaskResolver";
 export default async function main() {
   createConnection()
   const schema = await buildSchema({
-    resolvers : [TestResolver, UserResolver, UserSessionResolver, FolderResolver, ListResolver, TaskResolver],
+    resolvers : [TestResolver, UserResolver, UserSessionResolver, FolderResolver, ListResolver, TaskResolver, TaskScheduleResolver],
   })
   const corsOptions = {
     origin: ['http://localhost:3000', "http://localhost", "https://studio.apollographql.com"],
