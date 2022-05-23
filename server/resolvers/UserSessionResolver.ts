@@ -19,7 +19,7 @@ export class UserSessionResolver {
         // }
         // console.log("throwing error")
         // throw new Error("Invalid User")
-        console.debug("hit is valid user session", ctx.userId, ctx.sessionId)
+        // console.debug("hit is valid user session", ctx.userId, ctx.sessionId)
         if(ctx.userId || ctx.sessionId){
             return true
         }

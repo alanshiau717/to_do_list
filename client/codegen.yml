@@ -6,3 +6,7 @@ generates:
       - typescript
       - typescript-operations
       - typed-document-node
+config:
+  scalars:
+    Date: Date
+    DateTime: Date

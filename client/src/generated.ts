@@ -12,7 +12,7 @@ export type Scalars = {
   Int: number;
   Float: number;
   /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
-  DateTime: any;
+  DateTime: Date;
 };
 
 export type CreateFolderInput = {
@@ -27,6 +27,13 @@ export type CreateListInput = {
 export type CreateTaskInput = {
   list: Scalars['Float'];
   name: Scalars['String'];
+};
+
+export type CreateTaskScheduleInput = {
+  endTime: Scalars['DateTime'];
+  isAllDayEvent: Scalars['Boolean'];
+  startTime: Scalars['DateTime'];
+  taskId: Scalars['Float'];
 };
 
 export type CreateUserInput = {
@@ -101,16 +108,25 @@ export type ModifyTaskInput = {
   order?: InputMaybe<Scalars['Float']>;
 };
 
+export type ModifyTaskScheduleInput = {
+  endTime?: InputMaybe<Scalars['DateTime']>;
+  id: Scalars['Float'];
+  isAllDayEvent?: InputMaybe<Scalars['Boolean']>;
+  startTime?: InputMaybe<Scalars['DateTime']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createFolder: Folder;
   createList: List;
   createTask: Task;
+  createTaskSchedule: TaskSchedule;
   createUser: User;
   googleLogin: UserLoginResponse;
   modifyFolder: ModificationResponse;
   modifyList: ModificationResponse;
   modifyTask: ModificationResponse;
+  modifyTaskSchedule: ModificationResponse;
 };
 
 
@@ -126,6 +142,11 @@ export type MutationCreateListArgs = {
 
 export type MutationCreateTaskArgs = {
   data: CreateTaskInput;
+};
+
+
+export type MutationCreateTaskScheduleArgs = {
+  data: CreateTaskScheduleInput;
 };
 
 
@@ -153,9 +174,15 @@ export type MutationModifyTaskArgs = {
   data: ModifyTaskInput;
 };
 
+
+export type MutationModifyTaskScheduleArgs = {
+  data: ModifyTaskScheduleInput;
+};
+
 export type Query = {
   __typename?: 'Query';
   folders: Array<Folder>;
+  getTaskSchedules: Array<TaskSchedule>;
   getUsers: Array<User>;
   hello: Scalars['String'];
   isValidUserSession: Scalars['Boolean'];
@@ -167,12 +194,26 @@ export type Task = {
   date_created: Scalars['DateTime'];
   date_updated: Scalars['DateTime'];
   done: Scalars['Boolean'];
-  due: Scalars['DateTime'];
+  due?: Maybe<Scalars['DateTime']>;
   id: Scalars['ID'];
   isDeleted: Scalars['Boolean'];
   list: List;
   name: Scalars['String'];
   order: Scalars['Float'];
+  taskSchedule: Array<TaskSchedule>;
+  user: User;
+};
+
+export type TaskSchedule = {
+  __typename?: 'TaskSchedule';
+  date_created: Scalars['DateTime'];
+  date_updated: Scalars['DateTime'];
+  endTime: Scalars['DateTime'];
+  id: Scalars['ID'];
+  isAllDayEvent: Scalars['Boolean'];
+  startTime: Scalars['DateTime'];
+  taskId: Scalars['Float'];
+  tasks: Task;
   user: User;
 };
 
@@ -243,7 +284,7 @@ export type CreateTaskMutationVariables = Exact<{
 }>;
 
 
-export type CreateTaskMutation = { __typename?: 'Mutation', createTask: { __typename?: 'Task', id: string, name: string, due: any, isDeleted: boolean, done: boolean } };
+export type CreateTaskMutation = { __typename?: 'Mutation', createTask: { __typename?: 'Task', id: string, name: string, due?: Date | null, isDeleted: boolean, done: boolean } };
 
 export type ModifyTaskMutationVariables = Exact<{
   data: ModifyTaskInput;
@@ -252,10 +293,29 @@ export type ModifyTaskMutationVariables = Exact<{
 
 export type ModifyTaskMutation = { __typename?: 'Mutation', modifyTask: { __typename?: 'ModificationResponse', id: number } };
 
+export type ModifyTaskScheduleMutationVariables = Exact<{
+  data: ModifyTaskScheduleInput;
+}>;
+
+
+export type ModifyTaskScheduleMutation = { __typename?: 'Mutation', modifyTaskSchedule: { __typename?: 'ModificationResponse', id: number } };
+
+export type CreateTaskScheduleMutationVariables = Exact<{
+  data: CreateTaskScheduleInput;
+}>;
+
+
+export type CreateTaskScheduleMutation = { __typename?: 'Mutation', createTaskSchedule: { __typename?: 'TaskSchedule', id: string, date_created: Date, date_updated: Date, startTime: Date, endTime: Date, isAllDayEvent: boolean, tasks: { __typename?: 'Task', id: string, name: string } } };
+
 export type GetFoldersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetFoldersQuery = { __typename?: 'Query', folders: Array<{ __typename?: 'Folder', done: boolean, isDeleted: boolean, name: string, userId: number, _id: string, lists: Array<{ __typename?: 'List', name: string, done: boolean, isDeleted: boolean, _id: string, tasks: Array<{ __typename?: 'Task', name: string, due: any, isDeleted: boolean, done: boolean, _id: string }> }> }> };
+export type GetFoldersQuery = { __typename?: 'Query', folders: Array<{ __typename?: 'Folder', done: boolean, isDeleted: boolean, name: string, userId: number, _id: string, lists: Array<{ __typename?: 'List', name: string, done: boolean, isDeleted: boolean, _id: string, tasks: Array<{ __typename?: 'Task', name: string, due?: Date | null, isDeleted: boolean, done: boolean, _id: string }> }> }> };
+
+export type GetTaskSchedulesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetTaskSchedulesQuery = { __typename?: 'Query', getTaskSchedules: Array<{ __typename?: 'TaskSchedule', id: string, date_created: Date, date_updated: Date, isAllDayEvent: boolean, start: Date, end: Date, tasks: { __typename?: 'Task', name: string, id: string } }> };
 
 export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -281,7 +341,10 @@ export const CreateListDocument = {"kind":"Document","definitions":[{"kind":"Ope
 export const ModifyListDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ModifyList"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ModifyListInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"modifyList"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<ModifyListMutation, ModifyListMutationVariables>;
 export const CreateTaskDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateTask"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateTaskInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createTask"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"due"}},{"kind":"Field","name":{"kind":"Name","value":"isDeleted"}},{"kind":"Field","name":{"kind":"Name","value":"done"}}]}}]}}]} as unknown as DocumentNode<CreateTaskMutation, CreateTaskMutationVariables>;
 export const ModifyTaskDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ModifyTask"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ModifyTaskInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"modifyTask"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<ModifyTaskMutation, ModifyTaskMutationVariables>;
+export const ModifyTaskScheduleDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ModifyTaskSchedule"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ModifyTaskScheduleInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"modifyTaskSchedule"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<ModifyTaskScheduleMutation, ModifyTaskScheduleMutationVariables>;
+export const CreateTaskScheduleDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateTaskSchedule"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateTaskScheduleInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createTaskSchedule"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"date_created"}},{"kind":"Field","name":{"kind":"Name","value":"date_updated"}},{"kind":"Field","name":{"kind":"Name","value":"tasks"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"startTime"}},{"kind":"Field","name":{"kind":"Name","value":"endTime"}},{"kind":"Field","name":{"kind":"Name","value":"isAllDayEvent"}}]}}]}}]} as unknown as DocumentNode<CreateTaskScheduleMutation, CreateTaskScheduleMutationVariables>;
 export const GetFoldersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getFolders"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"folders"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"_id"},"name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"lists"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"_id"},"name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"tasks"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"_id"},"name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"due"}},{"kind":"Field","name":{"kind":"Name","value":"isDeleted"}},{"kind":"Field","name":{"kind":"Name","value":"done"}}]}},{"kind":"Field","name":{"kind":"Name","value":"done"}},{"kind":"Field","name":{"kind":"Name","value":"isDeleted"}}]}},{"kind":"Field","name":{"kind":"Name","value":"done"}},{"kind":"Field","name":{"kind":"Name","value":"isDeleted"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}}]}}]}}]} as unknown as DocumentNode<GetFoldersQuery, GetFoldersQueryVariables>;
+export const GetTaskSchedulesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetTaskSchedules"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getTaskSchedules"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"date_created"}},{"kind":"Field","name":{"kind":"Name","value":"date_updated"}},{"kind":"Field","alias":{"kind":"Name","value":"start"},"name":{"kind":"Name","value":"startTime"}},{"kind":"Field","alias":{"kind":"Name","value":"end"},"name":{"kind":"Name","value":"endTime"}},{"kind":"Field","name":{"kind":"Name","value":"isAllDayEvent"}},{"kind":"Field","name":{"kind":"Name","value":"tasks"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<GetTaskSchedulesQuery, GetTaskSchedulesQueryVariables>;
 export const GetUsersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetUsers"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getUsers"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<GetUsersQuery, GetUsersQueryVariables>;
 export const IsValidUserSessionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"IsValidUserSession"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"isValidUserSession"}}]}}]} as unknown as DocumentNode<IsValidUserSessionQuery, IsValidUserSessionQueryVariables>;
 export const GoogleLoginDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"GoogleLogin"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"GoogleUserLoginInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"googleLogin"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"accessToken"}},{"kind":"Field","name":{"kind":"Name","value":"defaultFolder"}},{"kind":"Field","name":{"kind":"Name","value":"inbox"}}]}}]}}]} as unknown as DocumentNode<GoogleLoginMutation, GoogleLoginMutationVariables>;

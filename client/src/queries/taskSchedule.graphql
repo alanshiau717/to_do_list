@@ -1,0 +1,15 @@
+query GetTaskSchedules {
+  getTaskSchedules {
+    id
+    date_created
+    date_updated
+    start: startTime
+    end: endTime
+    isAllDayEvent
+    tasks {
+      name,
+      id
+    }
+  }
+}
+

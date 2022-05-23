@@ -8,10 +8,14 @@ import { TaskScheduleService } from "../services/task-schedule-service";
 export class TaskScheduleResolver {
     @Mutation(() => TaskSchedule)
     createTaskSchedule(@Arg("data") data: CreateTaskScheduleInput, @Ctx() ctx: any) {
+        console.log("hit create Task Schedule")
         if(!ctx.userId) {
             throw "USER NOT AUTHENTICATED"
         }
+
         return this.taskScheduleService.createTaskSchedule({...data, userId: ctx.userId})
+        
+      
     }
 
     @Mutation(() => ModificationResponse)

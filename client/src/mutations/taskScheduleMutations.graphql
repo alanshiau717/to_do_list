@@ -1,0 +1,21 @@
+mutation ModifyTaskSchedule($data: ModifyTaskScheduleInput!) {
+  modifyTaskSchedule(data: $data) {
+    id
+  }
+}
+
+
+mutation CreateTaskSchedule($data: CreateTaskScheduleInput!) {
+  createTaskSchedule(data: $data) {
+    id
+    date_created
+    date_updated
+    tasks {
+      id
+      name
+    }
+    startTime
+    endTime
+    isAllDayEvent
+  }
+}

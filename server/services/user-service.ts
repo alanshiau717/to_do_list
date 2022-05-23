@@ -229,8 +229,6 @@ export class UserService implements IUserService {
             {
                 relations: ["user"]
             })
-        console.debug("Session:",session)
-        // const session = await this.userSessionRepository.findById(sessionId).exec()
         if (!session){
             return false
         }
