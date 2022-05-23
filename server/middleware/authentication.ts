@@ -4,7 +4,6 @@ import * as jwt from "jsonwebtoken";
 
 
 export default async (req: any, _: express.Response, next: express.NextFunction) => {
-  console.log("hit middleware")
   try {
     const userService = new UserService();
     const decodedToken = validateAndDecodeJwtToken(req.cookies['token'])
@@ -25,9 +24,7 @@ export default async (req: any, _: express.Response, next: express.NextFunction)
 }
 
 function validateAndDecodeJwtToken(cookie: string) {
-  // console.debug("encoded token",cookie)
   const decodedToken = jwt.verify(cookie,process.env.JWT_SECRET!)
-  // console.debug("decoded token",decodedToken)
   if (!(typeof decodedToken === 'string' || decodedToken instanceof String)) {
     return decodedToken
   }

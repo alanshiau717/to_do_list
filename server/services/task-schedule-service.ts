@@ -13,7 +13,6 @@ interface IModifyTaskSchedule extends ModifyTaskScheduleInput {
 }
 
 export class TaskScheduleService {
-
     public async createTaskSchedule(payload: ICreateTaskSchedule) {
            if(await this.taskService.taskBelongsToUser(payload.userId, payload.taskId)) {
                let taskSchedule = this.repository.create()
@@ -22,11 +21,11 @@ export class TaskScheduleService {
                taskSchedule.endTime = payload.endTime
                taskSchedule.isAllDayEvent = payload.isAllDayEvent
                taskSchedule.userId = payload.userId
-               return await this.repository.save(taskSchedule)
+               const createdTaskSchedule = await this.repository.save(taskSchedule)
+               return await this.getTaskScheduleById(createdTaskSchedule.id)
            }
            throw "INTERNAL SERVER ERROR"
     }
-
     public async modifyTaskScheduleAndReturnId(payload: IModifyTaskSchedule) {
             const {userId, id, ...modifyTaskScheduleProps} = payload
             if(await this.taskScheduleBelongsToUser(userId, id)) {
@@ -45,6 +44,10 @@ export class TaskScheduleService {
             }
         }
         return false
+    }
+
+    public async getTaskScheduleById(taskScheduleId: number) {
+        return await this.repository.findOne(taskScheduleId,{relations: ["tasks"]})
     }
 
     public async getAllTaskScheduleByUserId(userId: number) {
