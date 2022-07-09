@@ -7,11 +7,10 @@ import UserAccessService from "../../services/user.access";
 import { Navbar } from "react-bootstrap";
 import { List } from "react-bootstrap-icons";
 import "../../css/main_view.css";
-import SideBar from "../main_view/sidebar/sidebar";
 import SidebarFunctional from "../main_view/sidebar/sidebarFunctional";
 import { changeListView } from "../../redux/reducers/mainViewSlice";
 import SidebarTaskContainer from "../main_view/main_content/main_content_container";
-import Calendar from "../main_view/calendar/calendarContainer"
+import Calendar from "../main_view/calendar/calendarContainer";
 // import Calendar from "../main_view/calendar"
 
 export type Iedittask = (
@@ -76,8 +75,8 @@ export default function MainViewPage(props: Props) {
     (state: any) => state.mainview.currentList,
   );
   const currentView = useSelector(
-    (state: any) => state.mainview.currentView
-  )
+    (state: any) => state.mainview.currentView,
+  );
   const { loading, error, data } = useQuery(GetFoldersDocument);
   const dispatch = useDispatch();
   const toggleSidebar = () => {
@@ -93,7 +92,7 @@ export default function MainViewPage(props: Props) {
         dispatch(
           changeListView({
             list_id: userDetails.inbox.toString(),
-            folder_id: userDetails.defaultFolder.toString()
+            folder_id: userDetails.defaultFolder.toString(),
           }),
         );
       }
@@ -115,13 +114,13 @@ export default function MainViewPage(props: Props) {
   ]);
   return (
     <div id="outer_wrapper">
-        <div id="navbar">        
-          <Navbar bg="primary" expand="lg">
-        <Navbar.Brand href="#home">
-          <List onClick={toggleSidebar} />
-        </Navbar.Brand>
-      </Navbar></div>
-    
+      <div id="navbar">
+        <Navbar bg="primary" expand="lg">
+          <Navbar.Brand href="#home">
+            <List onClick={toggleSidebar} size={45} />
+          </Navbar.Brand>
+        </Navbar>
+      </div>
 
       <div className="wrapper">
         <div
@@ -134,16 +133,14 @@ export default function MainViewPage(props: Props) {
           />
         </div>
         <div id="content">
-          { currentView == "tasks" ?
-          <div>
-            <SidebarTaskContainer folders={folders} />
-          </div> : null
-          }
-          { currentView == "calendar" ?
-          
-            <Calendar folders = {folders}/>
-           : null
-          }
+          {currentView == "tasks" ? (
+            <div>
+              <SidebarTaskContainer folders={folders} />
+            </div>
+          ) : null}
+          {currentView == "calendar" ? (
+            <Calendar folders={folders} />
+          ) : null}
         </div>
       </div>
     </div>
