@@ -1,64 +1,3 @@
-// import { Navbar, Nav, Container, Row, Col } from "react-bootstrap";
-// import { useDispatch } from "react-redux";
-// import { RouteComponentProps } from "react-router-dom";
-// import { GetFoldersQuery } from "../../../generated";
-// import { UserDetails } from "../../../services/user.access";
-// import List_unit from "./list_unit";
-// import SidebarFolder from "./sidebarFolder";
-// import { Plus } from "react-bootstrap-icons";
-// interface Props extends RouteComponentProps {
-//     folders: GetFoldersQuery["folders"];
-//     userDetails: UserDetails;
-//     changeListView: any;
-//     changeMainView: any;
-//   }
-// export default function SidebarFunctional(props: Props){
-//     const dispatch = useDispatch()
-//     function openModal(item: "folder" | "list"){
-
-//     }
-//     return (
-//         <Navbar>
-//             <Nav
-//                className="flex-column"
-//                style={{ maxWidth: "100%", minWidth: "100%" }}
-//             >
-//                 <div>
-//                     {/* This is the Inbox */}
-//                     {props.folders.map((folder) => {
-//                        folder.lists.map((list)=> {
-//                            return (list._id == props.userDetails.inbox.toString() && <List_unit list={list} folderId={folder._id} noDelete={true}></List_unit>)
-//                        })
-//                     })}
-//                     {/* This is the Lists in the default folder */}
-                    
-//                     {props.folders.map((folder) => {
-//                         return folder._id == props.userDetails.defaultFolder.toString() && (<SidebarFolder folder={folder} key={folder._id}/>)
-//                     })}
-                    
-//                     <Container style={{ padding: "0px" }}>
-//                     <Row
-//                       style={{ maxWidth: "100%", minWidth: "100%" }}
-//                     >
-//                       <Col>
-//                         <Nav.Item>Lists</Nav.Item>
-//                       </Col>
-//                       <Col className="ml-auto" md="auto">
-//                         <Plus
-//                           onClick={() => this.openModal("list")}
-//                           style={{ cursor: "pointer" }}
-//                         />
-//                       </Col>
-//                     </Row>
-//                   </Container>
-
-//                 </div>
-//             </Nav>
-//         </Navbar>
-//     )
-// }
-
-
 import { Component } from "react";
 
 import { RouteComponentProps, withRouter } from "react-router-dom";
@@ -67,7 +6,10 @@ import SidebarFolder from "./sidebarFolder";
 import IJWT from "../../../models/shared/jwt";
 import { UserDetails } from "../../../services/user.access";
 import { connect } from "react-redux";
-import { changeListView, changeMainView } from "../../../redux/reducers/mainViewSlice";
+import {
+  changeListView,
+  changeMainView,
+} from "../../../redux/reducers/mainViewSlice";
 import { GetFoldersQuery } from "../../../generated";
 import { Navbar, Nav, Row, Container, Col } from "react-bootstrap";
 import { Plus } from "react-bootstrap-icons";
@@ -142,109 +84,115 @@ class SideBar extends Component<Props, State> {
   render() {
     const { folders, userDetails } = this.props;
     return (
-      <Navbar>
+      <Navbar
+        bg="background"
+        style={{ height: "100%", width: "100%" }}
+      >
         <Nav
           className="flex-column"
           style={{ maxWidth: "100%", minWidth: "100%" }}
         >
-            <div>
-                    {/* This is the Inbox */}
-                    {this.props.folders.map((folder) => {
-                        return(
-                       folder.lists.map((list)=> {
-                           return (
-                               list._id == this.props.userDetails.inbox.toString() 
-                               && 
-                               <ListUnit key={list._id} list={list} folderId={folder._id} noDelete={true}/>
-                               )
-                       }))
-                    })}      
-                    <Container style={{ padding: "0px" }}>
-                    <Row
-                      style={{ maxWidth: "100%", minWidth: "100%" }}
-                    >
-                      <Col>
-                        <Nav.Item>Lists</Nav.Item>
-                      </Col>
-                      <Col className="ml-auto" md="auto">
-                        <Plus
-                          onClick={() => this.openModal("list")}
-                          style={{ cursor: "pointer" }}
-                        />
-                      </Col>
-                    </Row>
-                    </Container>
-                  {/* This is the Lists in the default folder */} 
-                    {this.props.folders.map((folder) => {
-                            return (
-                                folder._id == this.props.userDetails.defaultFolder.toString() 
-                                    && folder.lists.map(list=> {
-                                        return(
-                                            list._id!== this.props.userDetails.inbox.toString() &&
-                                            (<div key={list._id}>
-                                                <ListUnit
-                                                list={list}
-                                                folderId={folder._id}
-                                                noDelete={
-                                                    false
-                                                }
-                                />
-                                            </div>)
-                                        )
-                                    })
-                                    // (<SidebarFolder folder={folder} key={folder._id}/>))
-                    )})
-                    }
-                  {/* This is the Folders */}
-                  <Container style={{ padding: "0px" }}>
-                    <Row
-                      style={{ maxWidth: "100%", minWidth: "100%" }}
-                    >
-                      <Col>
-                        <Nav.Item>Folders</Nav.Item>
-                      </Col>
-                      <Col className="ml-auto" md="auto">
-                        <Plus
-                          onClick={() => this.openModal("folder")}
-                          style={{ cursor: "pointer" }}
-                        />
-                      </Col>
-                    </Row>
-                  </Container>
-                  {this.props.folders.map((folder) => {
-                     return (folder._id !== userDetails.defaultFolder.toString() 
-                     && !folder.isDeleted && (
-                        <SidebarFolder
-                        folder={folder}
-                        key={folder._id}
-                      />
-                     )
-                     )
-                  })}
-                    <AddModalFolder
-                    modalShow={this.state.folderModalShow}
-                    closeModal={this.closeFolderModal}
+          <div>
+            {/* This is the Inbox */}
+            {this.props.folders.map((folder) => {
+              return folder.lists.map((list) => {
+                return (
+                  list._id ==
+                    this.props.userDetails.inbox.toString() && (
+                    <ListUnit
+                      key={list._id}
+                      list={list}
+                      folderId={folder._id}
+                      noDelete={true}
                     />
-                    <AddModalList
-                    folderId={this.props.userDetails.defaultFolder.toString()}
-                    closeModal={this.closeListModal}
-                    modalShow={this.state.listModalShow}
-                    />
-            <button onClick={() => { 
-              this.props.changeMainView({
-                currentView: "calendar"
-              })
-              
-              // this.props.history.push("/calendar") 
-            }
-              
-              }>Take me to Calendar</button>
+                  )
+                );
+              });
+            })}
+            <Container style={{ padding: "0px" }}>
+              <Row style={{ maxWidth: "100%", minWidth: "100%" }}>
+                <Col>
+                  <Nav.Item>Lists</Nav.Item>
+                </Col>
+                <Col className="ml-auto" md="auto">
+                  <Plus
+                    onClick={() => this.openModal("list")}
+                    style={{ cursor: "pointer" }}
+                  />
+                </Col>
+              </Row>
+            </Container>
+            {/* This is the Lists in the default folder */}
+            {this.props.folders.map((folder) => {
+              return (
+                folder._id ==
+                  this.props.userDetails.defaultFolder.toString() &&
+                folder.lists.map((list) => {
+                  return (
+                    list._id !==
+                      this.props.userDetails.inbox.toString() && (
+                      <div key={list._id}>
+                        <ListUnit
+                          list={list}
+                          folderId={folder._id}
+                          noDelete={false}
+                        />
+                      </div>
+                    )
+                  );
+                })
+                // (<SidebarFolder folder={folder} key={folder._id}/>))
+              );
+            })}
+            {/* This is the Folders */}
+            <Container style={{ padding: "0px" }}>
+              <Row style={{ maxWidth: "100%", minWidth: "100%" }}>
+                <Col>
+                  <Nav.Item>Folders</Nav.Item>
+                </Col>
+                <Col className="ml-auto" md="auto">
+                  <Plus
+                    onClick={() => this.openModal("folder")}
+                    style={{ cursor: "pointer" }}
+                  />
+                </Col>
+              </Row>
+            </Container>
+            {this.props.folders.map((folder) => {
+              return (
+                folder._id !== userDetails.defaultFolder.toString() &&
+                !folder.isDeleted && (
+                  <SidebarFolder folder={folder} key={folder._id} />
+                )
+              );
+            })}
+            <AddModalFolder
+              modalShow={this.state.folderModalShow}
+              closeModal={this.closeFolderModal}
+            />
+            <AddModalList
+              folderId={this.props.userDetails.defaultFolder.toString()}
+              closeModal={this.closeListModal}
+              modalShow={this.state.listModalShow}
+            />
+            <button
+              onClick={() => {
+                this.props.changeMainView({
+                  currentView: "calendar",
+                });
 
-            </div>
+                // this.props.history.push("/calendar")
+              }}
+            >
+              Take me to Calendar
+            </button>
+          </div>
         </Nav>
       </Navbar>
     );
   }
 }
 
-export default withRouter(connect(null, { changeListView, changeMainView })(SideBar));
+export default withRouter(
+  connect(null, { changeListView, changeMainView })(SideBar),
+);
