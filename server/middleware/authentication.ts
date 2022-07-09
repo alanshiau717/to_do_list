@@ -9,16 +9,12 @@ export default async (req: any, _: express.Response, next: express.NextFunction)
     const decodedToken = validateAndDecodeJwtToken(req.cookies['token'])
     let isValidUserSession = await userService.isValidUserSession(decodedToken.sessionId, decodedToken.userId)
     if(isValidUserSession) {
-      // req.userId = 1
-      // req.sessionId = 1
       req.userId = decodedToken.userId
       req.sessionId = decodedToken.sessionId
     }
   } catch(err) {
     req.userId = null
     req.sessionId = null
-      // req.userId = 9
-      // req.sessionId = 1
   }
   return next();
 }

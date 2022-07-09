@@ -6,7 +6,10 @@ import SidebarFolder from "./sidebarFolder";
 import IJWT from "../../../models/shared/jwt";
 import { UserDetails } from "../../../services/user.access";
 import { connect } from "react-redux";
-import { changeListView, changeMainView } from "../../../redux/reducers/mainViewSlice";
+import {
+  changeListView,
+  changeMainView,
+} from "../../../redux/reducers/mainViewSlice";
 import { GetFoldersQuery } from "../../../generated";
 import { Navbar, Nav, Row, Container, Col } from "react-bootstrap";
 import { Plus } from "react-bootstrap-icons";
@@ -60,7 +63,6 @@ class SideBar extends Component<Props, State> {
     });
   }
   openModal(item: "folder" | "list") {
-    console.log("hit open modal");
     if (item === "folder") {
       this.setState({
         folderModalShow: true,
@@ -91,10 +93,7 @@ class SideBar extends Component<Props, State> {
               return folder._id !==
                 userDetails.defaultFolder.toString() ? (
                 !folder.isDeleted && (
-                  <SidebarFolder
-                    folder={folder}
-                    key={folder._id}
-                  />
+                  <SidebarFolder folder={folder} key={folder._id} />
                 )
               ) : (
                 <div key={folder._id}>
@@ -124,7 +123,7 @@ class SideBar extends Component<Props, State> {
                               // editList={this.props.editList}
                               noDelete={
                                 list._id ===
-                                  this.props.userDetails.inbox.toString()
+                                this.props.userDetails.inbox.toString()
                                   ? true
                                   : false
                               }
@@ -163,24 +162,26 @@ class SideBar extends Component<Props, State> {
               closeModal={this.closeListModal}
               modalShow={this.state.listModalShow}
             />
-            <button onClick={() => { 
-              this.props.changeMainView({
-                currentView: "calendar"
-              })
-              
-              // this.props.history.push("/calendar") 
-            }
-              
-              }>Take me to Calendar</button>
+            <button
+              onClick={() => {
+                this.props.changeMainView({
+                  currentView: "calendar",
+                });
+
+                // this.props.history.push("/calendar")
+              }}
+            >
+              Take me to Calendar
+            </button>
           </div>
-              
-          <div>
-            
-          </div>
+
+          <div></div>
         </Nav>
       </Navbar>
     );
   }
 }
 
-export default withRouter(connect(null, { changeListView, changeMainView })(SideBar));
+export default withRouter(
+  connect(null, { changeListView, changeMainView })(SideBar),
+);

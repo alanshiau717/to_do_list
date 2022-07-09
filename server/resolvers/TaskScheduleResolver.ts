@@ -26,6 +26,7 @@ export class TaskScheduleResolver {
     async getTaskSchedules(@Ctx() ctx: any){
         return this.taskScheduleService.getAllTaskScheduleByUserId(ctx.userId)
     }
+
     private get taskScheduleService() {
         return new TaskScheduleService
     }

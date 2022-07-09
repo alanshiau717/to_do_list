@@ -21,6 +21,7 @@ import { withRouter } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useMutation, useQuery } from "@apollo/client";
 import momentTimezonePlugin from "@fullcalendar/moment-timezone";
+import TaskScheduleEventModal from "./taskScheduleEventModal";
 
 interface TaskScheduleEventAPI extends EventApi {
   extendedProps: {
@@ -40,7 +41,8 @@ function CalendarContainer(props: Props) {
   const { loading, error, data } = useQuery(GetTaskSchedulesDocument);
   const [tasks2, setTasks2] =
     useState<GetFoldersQuery["folders"][0]["lists"][0]["tasks"]>();
-
+  const [taskScheduleModalShow, setTaskScheduleModalShow] =
+    useState(false);
   const [tasks, setTasks] = useState<EventInput[]>([
     { title: "today's event", date: new Date() },
   ]);
@@ -76,6 +78,10 @@ function CalendarContainer(props: Props) {
       console.log("error", createTaskScheduleResponse.error?.message);
     }
   }, [createTaskScheduleResponse]);
+  useEffect(() => {
+    setTasks2(getTasksFromCurrentList(currentList, currentFolder));
+  });
+
   function transformData(data: GetTaskSchedulesQuery): EventInput[] {
     var out = data.getTaskSchedules.map((taskSchedule) => {
       const { tasks, __typename, ...alreadyMappedKeys } =
@@ -90,10 +96,6 @@ function CalendarContainer(props: Props) {
     console.log(out);
     return out;
   }
-
-  useEffect(() => {
-    setTasks2(getTasksFromCurrentList(currentList, currentFolder));
-  });
 
   function eventRecieveCallBack(args: EventReceiveArg) {
     let event = args.event as TaskScheduleEventAPI;
@@ -112,7 +114,6 @@ function CalendarContainer(props: Props) {
       throw Error();
     }
   }
-
   function sleep(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
@@ -164,10 +165,19 @@ function CalendarContainer(props: Props) {
             center: "title",
           }}
           eventReceive={eventRecieveCallBack}
+          eventClick={() => {
+            setTaskScheduleModalShow(true);
+          }}
           events={tasks}
           timeZone="Australia/Melbourne"
         />
       </div>
+      <TaskScheduleEventModal
+        closeModal={() => {
+          setTaskScheduleModalShow(false);
+        }}
+        modalShow={taskScheduleModalShow}
+      />
     </div>
   );
 }
