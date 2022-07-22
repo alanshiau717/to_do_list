@@ -13,8 +13,8 @@ import {
 import { GetFoldersQuery } from "../../../generated";
 import { Navbar, Nav, Row, Container, Col } from "react-bootstrap";
 import { Plus } from "react-bootstrap-icons";
-import AddModalFolder from "./add_modal_folder";
-import AddModalList from "./add_modal_list";
+import AddModalFolder from "../modal/add_modal_folder";
+import AddModalList from "../modal/add_modal_list";
 
 import ListUnit from "./list_unit";
 

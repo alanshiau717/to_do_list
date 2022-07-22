@@ -1,20 +1,29 @@
 $theme-colors: (
-  "primary": #7B61FF,
-  "danger": #ff4136,
-  "background": #F5F5F5
+        "primary": #7B61FF,
+        "danger": #ff4136,
+        "background": #F5F5F5,
+        "hovered": #DFDFDF
+);
+
+$opacities: (
+        "low": 0.75,
+        "medium": 0.5,
+        "high": 0.25
 );
 
 .bg-primary,
 .btn-primary,
 .badge-primary,
 .alert-primary {
-  // background-image: red;
-  // background-image: linear-gradient(
-  //   to right,
-  //   #f64f59,
-  //   #c471ed,
-  //   #12c2e9
-  // );
+}
+
+
+@function theme-color($key) {
+  @return map-get($theme-colors, $key)
+}
+
+@function opacity($key) {
+  @return map-get($opacities, $key)
 }
 
 @import "~bootstrap/scss/bootstrap";

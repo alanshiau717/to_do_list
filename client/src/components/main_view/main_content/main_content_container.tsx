@@ -1,4 +1,4 @@
-import { Component, useState } from "react";
+import React, { Component, useState } from "react";
 import { Container } from "react-bootstrap";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { connect, useSelector } from "react-redux";

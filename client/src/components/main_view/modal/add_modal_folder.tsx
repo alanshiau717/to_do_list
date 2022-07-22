@@ -5,6 +5,8 @@ import { Modal, Button, Form } from "react-bootstrap";
 // import { Ieditfolder } from "../../wrappers/main_view_wrapper";
 import { CreateFolderDocument, GetFoldersDocument } from "../../../generated";
 import { useMutation } from "@apollo/client";
+import {useDispatch} from "react-redux";
+import {closeModal} from "../../../redux/reducers/modalSlice";
 interface Props extends RouteComponentProps {
   modalShow: boolean;
   closeModal: () => void;
@@ -87,5 +89,71 @@ function AddModalFolderFunctional(props: Props) {
     </Modal>
   );
 }
+
+export interface GlobalFolderModalProps {
+  folderId: string
+}
+
+export function GlobalAddFolderModal(props: GlobalFolderModalProps) {
+  const [addFolder, { data, loading, error }] = useMutation(
+      CreateFolderDocument,
+      {
+        refetchQueries: [GetFoldersDocument],
+      },
+  );
+  const dispatch = useDispatch()
+  // const [modalShow, setModalShow] = useState(props.modalShow);
+  const [newItemName, setNewItemName] = useState("");
+  const myRef = React.createRef<HTMLInputElement>();
+  function focus() {
+    const node = myRef.current;
+    node?.focus();
+    // this.state.textInput.current.focus();
+  }
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     focus();
+  //   }, 1);
+  // }, [modalShow]);
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setNewItemName(e.target.value);
+  }
+  function handleSubmit() {
+    addFolder({ variables: { data: { name: newItemName } } });
+    setNewItemName("");
+    dispatch(closeModal())
+    // closeModal();
+  }
+  // function closeModal() {
+  //   setModalShow(false);
+  //   props.closeModal();
+  // }
+
+  return (
+        <Modal.Body>
+          <Form>
+            <Form.Group controlId="formBasicEmail">
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                  autoFocus
+                  ref={myRef}
+                  placeholder="Enter Folder Name"
+                  value={newItemName}
+                  onChange={handleChange}
+                  onKeyPress={(
+                      e: React.KeyboardEvent<HTMLInputElement>,
+                  ) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      handleSubmit();
+                    }
+                  }}
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+  );
+}
+
 
 export default withRouter(AddModalFolderFunctional);

@@ -4,7 +4,7 @@
    "description": "",
    "main": "index.js",
    "scripts": {
-      "postinstall": "cd client && npm install && cd.. && cd server && npm install",
+      "postinstall": "cd client && npm install && cd .. && cd server && npm install",
       "client": "cd client && npm run dev",
       "server": "cd server && npm run dev",
       "tsoa": "tsoa spec-and-routes",

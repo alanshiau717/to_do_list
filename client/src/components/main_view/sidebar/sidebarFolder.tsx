@@ -4,7 +4,7 @@ import { changeListView } from "../../../redux/reducers/mainViewSlice";
 import { connect } from "react-redux";
 import { ThreeDotsVertical, Folder } from "react-bootstrap-icons";
 import ListUnit from "./list_unit";
-import AddModalList from "./add_modal_list";
+import AddModalList from "../modal/add_modal_list";
 import {
   GetFoldersDocument,
   GetFoldersQuery,

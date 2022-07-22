@@ -1,0 +1,43 @@
+@import '../custom.scss';
+
+.sidebarElement {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+  padding: 10px 12px 10px 34px;
+  gap: 34px;
+
+  position: relative;
+  width: 250px;
+  height: 44px;
+  border-radius: 15px;
+}
+
+.sidebarText {
+  flex: none;
+  order: 1;
+  align-self: stretch;
+  flex-grow: 1;
+  letter-spacing: 0px;
+  font-size: 20px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 80px
+}
+.sidebarIcon {
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
+.sidebarDropdownIcon {
+  flex: none;
+  order: 2;
+  flex-grow: 0;
+}
+
+.sidebarElement:hover {
+  background-color: theme-color("hovered");
+  cursor: pointer;
+}
