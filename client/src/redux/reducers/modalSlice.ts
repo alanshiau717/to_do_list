@@ -1,6 +1,4 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {RootState} from "../store"
-import {GlobalAddFolderModal, GlobalFolderModalProps} from "../../components/main_view/modal/add_modal_folder";
 import {GlobalListModalProps} from "../../components/main_view/modal/add_modal_list";
 
 export enum CurrentModal {
@@ -12,7 +10,7 @@ export enum CurrentModal {
 export interface ModalState {
     currentModal: CurrentModal | null,
     isOpen: boolean,
-    modalProps: GlobalFolderModalProps | GlobalListModalProps | null
+    modalProps: GlobalListModalProps | null
 }
 
 const initialState: ModalState = {
@@ -25,16 +23,15 @@ export const modalSlice = createSlice({
         name: "modal",
         initialState,
         reducers: {
-            openModal: (state, ) => {
+            openModal: (state,) => {
                 // state.currentModal = action.payload.currentModal
                 state.isOpen = true
             },
-            openFolderModal: (state, action: PayloadAction<{props: GlobalFolderModalProps}>) => {
+            openFolderModal: (state) => {
                 state.currentModal = CurrentModal.ADD_FOLDER_MODAL
-                state.modalProps = action.payload.props
                 modalSlice.caseReducers.openModal(state)
             },
-            openListModal: (state, action: PayloadAction<{props: GlobalListModalProps}>) => {
+            openListModal: (state, action: PayloadAction<{ props: GlobalListModalProps }>) => {
                 state.currentModal = CurrentModal.ADD_LIST_MODAL
                 state.modalProps = action.payload.props
                 modalSlice.caseReducers.openModal(state)

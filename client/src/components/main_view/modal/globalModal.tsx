@@ -4,6 +4,7 @@ import Modal, {ModalProps} from "react-bootstrap/Modal"
 import {useDispatch, useSelector} from "react-redux";
 import {closeModal, CurrentModal} from "../../../redux/reducers/modalSlice";
 import {GlobalAddListModal, GlobalListModalProps} from "./add_modal_list";
+import {GlobalAddFolderModal} from "./add_modal_folder";
 
 export const MODAL_TYPES = {
     CREATE_MODAL: "CREATE_MODAL",
@@ -35,7 +36,8 @@ export default function GlobalModal() {
         switch(currentModal) {
             case CurrentModal.ADD_LIST_MODAL:
                 return (<GlobalAddListModal folderId={(modalProps as GlobalListModalProps).folderId}/>)
-            // case CurrentModal.ADD_FOLDER_MODAL:
+            case CurrentModal.ADD_FOLDER_MODAL:
+                return (<GlobalAddFolderModal/>)
 
         }
     }

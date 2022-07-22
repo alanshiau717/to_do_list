@@ -90,11 +90,8 @@ function AddModalFolderFunctional(props: Props) {
   );
 }
 
-export interface GlobalFolderModalProps {
-  folderId: string
-}
 
-export function GlobalAddFolderModal(props: GlobalFolderModalProps) {
+export function GlobalAddFolderModal() {
   const [addFolder, { data, loading, error }] = useMutation(
       CreateFolderDocument,
       {
@@ -130,6 +127,7 @@ export function GlobalAddFolderModal(props: GlobalFolderModalProps) {
   // }
 
   return (
+      <div>
         <Modal.Body>
           <Form>
             <Form.Group controlId="formBasicEmail">
@@ -152,6 +150,14 @@ export function GlobalAddFolderModal(props: GlobalFolderModalProps) {
             </Form.Group>
           </Form>
         </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={() => handleSubmit()}>
+            Create Folder
+          </Button>
+        </Modal.Footer>
+      </div>
+
+
   );
 }
 

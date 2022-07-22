@@ -2,7 +2,7 @@ import {GetFoldersQuery} from "../../../generated";
 import React, {useContext, useEffect, useState} from "react";
 import {Accordion, AccordionContext, useAccordionToggle} from "react-bootstrap";
 import {RenderProps, SidebarElementRender} from "./sidebar_element";
-import {ChevronDown, ChevronRight, List} from "react-bootstrap-icons";
+import {ChevronDown, ChevronRight, Folder, List} from "react-bootstrap-icons";
 import {UserDetails} from "../../../services/user.access";
 import {useDispatch} from "react-redux";
 import {CurrentModal, openFolderModal, openListModal, openModal} from "../../../redux/reducers/modalSlice";
@@ -33,7 +33,7 @@ function ContextAwareToggle({eventKey, callback, defaultFolder, changeEventKey})
         },
         {
             name: "Add Folder", function: () => {
-                dispatch(openFolderModal({props: {folderId: defaultFolder}}))
+                dispatch(openFolderModal())
             }
         }
     ]
@@ -47,27 +47,39 @@ function ContextAwareToggle({eventKey, callback, defaultFolder, changeEventKey})
 }
 
 function getDefaultLists(folders: GetFoldersQuery["folders"], defaultFolder: string, inbox: string): GetFoldersQuery["folders"][0]["lists"] {
-    let test: GetFoldersQuery["folders"][0]["lists"] = []
+    let defaultLists: GetFoldersQuery["folders"][0]["lists"] = []
     folders.forEach(
         (folder) => {
             if (folder._id == defaultFolder) {
                 folder.lists.forEach((list) => {
                     if (list._id !== inbox) {
-                        test.push(list)
+                        defaultLists.push(list)
                     }
                 })
             }
         }
     )
-    return test
+    return defaultLists
 }
 
+function getNonDefaultFolders(folders: GetFoldersQuery["folders"], defaultFolder: string): GetFoldersQuery["folders"] {
+    let nonDefaultFolders: GetFoldersQuery["folders"] = []
+    folders.forEach(
+        (folder) => {
+            if(folder._id !== defaultFolder) {
+                nonDefaultFolders.push(folder)
+            }
+        }
+    )
+    return nonDefaultFolders
+}
 
 export default function ProjectsAccordion(props: Props) {
 
     const {folders, userDetails} = props
 
-    let lists = getDefaultLists(folders, userDetails.defaultFolder.toString(), userDetails.inbox.toString())
+    let defaultLists = getDefaultLists(folders, userDetails.defaultFolder.toString(), userDetails.inbox.toString())
+    let nonDefaultFolders = getNonDefaultFolders(folders, userDetails.defaultFolder.toString())
     const [activeKey, setActiveKey] = useState<string | undefined>(undefined)
 
     function toggleAccordion(eventKey: string) {
@@ -76,7 +88,6 @@ export default function ProjectsAccordion(props: Props) {
         } else {
             setActiveKey(eventKey)
         }
-
     }
 
     return (
@@ -87,14 +98,20 @@ export default function ProjectsAccordion(props: Props) {
             }}/>
             <Accordion.Collapse eventKey={"1"}>
                 <div>
-                    {lists.map(list => {
+                    {defaultLists.map(list => {
                         return (
                             <SidebarElementRender icon={List} name={list.name}/>
                         )
                     })}
+                    {
+                        nonDefaultFolders.map(folder => {
+                            return (
+                                <SidebarElementRender icon={Folder} name={folder.name}/>
+                            )
+                        })
+                    }
                 </div>
             </Accordion.Collapse>
-
         </Accordion>
     )
 
