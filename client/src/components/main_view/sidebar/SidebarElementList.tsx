@@ -4,6 +4,7 @@ import {useMutation} from "@apollo/client";
 import {useDispatch} from "react-redux";
 import {openEditListModal} from "../../../redux/reducers/modalSlice";
 import {List} from "react-bootstrap-icons";
+import {changeListView} from "../../../redux/reducers/mainViewSlice";
 
 interface Props {
     list: GetFoldersQuery["folders"][0]["lists"][0];
@@ -43,7 +44,9 @@ export function SidebarElementList(props: Props) {
     ]
 
     return (
-        <SidebarElementRender icon={List} name={props.list.name} dropDownMenu={listDropDownProps} isIndented={props.isIndented}/>
+        <SidebarElementRender icon={List} name={props.list.name} dropDownMenu={listDropDownProps} isIndented={props.isIndented} onClick={() => {
+            // dispatch(changeListView({list_id: props.list._id}))
+        }}/>
     )
 
 }
