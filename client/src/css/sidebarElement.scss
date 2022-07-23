@@ -3,7 +3,7 @@
 .sidebarElement {
   display: flex;
   flex-direction: row;
-  justify-content: left;
+  justify-content: center;
   align-items: center;
   padding: 10px 12px 10px 34px;
   gap: 34px;
@@ -14,18 +14,35 @@
   border-radius: 15px;
 }
 
-.sidebarText {
-  flex: none;
+.sidebarElement-indented {
+  padding: 10px 12px 10px 60px !important;
+}
+
+.sidebarElement-selected {
+  background-color: theme-color("primary-transparent");
+}
+
+.sidebarElement-selected:hover {
+  //important used to over-ride the sidebarElement:hover background color
+  background-color: theme-color("primary-transparent-darker") !important;
+}
+
+.sidebarTextContainer {
   order: 1;
   align-self: stretch;
   flex-grow: 1;
+  overflow: hidden;
+}
+
+.sidebarText {
   letter-spacing: 0px;
   font-size: 20px;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  width: 80px
+  //width: 80px
 }
+
 .sidebarIcon {
   flex: none;
   order: 0;

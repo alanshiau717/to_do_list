@@ -2,7 +2,9 @@ $theme-colors: (
         "primary": #7B61FF,
         "danger": #ff4136,
         "background": #F5F5F5,
-        "hovered": #DFDFDF
+        "hovered": #DFDFDF,
+        "primary-transparent": rgba(123, 97, 255, 0.25),
+        "primary-transparent-darker": rgba(123, 97, 255, 0.5)
 );
 
 $opacities: (
@@ -22,7 +24,7 @@ $opacities: (
   @return map-get($theme-colors, $key)
 }
 
-@function opacity($key) {
+@function get-opacity($key) {
   @return map-get($opacities, $key)
 }
 

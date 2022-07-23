@@ -5,7 +5,8 @@ import {RenderProps, SidebarElementRender} from "./sidebar_element";
 import {ChevronDown, ChevronRight, Folder, List} from "react-bootstrap-icons";
 import {UserDetails} from "../../../services/user.access";
 import {useDispatch} from "react-redux";
-import {CurrentModal, openFolderModal, openListModal, openModal} from "../../../redux/reducers/modalSlice";
+import { openFolderModal, openListModal} from "../../../redux/reducers/modalSlice";
+import SidebarFoldersAccordion from "./SidebarFolderAccordion";
 
 
 interface Props {
@@ -13,22 +14,25 @@ interface Props {
     userDetails: UserDetails;
 }
 
+interface ContextAwareToggle {
+    eventKey: string;
+    defaultFolder: string;
+    changeEventKey(): any;
+}
 
-// @ts-ignore
-function ContextAwareToggle({eventKey, callback, defaultFolder, changeEventKey}) {
+function ContextAwareToggle(props: ContextAwareToggle) {
     const dispatch = useDispatch()
     const currentEventKey = useContext(AccordionContext);
     const decoratedOnClick = useAccordionToggle(
-        eventKey,
+        props.eventKey,
         () => {
-            callback && callback(eventKey)
-            changeEventKey()
+            props.changeEventKey()
         },
     );
     const folderDropDownProps: RenderProps["dropDownMenu"] = [
         {
             name: "Add List", function: () => {
-                dispatch(openListModal({props: {folderId: defaultFolder}}))
+                dispatch(openListModal({props: {folderId: props.defaultFolder}}))
             }
         },
         {
@@ -37,7 +41,7 @@ function ContextAwareToggle({eventKey, callback, defaultFolder, changeEventKey})
             }
         }
     ]
-    const isCurrentEventKey = currentEventKey === eventKey;
+    const isCurrentEventKey = currentEventKey === props.eventKey;
 
     return (
         <SidebarElementRender fontWeight="Bold" onClick={(event: any) => {
@@ -92,8 +96,7 @@ export default function ProjectsAccordion(props: Props) {
 
     return (
         <Accordion activeKey={activeKey}>
-            {/* @ts-ignore */}
-            <ContextAwareToggle eventKey={"1"} defaultFolder={userDetails.defaultFolder} changeEventKey={() => {
+            <ContextAwareToggle eventKey={"1"} defaultFolder={userDetails.defaultFolder.toString()} changeEventKey={() => {
                 toggleAccordion("1")
             }}/>
             <Accordion.Collapse eventKey={"1"}>
@@ -103,13 +106,12 @@ export default function ProjectsAccordion(props: Props) {
                             <SidebarElementRender icon={List} name={list.name}/>
                         )
                     })}
-                    {
-                        nonDefaultFolders.map(folder => {
-                            return (
-                                <SidebarElementRender icon={Folder} name={folder.name}/>
-                            )
-                        })
-                    }
+                    {nonDefaultFolders.map(folder => {
+                        return (
+                            <SidebarFoldersAccordion folder={folder}></SidebarFoldersAccordion>
+                        )
+                    })}
+
                 </div>
             </Accordion.Collapse>
         </Accordion>

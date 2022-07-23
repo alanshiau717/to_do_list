@@ -25,9 +25,11 @@ export interface RenderProps {
     icon: Icon;
     dropDownMenu?: dropDownProps[];
     name: string;
+    selected?: boolean
 
     onClick?(event: any): any;
 
+    isIndented?: boolean
     fontWeight?: string
 }
 
@@ -38,7 +40,9 @@ interface dropDownProps {
 }
 
 SidebarElementRender.defaultProps = {
-    fontWeight: "Regular"
+    fontWeight: "Regular",
+    selected: false,
+    isIndented: false
 }
 
 
@@ -46,23 +50,29 @@ export function SidebarElementRender(props: RenderProps) {
     const [showElementOptions, setElementOptions] = useState(false)
     const Icon = props.icon
     return (
-        <div className="sidebarElement clickPropagator" onMouseEnter={() => {
-            setElementOptions(true)
-        }
-        } onMouseLeave={() => {
+        <div
+            className={`${props.isIndented ? "sidebarElement-indented" : ""} sidebarElement clickPropagator ${props.selected ? "sidebarElement-selected" : ""}`}
+            onMouseEnter={() => {
+                setElementOptions(true)
+            }
+            } onMouseLeave={() => {
             setElementOptions(false)
         }}
-             onClick={(event) => {
-                 // @ts-ignore
-                 if (!event.target.classList.value.includes("clickPropagator")) {
-                     event.preventDefault()
-                 } else if (props.onClick) {
-                     props.onClick(event)
-                 }
-             }}
+            onClick={(event) => {
+                // @ts-ignore
+                if (!event.target.classList.value.includes("clickPropagator")) {
+                    event.preventDefault()
+                } else if (props.onClick) {
+                    props.onClick(event)
+                }
+            }}
         >
             <div className={"sidebarIcon clickPropagator"}><Icon className={"clickPropagator"} size={24}/></div>
-            <div style={{fontWeight: props.fontWeight}} className={"sidebarText clickPropagator"}>{props.name}</div>
+            <div  className={"sidebarTextContainer clickPropagator"}>
+                <div style={{fontWeight: props.fontWeight}} className={"sidebarText"}>
+                    {props.name}
+                </div>
+            </div>
             <div className={"sidebarDropdownIcon"}>{showElementOptions &&
                 <Dropdown className={"Dropdown"}>
                     <Dropdown.Toggle
