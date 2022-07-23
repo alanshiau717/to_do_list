@@ -5,6 +5,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {closeModal, CurrentModal} from "../../../redux/reducers/modalSlice";
 import {GlobalAddListModal, GlobalListModalProps} from "./add_modal_list";
 import {GlobalAddFolderModal} from "./add_modal_folder";
+import {EditListModal, EditListModalProps} from "./EditListModal";
+import {EditFolderModal, EditFolderModalProps} from "./EditFolderModal";
 
 export const MODAL_TYPES = {
     CREATE_MODAL: "CREATE_MODAL",
@@ -32,13 +34,17 @@ export default function GlobalModal() {
         (state: any) => state.modal.currentModal
     ) as CurrentModal
 
+
     function renderModal(currentModal: CurrentModal, modalProps: ModalProps) {
         switch(currentModal) {
             case CurrentModal.ADD_LIST_MODAL:
                 return (<GlobalAddListModal folderId={(modalProps as GlobalListModalProps).folderId}/>)
             case CurrentModal.ADD_FOLDER_MODAL:
                 return (<GlobalAddFolderModal/>)
-
+            case CurrentModal.EDIT_LIST_MODAL:
+                return (<EditListModal list={(modalProps as EditListModalProps).list}/>)
+            case CurrentModal.EDIT_FOLDER_MODAL:
+                return (<EditFolderModal folder={(modalProps as EditFolderModalProps).folder}/>)
         }
     }
     return (

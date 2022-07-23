@@ -5,8 +5,9 @@ import {RenderProps, SidebarElementRender} from "./sidebar_element";
 import {ChevronDown, ChevronRight, Folder, List} from "react-bootstrap-icons";
 import {UserDetails} from "../../../services/user.access";
 import {useDispatch} from "react-redux";
-import { openFolderModal, openListModal} from "../../../redux/reducers/modalSlice";
+import { openAddFolderModal, openAddListModal} from "../../../redux/reducers/modalSlice";
 import SidebarFoldersAccordion from "./SidebarFolderAccordion";
+import {SidebarElementList} from "./SidebarElementList";
 
 
 interface Props {
@@ -32,12 +33,12 @@ function ContextAwareToggle(props: ContextAwareToggle) {
     const folderDropDownProps: RenderProps["dropDownMenu"] = [
         {
             name: "Add List", function: () => {
-                dispatch(openListModal({props: {folderId: props.defaultFolder}}))
+                dispatch(openAddListModal({props: {folderId: props.defaultFolder}}))
             }
         },
         {
             name: "Add Folder", function: () => {
-                dispatch(openFolderModal())
+                dispatch(openAddFolderModal())
             }
         }
     ]
@@ -56,7 +57,7 @@ function getDefaultLists(folders: GetFoldersQuery["folders"], defaultFolder: str
         (folder) => {
             if (folder._id == defaultFolder) {
                 folder.lists.forEach((list) => {
-                    if (list._id !== inbox) {
+                    if (list._id !== inbox && !list.isDeleted) {
                         defaultLists.push(list)
                     }
                 })
@@ -70,7 +71,7 @@ function getNonDefaultFolders(folders: GetFoldersQuery["folders"], defaultFolder
     let nonDefaultFolders: GetFoldersQuery["folders"] = []
     folders.forEach(
         (folder) => {
-            if(folder._id !== defaultFolder) {
+            if(folder._id !== defaultFolder && !folder.isDeleted) {
                 nonDefaultFolders.push(folder)
             }
         }
@@ -103,7 +104,8 @@ export default function ProjectsAccordion(props: Props) {
                 <div>
                     {defaultLists.map(list => {
                         return (
-                            <SidebarElementRender icon={List} name={list.name}/>
+                            // <SidebarElementRender icon={List} name={list.name}/>
+                            <SidebarElementList list={list}/>
                         )
                     })}
                     {nonDefaultFolders.map(folder => {

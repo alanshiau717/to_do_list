@@ -113,7 +113,6 @@ export function GlobalAddListModal(props: GlobalListModalProps) {
         refetchQueries: [GetFoldersDocument],
       },
   );
-  // const [modalShow, setModalShow] = useState(props.modalShow);
   const [newItemName, setNewItemName] = useState("");
   const myRef = React.createRef<HTMLInputElement>();
   const dispatch = useDispatch()
@@ -121,19 +120,9 @@ export function GlobalAddListModal(props: GlobalListModalProps) {
     const node = myRef.current;
     node?.focus();
   }
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     focus();
-  //   }, 1);
-  // }, [modalShow]);
-
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setNewItemName(e.target.value);
   }
-  // function closeModal() {
-  //   setModalShow(false);
-  //   props.closeModal();
-  // }
   function handleSubmit() {
     addList({
       variables: {
@@ -143,15 +132,9 @@ export function GlobalAddListModal(props: GlobalListModalProps) {
         },
       },
     });
-
-    // this.props.editList("add", {
-    //   name: this.state.newItemName,
-    //   folderId: this.props.folderId,
-    // });
     dispatch(closeModal())
     setNewItemName("");
     setTimeout(() => {
-      // closeModal();
     }, 1);
   }
   return (<div>

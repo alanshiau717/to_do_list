@@ -69,7 +69,7 @@ export function SidebarElementRender(props: RenderProps) {
         >
             <div className={"sidebarIcon clickPropagator"}><Icon className={"clickPropagator"} size={24}/></div>
             <div  className={"sidebarTextContainer clickPropagator"}>
-                <div style={{fontWeight: props.fontWeight}} className={"sidebarText"}>
+                <div style={{fontWeight: props.fontWeight}} className={"sidebarText clickPropagator"}>
                     {props.name}
                 </div>
             </div>
