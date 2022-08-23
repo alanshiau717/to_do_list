@@ -16,7 +16,7 @@ import {Navbar, Nav, Row, Container, Col, Accordion, AccordionContext, useAccord
 import {Inbox, Plus, ThreeDotsVertical} from "react-bootstrap-icons";
 import AddModalFolder from "../modal/add_modal_folder";
 import AddModalList from "../modal/add_modal_list";
-import SidebarElement, {SidebarElementRender} from "./sidebar_element";
+import {SidebarElementRender} from "./sidebar_element";
 import ListUnit from "./list_unit";
 import {useAccordionButton} from "react-bootstrap/cjs/AccordionButton";
 import ProjectsAccordion from "./ProjectsAccordion";

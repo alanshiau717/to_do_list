@@ -10,9 +10,14 @@ query getFolders {
         due
         isDeleted
         done
+        description
+        taskSchedule {
+          id
+        }
       }
       done
       isDeleted
+      folderId
     }
     done
     isDeleted

@@ -28,7 +28,11 @@ export class Task extends BaseEntity {
 
     @Field(()=> [TaskSchedule])
     @OneToMany(() => TaskSchedule, taskSchedule => taskSchedule.tasks)
+    @JoinColumn({name:"taskScheduleId"})
     taskSchedule: TaskSchedule[]
+
+    @Column({type: "int", nullable: true})
+    taskScheduleId: number;
 
     @Field(() => Number)
     @Column(
@@ -72,4 +76,15 @@ export class Task extends BaseEntity {
         }
     )
     done: boolean
+
+    @Field(
+        () => String, {nullable: true})
+    @Column(
+        {
+            type: "text",
+            nullable: true
+        }
+    )
+    description?: string
+
 }

@@ -1,7 +1,7 @@
 import {GetFoldersDocument, GetFoldersQuery, ModifyListDocument} from "../../../generated";
 import {RenderProps, SidebarElementRender} from "./sidebar_element";
 import {useMutation} from "@apollo/client";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {openEditListModal} from "../../../redux/reducers/modalSlice";
 import {List} from "react-bootstrap-icons";
 import {changeListView} from "../../../redux/reducers/mainViewSlice";
@@ -16,6 +16,9 @@ SidebarElementList.defaultProps = {
 }
 
 export function SidebarElementList(props: Props) {
+    const currentList = useSelector(
+        (state: any) => state.mainview.currentList,
+    ) as string | null
     const [modifyList, {data,loading,error}] = useMutation(
         ModifyListDocument,
         {
@@ -44,8 +47,8 @@ export function SidebarElementList(props: Props) {
     ]
 
     return (
-        <SidebarElementRender icon={List} name={props.list.name} dropDownMenu={listDropDownProps} isIndented={props.isIndented} onClick={() => {
-            // dispatch(changeListView({list_id: props.list._id}))
+        <SidebarElementRender isSelected={props.list._id == currentList} icon={List} name={props.list.name} dropDownMenu={listDropDownProps} isIndented={props.isIndented} onClick={() => {
+            dispatch(changeListView({list_id: props.list._id, folder_id: props.list.folderId.toString()}))
         }}/>
     )
 

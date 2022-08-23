@@ -65,6 +65,7 @@ export class List extends BaseEntity implements IList{
     @JoinColumn({name:"folderId"})
     folder: Folder
 
+    @Field(() => Number)
     @Column({type: "int", nullable: true})
     folderId: number;
 

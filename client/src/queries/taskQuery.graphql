@@ -1,0 +1,17 @@
+query Task($taskId: Float!) {
+  task(taskId: $taskId) {
+    _id: id
+    name
+    due
+    isDeleted
+    done
+    description
+    taskSchedule {
+      id
+      isAllDayEvent
+      startTime
+      endTime
+      isDeleted
+    }
+  }
+}

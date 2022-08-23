@@ -1,0 +1,190 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type Folder {
+    date_created: DateTime!
+    date_updated: DateTime!
+    done: Boolean!
+    id: ID!
+    isDeleted: Boolean!
+    listIds: [Float!]!
+    lists: [List!]!
+    name: String!
+    order: Float!
+    user: User!
+    userId: Float!
+}
+
+type List {
+    date_created: DateTime!
+    date_updated: DateTime!
+    done: Boolean!
+    folder: Folder!
+    folderId: Float!
+    id: ID!
+    isDeleted: Boolean!
+    name: String!
+    order: Float!
+    tasks: [Task!]!
+    user: User!
+}
+
+type ModificationResponse {
+    id: Float!
+}
+
+type Mutation {
+    createFolder(data: CreateFolderInput!): Folder!
+    createList(data: CreateListInput!): List!
+    createTask(data: CreateTaskInput!): Task!
+    createTaskSchedule(data: CreateTaskScheduleInput!): TaskSchedule!
+    createUser(data: CreateUserInput!): User!
+    googleLogin(data: GoogleUserLoginInput!): UserLoginResponse!
+    modifyFolder(data: ModifyFolderInput!): ModificationResponse!
+    modifyList(data: ModifyListInput!): ModificationResponse!
+    modifyTask(data: ModifyTaskInput!): ModificationResponse!
+    modifyTaskSchedule(data: ModifyTaskScheduleInput!): ModificationResponse!
+}
+
+type Query {
+    folders: [Folder!]!
+    getTaskSchedules: [TaskSchedule!]!
+    getUsers: [User!]!
+    hello: String!
+    isValidUserSession: Boolean!
+    lists: [List!]!
+    task(taskId: Float!): Task!
+}
+
+type Task {
+    date_created: DateTime!
+    date_updated: DateTime!
+    description: String!
+    done: Boolean!
+    due: DateTime
+    id: ID!
+    isDeleted: Boolean!
+    list: List!
+    name: String!
+    order: Float!
+    taskSchedule: [TaskSchedule!]!
+    user: User!
+}
+
+type TaskSchedule {
+    date_created: DateTime!
+    date_updated: DateTime!
+    endTime: DateTime!
+    id: ID!
+    isAllDayEvent: Boolean!
+    isDeleted: Boolean!
+    startTime: DateTime!
+    taskId: Float!
+    tasks: Task!
+    user: User!
+}
+
+type User {
+    activated: Boolean!
+    date_created: DateTime!
+    date_updated: DateTime!
+    defaultFolder: Folder!
+    email: String!
+    firstName: String!
+    folders: [Folder!]!
+    googleUserSub: String!
+    id: ID!
+    inbox: List!
+    isDeleted: Boolean!
+    lastName: String!
+    password: String!
+    userSessions: [UserSession!]!
+}
+
+type UserLoginResponse {
+    accessToken: String!
+    defaultFolder: Float!
+    inbox: Float!
+}
+
+type UserSession {
+    date_created: DateTime!
+    date_updated: DateTime!
+    id: ID!
+    isRevoked: Boolean!
+    user: User!
+}
+
+"The javascript `Date` as string. Type represents date and time as the ISO Date string."
+scalar DateTime
+
+input CreateFolderInput {
+    name: String!
+}
+
+input CreateListInput {
+    folder: Float!
+    name: String!
+}
+
+input CreateTaskInput {
+    list: Float!
+    name: String!
+}
+
+input CreateTaskScheduleInput {
+    endTime: DateTime!
+    isAllDayEvent: Boolean!
+    startTime: DateTime!
+    taskId: Float!
+}
+
+input CreateUserInput {
+    email: String!
+    firstName: String!
+    lastName: String!
+    password: String!
+}
+
+input GoogleUserLoginInput {
+    idToken: String!
+}
+
+input ModifyFolderInput {
+    done: Boolean
+    id: Float!
+    isDeleted: Boolean
+    name: String
+    order: Float
+}
+
+input ModifyListInput {
+    done: Boolean
+    folderId: Float
+    id: Float!
+    isDeleted: Boolean
+    name: String
+    order: Float
+}
+
+input ModifyTaskInput {
+    done: Boolean
+    due: DateTime
+    id: Float!
+    isDeleted: Boolean
+    listId: Float
+    name: String
+    order: Float
+}
+
+input ModifyTaskScheduleInput {
+    endTime: DateTime
+    id: Float!
+    isAllDayEvent: Boolean
+    isDeleted: Boolean
+    startTime: DateTime
+}

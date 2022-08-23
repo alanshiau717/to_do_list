@@ -1,0 +1,37 @@
+@import 'src/themes';
+
+.smallButtonContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 3px 4px 3px 8px;
+    gap: 3px;
+
+    position: relative;
+}
+
+.smallButtonContainer:hover {
+      border-radius: 15px;
+      background-color: theme-color("hovered");
+    cursor: pointer;
+}
+
+.smallButtonText {
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12.8px;
+    line-height: 19px;
+}
+.smallButtonIcon {
+    visibility: hidden;
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+}
+.smallButtonIcon-visible {
+    visibility: unset;
+    display: flex;
+}

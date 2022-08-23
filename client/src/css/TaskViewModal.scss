@@ -1,0 +1,104 @@
+@import 'src/themes';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px 0px 0px;
+
+  //width: 262px;
+  //height: 123px;
+
+  //background: #FFFFFF;
+
+  ///* Inside auto layout */
+  //
+  //flex: none;
+  //order: 2;
+  //flex-grow: 0;
+}
+
+.headingContainer {
+  /* Frame 111 */
+
+
+  /* Auto layout */
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+
+
+  /* Inside auto layout */
+
+  flex: none;
+  order: 0;
+  align-self: stretch;
+  flex-grow: 0;
+}
+
+
+
+.headingText {
+  width: 222px;
+  height: 20px;
+
+  /* Body/Small */
+
+  //font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12.8px;
+  line-height: 19px;
+  /* identical to box height, or 150% */
+
+
+  /* Text/02. Muted */
+
+  color: #6C757D;
+
+
+  /* Inside auto layout */
+
+  flex: none;
+  order: 0;
+  flex-grow: 1;
+}
+
+.headingButton {
+  /* Frame 92 */
+
+
+  width: 20px;
+  height: 20px;
+
+  background: #FFFFFF;
+  border-radius: 5px;
+
+  /* Inside auto layout */
+
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+}
+
+.bodyContainer {
+  flex: none;
+  order: 1;
+  align-self: start;
+  flex-grow: 1;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12.8px;
+  line-height: 19px;
+}
+
+.taskScheduleContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+modal-header-no-padding {
+  padding: 0px !important;
+}

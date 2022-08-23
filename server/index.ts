@@ -13,14 +13,6 @@ import { FolderResolver } from "./resolvers/FolderResolver";
 import { ListResolver } from "./resolvers/ListResolver";
 import { TaskResolver } from "./resolvers/TaskResolver";
 import { TaskScheduleResolver } from "./resolvers/TaskScheduleResolver";
-// import http from 'http';
-// const express = require("express")
-// import express from "express"
-// import expressJwt from "express-jwt"
-// appendFile.use(
-//   expressJwt()
-// )
-
 
 
 export default async function main() {
@@ -50,19 +42,8 @@ export default async function main() {
       return context
     }
   })
-
   await server.start()
   server.applyMiddleware({app, cors: corsOptions, path: '/'})
-
-
-  // const server = new ApolloServer({ schema, context: auth, cors: {
-  //   origin: ['http://localhost:3000', "http://localhost", "https://studio.apollographql.com"],
-  //   credentials: true
-  // }})
-
   return app.listen({port: 4000}, () => 
     console.log("Server is ready"))
-  
 }
-
-// main()

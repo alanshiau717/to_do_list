@@ -9,10 +9,9 @@ import {List} from "react-bootstrap-icons";
 import "../../css/main_view.css";
 import SidebarFunctional from "../main_view/sidebar/sidebarFunctional";
 import {changeListView} from "../../redux/reducers/mainViewSlice";
-import SidebarTaskContainer from "../main_view/main_content/main_content_container";
 import Calendar from "../main_view/calendar/calendarContainer";
 import GlobalModal from "../main_view/modal/globalModal";
-// import Calendar from "../main_view/calendar"
+import TaskViewContainer from "../main_view/main_content/TaskViewContainer";
 
 export type Iedittask = (
     action: "complete" | "delete" | "edit" | "add",
@@ -135,9 +134,10 @@ export default function MainViewPage(props: Props) {
                 <div id="content">
                     <GlobalModal />
                     {currentView == "tasks" ? (
-                        <div>
-                            <SidebarTaskContainer folders={folders}/>
-                        </div>
+
+                            <TaskViewContainer folders={folders}/>
+                            // <SidebarTaskContainer folders={folders}/>
+
                     ) : null}
                     {currentView == "calendar" ? (
                         <Calendar folders={folders}/>

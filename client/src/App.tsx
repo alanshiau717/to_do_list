@@ -1,6 +1,6 @@
 import {Component, useEffect} from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./custom.scss";
+import "./themes.scss";
 // import "./App.css";
 import {Switch, Route, useHistory} from "react-router-dom";
 import LoginPage from "./components/login-page";
@@ -55,7 +55,7 @@ export function AppFunctional() {
             console.log("setting is authenticating to false");
             dispatch(userIsAuthenticating(false));
             if (isAuthenticated == true) {
-                history.push("/main");
+                // history.push("/main");
             }
         }
     });

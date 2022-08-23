@@ -35,5 +35,9 @@ export class TaskSchedule extends BaseEntity {
     @Field(() => Boolean)
     @Column()
     isAllDayEvent: boolean
+
+    @Field(() => Boolean)
+    @Column()
+    isDeleted: boolean
     
 }

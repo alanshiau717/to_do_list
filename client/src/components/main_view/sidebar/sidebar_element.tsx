@@ -2,9 +2,6 @@ import "../../../css/sidebarElement.scss";
 import {Icon, Inbox, ThreeDotsVertical} from "react-bootstrap-icons";
 import React, {Component, EventHandler, forwardRef, useState} from "react";
 import {Dropdown} from "react-bootstrap";
-import {useDispatch} from "react-redux";
-import {openModal} from "../../../redux/reducers/modalSlice";
-import DropdownMenu from "react-bootstrap/DropdownMenu";
 
 const ThreeDotsVertical25 = React.forwardRef<any, any>(({children, onClick}, ref) => (
     <a
@@ -25,7 +22,7 @@ export interface RenderProps {
     icon: Icon;
     dropDownMenu?: dropDownProps[];
     name: string;
-    selected?: boolean
+    isSelected?: boolean
 
     onClick?(event: any): any;
 
@@ -41,7 +38,7 @@ interface dropDownProps {
 
 SidebarElementRender.defaultProps = {
     fontWeight: "Regular",
-    selected: false,
+    isSelected: false,
     isIndented: false
 }
 
@@ -51,7 +48,7 @@ export function SidebarElementRender(props: RenderProps) {
     const Icon = props.icon
     return (
         <div
-            className={`${props.isIndented ? "sidebarElement-indented" : ""} sidebarElement clickPropagator ${props.selected ? "sidebarElement-selected" : ""}`}
+            className={`${props.isIndented ? "sidebarElement-indented" : ""} sidebarElement clickPropagator ${props.isSelected ? "sidebarElement-selected" : ""}`}
             onMouseEnter={() => {
                 setElementOptions(true)
             }

@@ -30,4 +30,7 @@ export class ModifyTaskScheduleInput {
 
     @Field({ nullable: true })
     isAllDayEvent?: boolean
+
+    @Field({nullable: true})
+    isDeleted?: boolean
 }

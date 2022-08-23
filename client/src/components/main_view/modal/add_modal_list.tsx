@@ -138,6 +138,11 @@ export function GlobalAddListModal(props: GlobalListModalProps) {
     }, 1);
   }
   return (<div>
+    <Modal.Header>
+      <Modal.Title>
+        Add List
+      </Modal.Title>
+    </Modal.Header>
     <Modal.Body>
     <Form>
       <Form.Group controlId="formBasicEmail">

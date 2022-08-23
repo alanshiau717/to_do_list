@@ -54,6 +54,15 @@ export class TaskService {
     private get listService() {
         return new ListService();
     }
-
-    
+    public async getTask(userId: number, taskId: number) {
+        if(await this.taskBelongsToUser(userId, taskId)) {
+            let task =  await this.repository.findOne({id: taskId}, {relations: ["taskSchedule"]})
+            task!!.taskSchedule.sort(
+                (a, b) =>
+                    new Date(a.startTime).getTime() - new Date(b.startTime).getTime()
+            )
+            return task
+        }
+        throw "TASK DOESN'T BELONG TO USER"
+    }
 }

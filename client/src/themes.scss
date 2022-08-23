@@ -3,8 +3,10 @@ $theme-colors: (
         "danger": #ff4136,
         "background": #F5F5F5,
         "hovered": #DFDFDF,
+        "text-muted": #6C757D,
+        "text-warning": #DC3545,
         "primary-transparent": rgba(123, 97, 255, 0.25),
-        "primary-transparent-darker": rgba(123, 97, 255, 0.5)
+        "primary-transparent-darker": rgba(123, 97, 255, 0.5),
 );
 
 $opacities: (
@@ -13,19 +15,21 @@ $opacities: (
         "high": 0.25
 );
 
-.bg-primary,
-.btn-primary,
-.badge-primary,
-.alert-primary {
-}
+$text-colors: (
+        "text-muted": #6C757D,
+        "text-warning": #DC3545
+);
 
+@function text-color($key) {
+  @return map-get($text-colors, $key)
+};
 
 @function theme-color($key) {
   @return map-get($theme-colors, $key)
-}
+};
 
 @function get-opacity($key) {
   @return map-get($opacities, $key)
-}
+};
 
 @import "~bootstrap/scss/bootstrap";

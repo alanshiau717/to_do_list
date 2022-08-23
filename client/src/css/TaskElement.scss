@@ -1,0 +1,87 @@
+@import '../themes.scss';
+//@use 'src/themes';
+
+.TaskElementContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px;
+  position: relative;
+  align-self: stretch;
+  height: 72px;
+  border-radius: 15px;
+}
+
+.TaskElementContainer:hover {
+  background-color: theme-color("hovered");
+  cursor: pointer;
+}
+
+.TaskElementRow1 {
+  display: flex;
+  flex: none;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px 10px 10px 10px;
+  gap: 10px;
+  height:50%;
+  width:100%;
+}
+
+.TaskElementRow1-singleRow {
+  height: 100% !important;
+}
+
+.TaskElementRow2 {
+  display: flex;
+  flex: none;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px;
+  gap: 20px;
+  height:50%;
+  width:100%;
+}
+
+.TaskCircle {
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
+.Text {
+  flex: none;
+  order: 1;
+  flex-grow: 1;
+}
+.EditButton {
+  flex: none;
+  order: 2;
+  flex-grow: 0;
+}
+.DeleteButton {
+  flex: none;
+  order: 3;
+  flex-grow: 0;
+}
+.ScheduleCalendar {
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
+.DueDate {
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+}
+.DueDate-expired {
+  color: text-color("text-warning");
+}
+
+.hover-button .hover-button--on,
+.hover-button:hover .hover-button--off {
+  display: none;
+}
+
+.hover-button:hover .hover-button--on {
+  display: inline;
+}

@@ -42,6 +42,11 @@ export function EditListModal(props: EditListModalProps) {
 
     return (
         <div>
+            <Modal.Header>
+                <Modal.Title>
+                    Edit List Name
+                </Modal.Title>
+            </Modal.Header>
             <Modal.Body>
                 <Form>
                     <Form.Group controlId="formBasicEmail">

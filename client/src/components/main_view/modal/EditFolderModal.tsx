@@ -41,6 +41,11 @@ export function EditFolderModal(props: EditFolderModalProps) {
 
     return (
         <div>
+            <Modal.Header>
+                <Modal.Title>
+                    Edit Folder Name
+                </Modal.Title>
+            </Modal.Header>
             <Modal.Body>
                 <Form>
                     <Form.Group controlId="formBasicEmail">

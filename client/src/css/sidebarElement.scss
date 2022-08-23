@@ -1,4 +1,4 @@
-@import '../custom.scss';
+@import 'src/themes';
 
 .sidebarElement {
   display: flex;
@@ -13,6 +13,12 @@
   height: 44px;
   border-radius: 15px;
 }
+
+.sidebarElement:hover {
+  background-color: theme-color("hovered");
+  cursor: pointer;
+}
+
 
 .sidebarElement-indented {
   padding: 5px 12px 5px 60px !important;
@@ -52,9 +58,4 @@
   flex: none;
   order: 2;
   flex-grow: 0;
-}
-
-.sidebarElement:hover {
-  background-color: theme-color("hovered");
-  cursor: pointer;
 }

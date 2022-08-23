@@ -1,4 +1,4 @@
-import { Resolver, Mutation, Arg, Ctx} from "type-graphql";
+import { Resolver, Mutation, Arg, Ctx, Query} from "type-graphql";
 import {Task} from "../database/entity/Task"
 import {CreateTaskInput, ModifyTaskInput} from "../inputs/TaskInputs"
 import { ModificationResponse } from "../schemas/ModificationResponse";
@@ -26,11 +26,14 @@ export class TaskResolver {
         return {id: taskId}
     }
 
-    
 
-
-
-
-
-
+    @Query(() => Task)
+    async task(
+        @Ctx() ctx: any,
+        @Arg("taskId") taskId: number) {
+        if(!ctx.userId) {
+            throw "USER NOT AUTHENTICATED"
+        }
+        return this.taskService.getTask(ctx.userId, taskId)
+    }
 }

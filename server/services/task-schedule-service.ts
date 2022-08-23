@@ -21,12 +21,14 @@ export class TaskScheduleService {
                taskSchedule.endTime = payload.endTime
                taskSchedule.isAllDayEvent = payload.isAllDayEvent
                taskSchedule.userId = payload.userId
+               taskSchedule.isDeleted = false
                const createdTaskSchedule = await this.repository.save(taskSchedule)
                return await this.getTaskScheduleById(createdTaskSchedule.id)
            }
            throw "INTERNAL SERVER ERROR"
     }
     public async modifyTaskScheduleAndReturnId(payload: IModifyTaskSchedule) {
+            console.log("hit modify task SChedule")
             const {userId, id, ...modifyTaskScheduleProps} = payload
             if(await this.taskScheduleBelongsToUser(userId, id)) {
                 removeUndefinedKeys(modifyTaskScheduleProps)
